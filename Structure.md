@@ -14,9 +14,7 @@ To start connecting their books, a person opens our website. On the website ther
 
 No authentication is required. After the first application login, we automatically create a user id and authenticate them in our service.
 
-For each application that we support, we create exporter and importer adopters. When an exporter announces that new data is available, the importers come online and act on it. These adopters are developed as semi-independet services.
-
-In case an application like JIRA supports multiple types of data, we will probably have to add them in our UI and let the user select. This aspect is not addressed in this document.
+For each application that we support, we create read and write adopters. These adopters are developed as semi-independet services.
 
 There is also the matter of sync start point in time. Do we sync everything that happens after the application authentication or do we try to sync all of the data or some thing in the middle? It can even be yet another setting that is disposed to the individual to decide.
 
@@ -27,19 +25,25 @@ There is also the matter of sync start point in time. Do we sync everything that
 - A user profile record on our database is basically just an identifier that the authenticated applications point to. Indicating that these accounts belong to the same person.
 - If someone without a session logs into an application that we have already created a user for, we have to recognize this and other than providing the session, update the UI to show all the logged in applications.
 - If someone logs into application A in one browser and logs into application B in another browser and then logs into B from the first browser, we have to recognize this as well and merge the 2 user profiles that we have created. This can be addressed later!
-- We need to maintain a set of authentication adopters. Each adopter would have a name, an icon, an authentication UI and the name of importer/exporter adopters they support for each data type.
+- We need to maintain a set of authentication adopters. Each adopter would have a name, an icon, and an authentication UI.
 
 ## Synchronization
-1. After an exporter has been switched on by the user, it either registers a webhook to receive events from the application or adds itself for that specific user to be notified in every time interval.
-2. At specific webhooks or time intervals, an exporter adopter gets notified about some updates in the data.
-3. The updates are sent in a specific format to every importer adopter for that user for that data type. The importer only writes this update as a pending operation in their respective database.
-4. Then, each importer adopter with a pending operation is called sequentially to send their updates to their respectice applications. After completing each update, their remove it from their pending list.
-5. Storing the update (step 3) and sending it to the application (step 4) is designed as a two step process to avoid failures or delays during the receiving process.
-6. It might be a good idea to revive the importer adopters with pending tasks in a time interval basis to have a background retry going.
-7. We do not import into an application if the exported source is the same application on the same user account.
+- For each data type and application combination, we have an update notifier, a reader and a writer implementation
+- After reading gets switched on, the update notifier is asked to register a hook and notify on updates
+- After receiving a notification from an update notifier, sync tasks will be created in the sync queue per each write that has been switched on by the user
+- If a sync task with the same source and destination already exists, we do not create a new sync task
+- A task queue is processed on each update notification for the newly created tasks
+- After each task is processed, it is removed from the queue
+- On a constant time interval we make an attempt to process all the remaining tasks as well
+- For each data type, we have a default change interpreter that compares the data on the source reader with the data on the destination reader and produces a change report
+- The writer then receives the change report and applies it to the destination application
+- We can have custom implementations of change interpreter based on its variables
+- We never create a sync task from an application to itself!
+
+## Addressed concerns
+### Complex applications
+An application might support different data sources and data types. The authentication adopter is tasked to point to a specific data source within the application and then tell us which data types are available in this data source. Under each application there are multiple authentications. And under each authentication there are multiple data types. Each data type has a read and a write switch that the user can turn on or off.
 
 ## Unaddressed concerns
-- The UX for when an application manages multiple types of data
 - An strategy for handling the starting point of the sync
 - What happens when access to an application is revoked without us knowing
-- The case where a user has multiple accounts on the same application
