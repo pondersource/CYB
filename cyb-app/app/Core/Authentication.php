@@ -14,14 +14,14 @@ class Authentication {
     public $read;
     public $write;
 
-    public function __construct($id, $app_code_name, $display_name, $user_id, $metadata, $read, $write) {
-        $this->id = $id;
-        $this->app_code_name = $app_code_name;
-        $this->display_name = $display_name;
-        $this->user_id = $user_id;
-        $this->metadata = $metadata;
-        $this->read = $read;
-        $this->write = $write;
+    public function __construct($parameters) {
+        $this->id = $parameters['id'];
+        $this->app_code_name = $parameters['app_code_name'];
+        $this->display_name = $parameters['display_name'];
+        $this->user_id = $parameters['user_id'];
+        $this->metadata = $parameters['metadata'];
+        $this->read = $parameters['read'];
+        $this->write = $parameters['write'];
     }
 
 }

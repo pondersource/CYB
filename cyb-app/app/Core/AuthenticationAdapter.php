@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-interface AuthenticationAdopter {
+interface AuthenticationAdapter {
 
     public function getAppCodeName();
     public function getName();

@@ -5,7 +5,7 @@ namespace App\Core\DataType;
 use App\Core\DataType\Timesheet\TimesheetChangeInterpreter;
 use App\Core\DataType\Timesheet\TimesheetType;
 
-class DataTypes {
+class DataTypeManager {
 
     public static function getDataTypeForName($data_type) {
         if ($data_type == 'timesheet') {

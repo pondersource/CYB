@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Core\Applications;
+use App\Core\ApplicationManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +14,15 @@ use App\Core\Applications;
 |
 */
 Route::get('/', function () {
-    $applications = Applications::getApplications();
-    $authentications = Applications::getAuthentications();
+    $applications = ApplicationManager::getApplications();
+    $authentications = ApplicationManager::getAuthentications();
     return view('welcome', compact('applications', 'authentications'));
 });
 
 Route::post('/apps/{app_code_name}/auth', function($app_code_name) {
-    return Applications::finalizeAuthentication($app_code_name);
+    return ApplicationManager::finalizeAuthentication($app_code_name);
 });
 
 Route::post('/hookOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
-    return Applications::hookOn($auth_id, $data_type);
+    return ApplicationManager::hookOn($auth_id, $data_type);
 });

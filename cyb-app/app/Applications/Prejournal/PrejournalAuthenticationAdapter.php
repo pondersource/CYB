@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Applications\Teamwork;
+namespace App\Applications\Prejournal;
 
-use App\Core\AuthenticationAdopter;
-use App\Core\Applications;
+use App\Core\AuthenticationAdapter;
+use App\Core\ApplicationManager;
 
-class TeamworkAuthenticationAdopter implements AuthenticationAdopter {
+class PrejournalAuthenticationAdapter implements AuthenticationAdapter {
 
     public function getAppCodeName() {
-        return 'teamwork';
+        return 'prejournal';
     }
 
     public function getName() {
-        return 'Teamwork';
+        return 'Prejournal';
     }
 
     public function getIconURL() {
@@ -24,7 +24,7 @@ class TeamworkAuthenticationAdopter implements AuthenticationAdopter {
     }
 
     public function getAuthenticationUI() {
-        $app_code_name = TeamworkAuthenticationAdopter::getAppCodeName();
+        $app_code_name = PrejournalAuthenticationAdapter::getAppCodeName();
         return view('sample_authentication', compact('app_code_name'));
     }
 
@@ -36,17 +36,17 @@ class TeamworkAuthenticationAdopter implements AuthenticationAdopter {
         // TODO Do registration stuff
         
         // Imagining an update case happens immediately!
-        Applications::onNewUpdate($auth, $data_type);
+        ApplicationManager::onNewUpdate($auth, $data_type);
     }
 
     public function getReader($data_type) {
         // Datatype is always timesheet in this case
-        return new TeamworkTimesheetReader();
+        return new PrejournalTimesheetReader();
     }
 
     public function getWriter($data_type) {
         // Datatype is always timesheet in this case
-        return new TeamworkTimesheetWriter();
+        return new PrejournalTimesheetWriter();
     }
 
 }
