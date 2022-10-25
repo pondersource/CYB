@@ -19,10 +19,6 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter {
         return null;
     }
 
-    public function getSupportedDataTypes() {
-        return [ 'timesheet' ];
-    }
-
     public function getAuthenticationUI() {
         $app_code_name = TeamworkAuthenticationAdapter::getAppCodeName();
         return view('sample_authentication', compact('app_code_name'));
@@ -39,12 +35,16 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter {
         ApplicationManager::onNewUpdate($auth, $data_type);
     }
 
-    public function getReader($data_type) {
+    public function getSupportedDataTypes($auth) {
+        return [ 'timesheet' ];
+    }
+
+    public function getReader($auth, $data_type) {
         // Datatype is always timesheet in this case
         return new TeamworkTimesheetReader();
     }
 
-    public function getWriter($data_type) {
+    public function getWriter($auth, $data_type) {
         // Datatype is always timesheet in this case
         return new TeamworkTimesheetWriter();
     }

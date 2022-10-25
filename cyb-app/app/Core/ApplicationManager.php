@@ -5,6 +5,7 @@ namespace App\Core;
 use App\Applications\Prejournal\PrejournalAuthenticationAdapter;
 use App\Applications\Teamwork\TeamworkAuthenticationAdapter;
 use App\Core\Authentication;
+use App\Core\AuthFunction;
 use App\Core\DataType\DataTypeManager;
 use App\Core\Task;
 
@@ -44,24 +45,41 @@ class ApplicationManager {
     public static function getAuthentications() {
         // TODO Query from authentication table
         return [
-            new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null, 'read'=>false, 'write'=>false]),
-            new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null, 'read'=>false, 'write'=>true])
+            new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]),
+            new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null])
         ];
     }
 
     public static function getAuthentication($auth_id) {
         // TODO Query from authentication table
         if ($auth_id == 1) {
-            return new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null, 'read'=>false, 'write'=>false]);
+            return new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]);
         }
         else {
-            return new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null, 'read'=>false, 'write'=>true]);
+            return new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]);
         }
+    }
+
+    public static function getFunction($auth_id, $data_type) {
+        // TODO Query from auth function table
+        if ($data_type != 'timesheet') {
+            return new AuthFunction(['id'=>0, 'auth_id'=>$auth_id, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
+        }
+
+        if ($auth_id == 1) {
+            return new AuthFunction(['id'=>1, 'auth_id'=>1, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
+        }
+
+        if ($auth_id == 2) {
+            return new AuthFunction(['id'=>2, 'auth_id'=>2, 'data_type'=>$data_type, 'read'=>false, 'write'=>true]);
+        }
+        
+        return new AuthFunction(['id'=>0, 'auth_id'=>$auth_id, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
     }
 
     public static function getWriteAuthentications($data_type, $except) {
         // TODO Query from authentication table
-        return [ new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null, 'read'=>false, 'write'=>true]) ];
+        return [ new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]) ];
     }
 
     public static function hookOn($auth_id, $data_type) {
@@ -106,9 +124,9 @@ class ApplicationManager {
             $src_app = ApplicationManager::getApplication($task->from_auth->app_code_name);
             $dst_app = ApplicationManager::getApplication($task->to_auth->app_code_name);
             
-            $src_reader = $src_app->getReader($data_type);
-            $dst_reader = $dst_app->getReader($data_type);
-            $writer = $dst_app->getWriter($data_type);
+            $src_reader = $src_app->getReader($task->from_auth, $data_type);
+            $dst_reader = $dst_app->getReader($task->to_auth, $data_type);
+            $writer = $dst_app->getWriter($task->to_auth, $data_type);
 
             // In the future, we should support custom implementations
             $change_interpreter = DataTypeManager::getChangeInterpreter($data_type);

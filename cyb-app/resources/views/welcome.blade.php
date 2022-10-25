@@ -31,12 +31,13 @@
         @endforeach
 
         <h2>Authenticated accounts</h2>
-        @foreach($authentications as $auth)
-            <b>{{ $auth->display_name }}</b> - {{ $auth->app_code_name }}<br>
-            <i>Timesheet data</i><br>
-            <input id="{{ $auth->id }}-timesheet-read" type="checkbox" onclick="readToggle(event);" {{ $auth->read ? 'checked':'' }}>Read</input><br>
-            <input id="{{ $auth->id }}-timesheet-write" type="checkbox" onclick="writeToggle(event);" {{ $auth->write ? 'checked':'' }}>Write</input>
-            <br>
+        @foreach($view_authentications as $auth)
+            <b>{{ $auth['display_name'] }}</b> - {{ $auth['app_code_name'] }}<br>
+            @foreach($auth['data_types'] as $data_type)
+                <i>{{ $data_type['display_name'] }}</i><br>
+                <input id="{{ $auth['id'] }}-{{ $data_type['name'] }}-read" type="checkbox" onclick="readToggle(event);" {{ $data_type['read'] ? 'checked':'' }}>Read</input><br>
+                <input id="{{ $auth['id'] }}-{{ $data_type['name'] }}-write" type="checkbox" onclick="writeToggle(event);" {{ $data_type['write'] ? 'checked':'' }}>Write</input><br>
+            @endforeach
         @endforeach
     </body>
 
