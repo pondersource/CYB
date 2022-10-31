@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +52,8 @@ Route::get('/', function () {
     return view('welcome', compact('applications', 'view_authentications'));
 });
 
-Route::post('/apps/{app_code_name}/auth', function($app_code_name) {
-    return ApplicationManager::finalizeAuthentication($app_code_name);
+Route::post('/apps/{app_code_name}/auth', function(Request $request, $app_code_name) {
+    return ApplicationManager::finalizeAuthentication($request, $app_code_name);
 });
 
 Route::post('/hookOn/{auth_id}/{data_type}', function($auth_id, $data_type) {

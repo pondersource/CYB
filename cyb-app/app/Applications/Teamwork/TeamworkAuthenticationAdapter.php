@@ -4,6 +4,8 @@ namespace App\Applications\Teamwork;
 
 use App\Core\AuthenticationAdapter;
 use App\Core\ApplicationManager;
+use App\Core\AuthInfo;
+use App\Models\Authentication;
 
 class TeamworkAuthenticationAdapter implements AuthenticationAdapter {
 
@@ -20,12 +22,17 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter {
     }
 
     public function getAuthenticationUI() {
-        $app_code_name = TeamworkAuthenticationAdapter::getAppCodeName();
+        $app_code_name = $this->getAppCodeName();
         return view('sample_authentication', compact('app_code_name'));
     }
 
-    public function finalizeAuthentication() {
+    public function finalizeAuthentication(): ?AuthInfo {
         // TODO
+        return null;
+    }
+
+    public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool {
+        return $auth['app_user_id'] == $auth_info->app_user_id;
     }
 
     public function registerUpdateNotifier($auth, $data_type) {
