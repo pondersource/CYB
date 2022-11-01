@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
+use App\Models\Authentication;
 use Illuminate\Http\Request;
 
 /*
@@ -22,11 +23,7 @@ Route::get('/', function () {
     $view_authentications = [];
 
     foreach ($authentications as $auth) {
-        $view_auth = [];
-        $view_auth['id'] = $auth->id;
-        $view_auth['display_name'] = $auth->display_name;
-        $view_auth['app_code_name'] = $auth->app_code_name;
-
+        $view_auth = $auth->getAttributes();
 
         $app = ApplicationManager::getApplication($auth->app_code_name);
         $data_types = $app->getSupportedDataTypes($auth);
@@ -35,13 +32,13 @@ Route::get('/', function () {
 
         foreach ($data_types as $data_type) {
             $data_type_details = DataTypeManager::getDataTypeForName($data_type);
-            $function = ApplicationManager::getFunction($auth->id, $data_type);
+            $function = ApplicationManager::getFunction($auth['id'], $data_type);
 
             $view_data_type = [];
             $view_data_type['name'] = $data_type_details->getCodeName();
             $view_data_type['display_name'] = $data_type_details->getDisplayName();
-            $view_data_type['read'] = $function->read;
-            $view_data_type['write'] = $function->write;
+            $view_data_type['read'] = $function['read'];
+            $view_data_type['write'] = $function['write'];
             $view_data_types[] = $view_data_type;
         }
 
@@ -56,6 +53,18 @@ Route::post('/apps/{app_code_name}/auth', function(Request $request, $app_code_n
     return ApplicationManager::finalizeAuthentication($request, $app_code_name);
 });
 
-Route::post('/hookOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
-    return ApplicationManager::hookOn($auth_id, $data_type);
+Route::post('/readOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
+    return ApplicationManager::readOn($auth_id, $data_type);
+});
+
+Route::post('/readOff/{auth_id}/{data_type}', function($auth_id, $data_type) {
+    return ApplicationManager::readOff($auth_id, $data_type);
+});
+
+Route::post('/writeOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
+    return ApplicationManager::writeOn($auth_id, $data_type);
+});
+
+Route::post('/writeOff/{auth_id}/{data_type}', function($auth_id, $data_type) {
+    return ApplicationManager::writeOff($auth_id, $data_type);
 });

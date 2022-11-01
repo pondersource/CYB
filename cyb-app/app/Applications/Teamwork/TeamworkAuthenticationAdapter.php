@@ -27,19 +27,29 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter {
     }
 
     public function finalizeAuthentication(): ?AuthInfo {
-        // TODO
-        return null;
+        $auth_info = new AuthInfo();
+        $auth_info
+            ->setAppCodeName('teamwork')
+            ->setDisplayName('Ismoil')
+            ->setAppUserId('1')
+            ->setMetadata('xxxxxxxxxxxxxxxxx');
+        return $auth_info;
     }
 
     public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool {
         return $auth['app_user_id'] == $auth_info->app_user_id;
     }
 
-    public function registerUpdateNotifier($auth, $data_type) {
+    public function registerUpdateNotifier($auth, $data_type): bool {
         // TODO Do registration stuff
         
         // Imagining an update case happens immediately!
         ApplicationManager::onNewUpdate($auth, $data_type);
+        return true;
+    }
+
+    public function unregisterUpdateNotifier($auth, $data_type): bool {
+        return true;
     }
 
     public function getSupportedDataTypes($auth) {

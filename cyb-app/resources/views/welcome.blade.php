@@ -50,13 +50,32 @@
             const dataType = idParts[1];
 
             if (elem.checked) {
-                axios.post('/hookOn/' + authId + '/' + dataType, {}).then(response => {
+                axios.post('/readOn/' + authId + '/' + dataType, {}).then(response => {
                     alert('Read is now on');
 	            });
             }
             else {
-                axios.post('/hookOff/' + authId + '/' + dataType, {}).then(response => {
+                axios.post('/readOff/' + authId + '/' + dataType, {}).then(response => {
                     alert('Read is now off');
+	            });
+            }
+        }
+
+        function writeToggle(event) {
+            const elem = event.currentTarget;
+            const idParts = elem.id.split('-');
+
+            const authId = idParts[0];
+            const dataType = idParts[1];
+
+            if (elem.checked) {
+                axios.post('/writeOn/' + authId + '/' + dataType, {}).then(response => {
+                    alert('Write is now on');
+	            });
+            }
+            else {
+                axios.post('/writeOff/' + authId + '/' + dataType, {}).then(response => {
+                    alert('Write is now off');
 	            });
             }
         }

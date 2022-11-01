@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Applications\Prejournal\PrejournalAuthenticationAdapter;
 use App\Applications\Teamwork\TeamworkAuthenticationAdapter;
-use App\Core\AuthFunction;
 use App\Core\DataType\DataTypeManager;
 use App\Core\Task;
 use App\Models\Authentication;
+use App\Models\AuthFunction;
 use App\Models\User;
 
 class ApplicationManager {
@@ -42,7 +42,7 @@ class ApplicationManager {
                 return 'Authentication failed!';
             }
 
-            $has_user = Auth::hasUser();
+            $has_user = Auth::check();
 
             $auths = Authentication::query()
                     ->where('app_user_id', $auth_info->app_user_id)
@@ -67,7 +67,7 @@ class ApplicationManager {
                         $matching_auth['display_name'] = $auth_info->display_name;
                         $matching_auth['metadata'] = $auth_info->metadata;
                         
-                        $matching_auth->save();
+                        $matching_auth->update();
 
                         return 'Auth updated!';
                     }
@@ -100,7 +100,7 @@ class ApplicationManager {
 
                         if ($auth->save()) {
                             Auth::login($user, $remember = false);
-                            $request->session()->regenerate();
+                            //$request->session()->regenerate();
     
                             return 'success: new user!';
                         }
@@ -117,10 +117,10 @@ class ApplicationManager {
                     $matching_auth['display_name'] = $auth_info->display_name;
                     $matching_auth['metadata'] = $auth_info->metadata;
                     
-                    $matching_auth->save();
+                    $matching_auth->update();
 
                     if (Auth::loginUsingId($matching_auth['user_id'], $remember = false) != null) {
-                        $request->session()->regenerate();
+                        //$request->session()->regenerate();
 
                         return 'success: returning user!';
                     }
@@ -134,47 +134,59 @@ class ApplicationManager {
         return 'ERROR: App not found!';
     }
 
-    public static function getAuthentications() {
-        // TODO Query from authentication table
-        return [
-            new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]),
-            new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null])
-        ];
+    public static function getAuthentications(): array {
+        $user = Auth::user();
+
+        if (!$user) {
+            return [];
+        }
+
+        $authentications = Authentication::query()
+                ->where('user_id', $user['id'])
+                ->get();
+
+        return $authentications->all();
     }
 
-    public static function getAuthentication($auth_id) {
-        // TODO Query from authentication table
-        if ($auth_id == 1) {
-            return new Authentication(['id'=>1, 'app_code_name'=>'teamwork', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]);
-        }
-        else {
-            return new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]);
-        }
+    public static function getAuthentication($auth_id): ?Authentication {
+        return Authentication::query()->where('id', $auth_id)->first();
     }
 
-    public static function getFunction($auth_id, $data_type) {
-        // TODO Query from auth function table
-        if ($data_type != 'timesheet') {
-            return new AuthFunction(['id'=>0, 'auth_id'=>$auth_id, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
+    public static function getFunction($auth_id, $data_type): ?AuthFunction {
+        $function = AuthFunction::query()
+                ->where('auth_id', $auth_id)
+                ->where('data_type', $data_type)
+                ->first();
+
+        if ($function) {
+            return $function;
         }
 
-        if ($auth_id == 1) {
-            return new AuthFunction(['id'=>1, 'auth_id'=>1, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
-        }
-
-        if ($auth_id == 2) {
-            return new AuthFunction(['id'=>2, 'auth_id'=>2, 'data_type'=>$data_type, 'read'=>false, 'write'=>true]);
-        }
-
-        return new AuthFunction(['id'=>0, 'auth_id'=>$auth_id, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
+        return new AuthFunction(['auth_id'=>$auth_id, 'data_type'=>$data_type, 'read'=>false, 'write'=>false]);
     }
 
-    public static function getWriteAuthentications($data_type, $except) {
-        // TODO Query from authentication table
-        return [ new Authentication(['id'=>2, 'app_code_name'=>'prejournal', 'display_name'=>'Ismoil', 'user_id'=>1, 'metadata'=>null]) ];
+    public static function getWriteAuthentications($data_type, $except): array {
+        $auth_ids = AuthFunction::query()
+                ->where('data_type', $data_type)
+                ->where('write', true)
+                ->where('auth_id', '!=', $except['id'])
+                ->pluck('auth_id')
+                ->all();
+
+        $authentications = Authentication::query()->find($auth_ids)->all();
+
+        return $authentications;
     }
 
-    public static function hookOn($auth_id, $data_type) {
+    public static function readOn($auth_id, $data_type) {
+        return ApplicationManager::readToggle($auth_id, $data_type, true);
+    }
+
+    public static function readOff($auth_id, $data_type) {
+        return ApplicationManager::readToggle($auth_id, $data_type, false);
+    }
+
+    public static function readToggle($auth_id, $data_type, $read) {
         $auth = ApplicationManager::getAuthentication($auth_id);
 
         if ($auth === null) {
@@ -186,10 +198,98 @@ class ApplicationManager {
         if ($app === null) {
             return 'ERROR: App not found!';
         }
+        
+        $function = AuthFunction::query()
+                ->where('auth_id', $auth_id)
+                ->where('data_type', $data_type)
+                ->first();
 
-        $app->registerUpdateNotifier($auth, $data_type);
+        if ($function == null) {
+            $function = new AuthFunction();
+            $function['auth_id'] = $auth_id;
+            $function['data_type'] = $data_type;
+        }
+        else if ($function['read'] == $read) {
+            return 'Read already in the desired state!';
+        }
 
-        return 'success!';
+        $function['read'] = $read;
+
+        if ($function->save()) {
+            if ($read) {
+                if ($app->registerUpdateNotifier($auth, $data_type)) {
+                    return 'success!';
+                }
+                else {
+                    $function['read'] = false;
+                    $function->save();
+                    // TODO state might get lost here.
+    
+                    return 'Registering update notifier failed!';
+                }
+            }
+            else {
+                if ($app->unregisterUpdateNotifier($auth, $data_type)) {
+                    return 'success!';
+                }
+                else {
+                    $function['read'] = true;
+                    $function->save();
+                    // TODO state might get lost here.
+    
+                    return 'Unregistering update notifier failed!';
+                }
+            }
+        }
+        else {
+            return 'Failed to save/update function!';
+        }
+    }
+
+    public static function writeOn($auth_id, $data_type) {
+        return ApplicationManager::writeToggle($auth_id, $data_type, true);
+    }
+
+    public static function writeOff($auth_id, $data_type) {
+        return ApplicationManager::writeToggle($auth_id, $data_type, false);
+    }
+    
+    public static function writeToggle($auth_id, $data_type, $write) {
+        error_log('write toggle '.$auth_id. ' '.$write);
+        $auth = ApplicationManager::getAuthentication($auth_id);
+
+        if ($auth === null) {
+            return 'ERROR: Auth not found!';
+        }
+
+        $app = ApplicationManager::getApplication($auth->app_code_name);
+
+        if ($app === null) {
+            return 'ERROR: App not found!';
+        }
+        
+        $function = AuthFunction::query()
+                ->where('auth_id', $auth_id)
+                ->where('data_type', $data_type)
+                ->first();
+
+        if ($function == null) {
+            $function = new AuthFunction();
+            $function['auth_id'] = $auth_id;
+            $function['data_type'] = $data_type;
+        }
+        else if ($function['write'] == $write) {
+            return 'Write already in the desired state!';
+        }
+        
+        $function['write'] = $write;
+
+        if ($function->save()) {
+            return 'success!';
+        }
+        else {
+            return 'Failed to save/update function!';
+        }
     }
 
     public static function onNewUpdate($auth, $data_type) {

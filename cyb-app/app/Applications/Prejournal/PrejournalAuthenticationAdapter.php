@@ -40,11 +40,16 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter {
         return $auth['app_user_id'] == $auth_info->app_user_id;
     }
 
-    public function registerUpdateNotifier($auth, $data_type) {
+    public function registerUpdateNotifier($auth, $data_type): bool {
         // TODO Do registration stuff
         
         // Imagining an update case happens immediately!
         ApplicationManager::onNewUpdate($auth, $data_type);
+        return true;
+    }
+
+    public function unregisterUpdateNotifier($auth, $data_type): bool {
+        return true;
     }
 
     public function getSupportedDataTypes($auth) {
