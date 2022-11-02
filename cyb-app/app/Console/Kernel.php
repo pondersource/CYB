@@ -16,6 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        // Horizon includes a metrics dashboard which provides information
+        // regarding your job and queue wait times and throughput.
+        // metrics dashboard needs below command executed periodically.
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**
