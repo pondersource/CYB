@@ -43,9 +43,9 @@ class TaskProcess implements ShouldQueue
         $src_app = ApplicationManager::getApplication($this->task->from_auth->app_code_name);
         $dst_app = ApplicationManager::getApplication($this->task->to_auth->app_code_name);
 
-        $src_reader = $src_app->getReader($this->task->data_type);
-        $dst_reader = $dst_app->getReader($this->task->data_type);
-        $writer = $dst_app->getWriter($this->task->data_type);
+        $src_reader = $src_app->getReader($this->task->from_auth, $this->task->data_type);
+        $dst_reader = $dst_app->getReader($this->task->to_auth, $this->task->data_type);
+        $writer = $dst_app->getWriter($this->task->to_auth, $this->task->data_type);
 
         // In the future, we should support custom implementations.
         $change_interpreter = DataTypeManager::getChangeInterpreter($this->task->data_type);
