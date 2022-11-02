@@ -210,6 +210,7 @@ class ApplicationManager {
             $function = new AuthFunction();
             $function['auth_id'] = $auth_id;
             $function['data_type'] = $data_type;
+            $function['write'] = false;
         }
         else if ($function['read'] == $read) {
             return 'Read already in the desired state!';
@@ -279,6 +280,7 @@ class ApplicationManager {
             $function = new AuthFunction();
             $function['auth_id'] = $auth_id;
             $function['data_type'] = $data_type;
+            $function['read'] = false;
         }
         else if ($function['write'] == $write) {
             return 'Write already in the desired state!';
