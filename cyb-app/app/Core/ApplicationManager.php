@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Applications\Prejournal\PrejournalAuthenticationAdapter;
 use App\Applications\Teamwork\TeamworkAuthenticationAdapter;
 use App\Core\DataType\DataTypeManager;
-use App\Core\Task;
+use App\Models\Task;
 use App\Models\Authentication;
 use App\Models\AuthFunction;
 use App\Models\User;
+use App\Jobs\TaskProcess;
+
 
 class ApplicationManager {
-   
+
     public static function getApplications() {
         // Read from an static array
         return [ new PrejournalAuthenticationAdapter(), new TeamworkAuthenticationAdapter() ];
@@ -66,7 +68,7 @@ class ApplicationManager {
                         // Using pointing to the same data source again? Let's just update the auth we have.
                         $matching_auth['display_name'] = $auth_info->display_name;
                         $matching_auth['metadata'] = $auth_info->metadata;
-                        
+
                         $matching_auth->update();
 
                         return 'Auth updated!';
@@ -92,7 +94,7 @@ class ApplicationManager {
                     // Create a new user
                     $user = new User();
                     $user['name'] = $auth_info->display_name;
-                    
+
                     if ($user->save()) {
                         $user_id = $user['id'];
 
@@ -101,7 +103,7 @@ class ApplicationManager {
                         if ($auth->save()) {
                             Auth::login($user, $remember = false);
                             //$request->session()->regenerate();
-    
+
                             return 'success: new user!';
                         }
                         else {
@@ -116,7 +118,7 @@ class ApplicationManager {
                     // We already have a user. Authenticate them.
                     $matching_auth['display_name'] = $auth_info->display_name;
                     $matching_auth['metadata'] = $auth_info->metadata;
-                    
+
                     $matching_auth->update();
 
                     if (Auth::loginUsingId($matching_auth['user_id'], $remember = false) != null) {
@@ -198,7 +200,7 @@ class ApplicationManager {
         if ($app === null) {
             return 'ERROR: App not found!';
         }
-        
+
         $function = AuthFunction::query()
                 ->where('auth_id', $auth_id)
                 ->where('data_type', $data_type)
@@ -224,7 +226,7 @@ class ApplicationManager {
                     $function['read'] = false;
                     $function->save();
                     // TODO state might get lost here.
-    
+
                     return 'Registering update notifier failed!';
                 }
             }
@@ -236,7 +238,7 @@ class ApplicationManager {
                     $function['read'] = true;
                     $function->save();
                     // TODO state might get lost here.
-    
+
                     return 'Unregistering update notifier failed!';
                 }
             }
@@ -253,7 +255,7 @@ class ApplicationManager {
     public static function writeOff($auth_id, $data_type) {
         return ApplicationManager::writeToggle($auth_id, $data_type, false);
     }
-    
+
     public static function writeToggle($auth_id, $data_type, $write) {
         error_log('write toggle '.$auth_id. ' '.$write);
         $auth = ApplicationManager::getAuthentication($auth_id);
@@ -267,7 +269,7 @@ class ApplicationManager {
         if ($app === null) {
             return 'ERROR: App not found!';
         }
-        
+
         $function = AuthFunction::query()
                 ->where('auth_id', $auth_id)
                 ->where('data_type', $data_type)
@@ -281,7 +283,7 @@ class ApplicationManager {
         else if ($function['write'] == $write) {
             return 'Write already in the desired state!';
         }
-        
+
         $function['write'] = $write;
 
         if ($function->save()) {
@@ -295,39 +297,9 @@ class ApplicationManager {
     public static function onNewUpdate($auth, $data_type) {
         $write_auths = ApplicationManager::getWriteAuthentications($data_type, $auth);
 
-        // Fake in memory queue
-        $queue = [];
-
-        foreach($write_auths as $write_auth) {
-            $task = new Task($auth, $write_auth, $data_type);
-
-            // Add task to the queue
-            $queue[] = $task;
-        }
-
-        // Immediately call queue to be processed
-        ApplicationManager::processQueue($queue);
-    }
-
-    public static function processQueue($queue) {
-        foreach($queue as $task) {
-            $data_type = $task->data_type;
-            
-            $src_app = ApplicationManager::getApplication($task->from_auth->app_code_name);
-            $dst_app = ApplicationManager::getApplication($task->to_auth->app_code_name);
-            
-            $src_reader = $src_app->getReader($task->from_auth, $data_type);
-            $dst_reader = $dst_app->getReader($task->to_auth, $data_type);
-            $writer = $dst_app->getWriter($task->to_auth, $data_type);
-
-            // In the future, we should support custom implementations
-            $change_interpreter = DataTypeManager::getChangeInterpreter($data_type);
-
-            $changes = $change_interpreter->getStateChanges($src_reader, $dst_reader);
-            $writer->applyStateChanges($changes);
-
-            // TODO Remove task from the actual queue
+        foreach ($write_auths as $write_auth) {
+            $task = new Task(['from_auth' => $auth, 'to_auth' => $write_auth, 'data_type' => $data_type]);
+            TaskProcess::dispatch($task);
         }
     }
-
 }
