@@ -304,4 +304,19 @@ class ApplicationManager {
             TaskProcess::dispatch($task);
         }
     }
+
+    public static function taskHandler(Task $task) {
+        $src_app = ApplicationManager::getApplication($task->from_auth->app_code_name);
+        $dst_app = ApplicationManager::getApplication($task->to_auth->app_code_name);
+
+        $src_reader = $src_app->getReader($task->from_auth, $task->data_type);
+        $dst_reader = $dst_app->getReader($task->to_auth, $task->data_type);
+        $writer = $dst_app->getWriter($task->to_auth, $task->data_type);
+
+        // In the future, we should support custom implementations.
+        $change_interpreter = DataTypeManager::getChangeInterpreter($task->data_type);
+
+        $changes = $change_interpreter->getStateChanges($src_reader, $dst_reader);
+        $writer->applyStateChanges($changes);
+    }
 }
