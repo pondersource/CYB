@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuthFunction extends Model
 {
-
     protected $table = 'authfunctions';
 
-    protected $fillable = [ 'auth_id', 'data_type', 'read', 'write' ];
+    protected $fillable = ['auth_id', 'data_type', 'read', 'write'];
 
     use HasFactory;
 }

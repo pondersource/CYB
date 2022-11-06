@@ -2,13 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Core\ApplicationManager;
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-
-use App\Models\Task;
-use App\Core\ApplicationManager;
 
 class TaskProcess implements ShouldQueue
 {
@@ -24,7 +23,7 @@ class TaskProcess implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Task $task
+     * @param  Task  $task
      * @return void
      */
     public function __construct(Task $task)

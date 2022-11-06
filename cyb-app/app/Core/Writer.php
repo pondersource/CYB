@@ -2,8 +2,7 @@
 
 namespace App\Core;
 
-interface Writer {
-
+interface Writer
+{
     public function applyStateChanges($changes);
-
 }

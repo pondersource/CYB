@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
-use App\Models\Authentication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,22 +48,22 @@ Route::get('/', function () {
     return view('welcome', compact('applications', 'view_authentications'));
 });
 
-Route::post('/apps/{app_code_name}/auth', function(Request $request, $app_code_name) {
+Route::post('/apps/{app_code_name}/auth', function (Request $request, $app_code_name) {
     return ApplicationManager::finalizeAuthentication($request, $app_code_name);
 });
 
-Route::post('/readOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
+Route::post('/readOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::readOn($auth_id, $data_type);
 });
 
-Route::post('/readOff/{auth_id}/{data_type}', function($auth_id, $data_type) {
+Route::post('/readOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::readOff($auth_id, $data_type);
 });
 
-Route::post('/writeOn/{auth_id}/{data_type}', function($auth_id, $data_type) {
+Route::post('/writeOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::writeOn($auth_id, $data_type);
 });
 
-Route::post('/writeOff/{auth_id}/{data_type}', function($auth_id, $data_type) {
+Route::post('/writeOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::writeOff($auth_id, $data_type);
 });

@@ -4,34 +4,46 @@ namespace App\Core;
 
 use App\Models\Authentication;
 
-class AuthInfo {
-
+class AuthInfo
+{
     public $app_code_name;
+
     public $display_name;
+
     public $app_user_id;
+
     public $metadata;
-    
-    public function setAppCodeName($app_code_name) {
+
+    public function setAppCodeName($app_code_name)
+    {
         $this->app_code_name = $app_code_name;
+
         return $this;
     }
 
-    public function setDisplayName($display_name) {
+    public function setDisplayName($display_name)
+    {
         $this->display_name = $display_name;
+
         return $this;
     }
 
-    public function setAppUserId($app_user_id) {
+    public function setAppUserId($app_user_id)
+    {
         $this->app_user_id = $app_user_id;
+
         return $this;
     }
 
-    public function setMetadata($metadata) {
+    public function setMetadata($metadata)
+    {
         $this->metadata = $metadata;
+
         return $this;
     }
 
-    public function asAuthentication($user_id): Authentication {
+    public function asAuthentication($user_id): Authentication
+    {
         $auth = new Authentication();
 
         $auth['app_code_name'] = $this->app_code_name;
@@ -42,5 +54,4 @@ class AuthInfo {
 
         return $auth;
     }
-
 }
