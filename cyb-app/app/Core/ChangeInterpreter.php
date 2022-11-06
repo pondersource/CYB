@@ -2,8 +2,7 @@
 
 namespace App\Core;
 
-interface ChangeInterpreter {
-
+interface ChangeInterpreter
+{
     public function getStateChanges($src_reader, $dst_reader);
-
 }

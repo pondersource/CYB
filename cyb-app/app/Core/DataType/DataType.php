@@ -2,9 +2,9 @@
 
 namespace App\Core\DataType;
 
-interface DataType {
-
+interface DataType
+{
     public function getCodeName();
-    public function getDisplayName();
 
+    public function getDisplayName();
 }
