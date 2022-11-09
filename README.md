@@ -20,3 +20,9 @@ See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on t
 cd cyb-app
 docker compose up -d
 ```
+
+Or:
+```sh
+cd cyb-app
+./debug.sh
+./clean.sh # careful! This kills all your containers, also unrelated ones!
