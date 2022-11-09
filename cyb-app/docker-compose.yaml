@@ -19,7 +19,7 @@ services:
       - target: 8000
         published: 8000
         mode: host
-    entrypoint: sh -c "cd /app && php artisan optimize --force && php artisan serv --host=0.0.0.0"
+    entrypoint: sh -c "cd /app && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
     environment:
       # Database Configuration.
       DB_CONNECTION: mysql
