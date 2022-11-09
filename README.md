@@ -13,3 +13,10 @@ This gateway will let you connect various data sources and sinks for bookkeeping
 The name CYB stands for "Connect Your Books".
 
 See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on the vision behind it.
+
+## Usage
+
+```sh
+cd cyb-app
+docker compose up -d
+```
