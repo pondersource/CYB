@@ -1,0 +1,1 @@
+FROM bitnami/laravel:9.3.10
