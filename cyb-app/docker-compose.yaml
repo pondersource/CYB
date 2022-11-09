@@ -21,6 +21,10 @@ services:
         mode: host
     entrypoint: sh -c "cd /app && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
     environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_KEY: base64:1IKnsyc2Om+mWPqSKr44xdSTkzFQNS3xR9IRsX0ovG8=
+      APP_DEBUG: true
       # Database Configuration.
       DB_CONNECTION: mysql
       DB_HOST: cyb-mariadb
