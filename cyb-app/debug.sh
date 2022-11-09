@@ -60,4 +60,4 @@ docker run -d --network=testnet -p 8000:8000 --name cyb \
   lara-test sleep 30000
 
 echo Now: docker exec -it cyb php artisan serv --host=0.0.0.0
-
+echo And: docker exec -it cyb php artisan horizon
