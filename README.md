@@ -19,6 +19,7 @@ See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on t
 ```sh
 cd cyb-app
 docker compose up -d
+docker exec -it cyb php artisan horizon
 ```
 
 Or:

@@ -19,7 +19,7 @@ services:
       - target: 8000
         published: 8000
         mode: host
-    entrypoint: sh -c "cd /app && sleep 15 && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
+    entrypoint: sh -c "cd /app && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
     environment:
       APP_NAME: Laravel
       APP_ENV: local
@@ -42,8 +42,10 @@ services:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
     depends_on:
-      - cyb-mariadb
-      - cyb-redis
+      cyb-mariadb:
+        condition: service_healthy
+      cyb-redis:
+        condition: service_healthy
 
   cyb-mariadb:
     image: "mariadb:10.9.2-jammy"
@@ -62,7 +64,10 @@ services:
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 2s
+      retries: 100
   cyb-redis:
     image: "redis:7.0.4-bullseye"
     container_name: cyb-redis
