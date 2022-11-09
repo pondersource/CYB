@@ -57,6 +57,7 @@ docker run -d --network=testnet -p 8000:8000 --name cyb \
   -e "APP_ENV=local" \
   -e "APP_KEY=base64:1IKnsyc2Om+mWPqSKr44xdSTkzFQNS3xR9IRsX0ovG8=" \
   -e "APP_DEBUG=true" \
+  -e "REDIS_CLIENT=predis" \
   lara-test sleep 30000
 
 echo Now: docker exec -it cyb php artisan serv --host=0.0.0.0
