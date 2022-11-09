@@ -19,7 +19,7 @@ services:
       - target: 8000
         published: 8000
         mode: host
-    entrypoint: sh -c "cd /app && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
+    entrypoint: sh -c "cd /app && sleep 15 && php artisan migrate --force && php artisan optimize && php artisan serv --host=0.0.0.0"
     environment:
       APP_NAME: Laravel
       APP_ENV: local
@@ -36,6 +36,8 @@ services:
       REDIS_HOST: cyb-redis
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
+      REDIS_CLIENT: predis
+
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
