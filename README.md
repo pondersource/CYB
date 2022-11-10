@@ -25,5 +25,5 @@ docker exec -it cyb php artisan horizon
 Or:
 ```sh
 cd cyb-app
-./debug.sh
-./clean.sh # careful! This kills all your containers, also unrelated ones!
+./docker-debug.sh
+./docker-clean.sh # careful! This kills all your containers, also unrelated ones!
