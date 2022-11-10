@@ -2,5 +2,5 @@
 set -e
 
 cd cyb-app
+docker compose build cyb
 docker compose pull
-docker compose build
