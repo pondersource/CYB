@@ -8,8 +8,5 @@ RUN apt install --yes zip
 
 COPY . /app
 
-# remove development directories and lock files.
-RUN rm -rf ./vendor composer.lock package-lock.json .env
-
 # clean install packages.
 RUN composer install

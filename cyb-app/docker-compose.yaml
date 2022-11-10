@@ -37,7 +37,6 @@ services:
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
       REDIS_CLIENT: predis
-
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
@@ -68,6 +67,7 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 2s
       retries: 100
+
   cyb-redis:
     image: "redis:7.0.4-bullseye"
     container_name: cyb-redis
@@ -78,6 +78,8 @@ services:
       - cyb-network
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
+      timeout: 2s
+      retries: 100
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
