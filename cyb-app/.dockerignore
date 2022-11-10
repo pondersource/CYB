@@ -5,8 +5,8 @@ docker-clean.sh
 docker-debug.sh
 
 # directories.
-node_modules
-vendor
+**/node_modules
+**/vendor
 
 # lock files.
 composer.lock
