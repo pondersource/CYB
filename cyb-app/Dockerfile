@@ -14,7 +14,7 @@ RUN apt install --yes zip php8.1-redis
 COPY . /app
 
 # remove development directories and lock files.
-RUN rm -rf ./vendor composer.lock package-lock.json
+RUN rm -rf ./vendor composer.lock package-lock.json .env
 
 # clean install packages.
 RUN composer install
