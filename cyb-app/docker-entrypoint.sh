@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# exit on first error/non-zero error code returning command
+set -e
+# print trace of commands
+set -x
+
 cd /app || exit
 
 # clean install packages.
