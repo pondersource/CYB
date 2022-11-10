@@ -13,6 +13,10 @@ COPY . /app
 # clean install packages.
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
+# configure supervisor to run horizon.
+RUN cp ./supervisord.conf /etc/supervisor/supervisord.conf
+RUN cp ./horizon.conf /etc/supervisor/conf.d/horizon.conf
+
 # php horizon create assets.
 RUN php artisan horizon:install --no-interaction
 RUN php artisan horizon:publish --no-interaction
