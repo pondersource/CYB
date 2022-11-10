@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 cd cyb-app
-docker compose build cyb
-docker compose pull
+docker compose --file docker-compose.gitpod.yaml build cyb
+docker compose --file docker-compose.gitpod.yaml pull
