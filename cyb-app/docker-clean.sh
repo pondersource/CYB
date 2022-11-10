@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -e
 running=$(docker ps -q)
 [ -z "$running" ] && echo "no running containers!" || docker kill $running
