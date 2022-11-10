@@ -6,7 +6,13 @@ RUN apt update --yes
 # php composer needs zip to unpack downloaded files.
 RUN apt install --yes zip
 
+# copy project into image.
 COPY . /app
 
 # clean install packages.
 RUN composer install
+
+# make sure its excutable.
+RUN chmod +x /app/docker-entrypoint.sh
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
