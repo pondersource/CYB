@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -e
 docker build -t lara-test .
 docker run -d --network=testnet --name cyb-redis redis:7.0.4-bullseye
