@@ -2,5 +2,5 @@
 set -e
 
 cd cyb-app
-docker compose up -d
-docker exec -it cyb php artisan horizon
+docker compose pull
+docker compose build
