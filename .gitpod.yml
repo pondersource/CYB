@@ -1,4 +1,4 @@
 tasks:
   - name: Setup & Build
-    init:  gitpod-init.sh
-    command: gitpod-command.sh
+    init:  ./gitpod-init.sh
+    command: ./gitpod-command.sh
