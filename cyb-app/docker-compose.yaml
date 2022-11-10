@@ -63,7 +63,14 @@ services:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      test: [
+        "CMD",
+        "mysqladmin" , "ping",
+        "--host", "localhost",
+        "--port", "3306",
+        "--user=cyb",
+        "--password=simpleYetNotSecure"
+      ]
       timeout: 2s
       retries: 100
 
