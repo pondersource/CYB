@@ -2,4 +2,4 @@
 set -e
 
 cd cyb-app
-docker compose --file docker-compose.gitpod.yaml up --detach
+docker compose --file docker-compose.yaml up --detach
