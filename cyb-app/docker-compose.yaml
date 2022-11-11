@@ -1,0 +1,102 @@
+version: "3"
+
+networks:
+  cyb-network:
+
+services:
+  cyb:
+    image: cyb/stable
+    build:
+      context: ${PWD}/docker
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: 33
+    container_name: cyb
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    ports:
+      - target: 8000
+        published: 8000
+        mode: host
+    env_file:
+      - docker.production.env
+    environment:
+      APP_ENTRY_MODE: "php-fpm"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    depends_on:
+      cyb-mariadb:
+        condition: service_healthy
+      cyb-redis:
+        condition: service_healthy
+
+  cyb-horizon:
+    image: cyb/stable
+    build:
+      context: ${PWD}/docker
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: 33
+    container_name: cyb-horizon
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.production.env
+    environment:
+      APP_ENTRY_MODE: "horizon"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    depends_on:
+      cyb:
+      cyb-redis:
+        condition: service_healthy
+
+  cyb-mariadb:
+    image: "mariadb:10.9.2-jammy"
+    container_name: cyb-mariadb
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    command: mysqld --max-allowed-packet=64MB
+    env_file:
+      - docker.production.env
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    healthcheck:
+      test: [
+        "CMD",
+        "mysqladmin" , "ping",
+        "--host", "localhost",
+        "--port", "3306",
+        "--user=${MYSQL_USER}",
+        "--password=${MYSQL_PASSWORD}"
+      ]
+      timeout: 2s
+      retries: 100
+
+  cyb-redis:
+    image: "redis:7.0.4-bullseye"
+    container_name: cyb-redis
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      timeout: 2s
+      retries: 100
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"

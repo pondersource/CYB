@@ -96,6 +96,10 @@ COPY www.conf /etc/php/8.1/fpm/pool.d/www.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-cyb.ini
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/dockerization.zip" --output ~/cyb.zip
+RUN unzip ~/cyb.zip -d ~/
+
+# set volume for mounting.
 VOLUME /var/www/html
 
 # for artisan serve
