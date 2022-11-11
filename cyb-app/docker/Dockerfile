@@ -3,14 +3,24 @@ FROM ubuntu:22.04
 LABEL maintainer="Mohammad Mahdi Baghbani Pourvahid"
 
 # set environment variables and timezone.
-ARG WWWGROUP=33
+ARG CYBGID=1337
+ARG CYBUID=1337
 ARG NODE_VERSION=16
 ARG POSTGRES_VERSION=14
+ARG APACHE_RUN_USER=cyb
+ARG APACHE_RUN_GROUP=www-data
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
 
 RUN ln --symbolic --no-dereference --force /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# create cyb group and user as www-data owner (www-data is usually uid=33).
+# give cyb uid 1337 that can be altred through environment variables through entry point.
+# we have to give ownership to www-data so that Nginx can create cache and update Laravel log files.
+RUN groupadd --force --gid $CYBGID cyb
+RUN useradd --create-home --shell /bin/bash --no-user-group --gid $CYBGID --uid $CYBUID cyb
+RUN usermod --append --groups www-data cyb
 
 # app directory.
 WORKDIR /var/www/html
@@ -18,7 +28,20 @@ WORKDIR /var/www/html
 RUN apt update --yes
 
 # install dependencies.
-RUN apt install --yes gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2
+RUN apt install --yes   \
+    git                 \
+    zip                 \
+    curl                \
+    gosu                \
+    nginx               \
+    gnupg               \
+    unzip               \
+    sqlite3             \
+    python2             \
+    supervisor          \
+    libpng-dev          \
+    libcap2-bin         \
+    ca-certificates
 
 # setup keys and add ppa keys to ubuntu.
 RUN mkdir --parent ~/.gnupg
@@ -33,30 +56,32 @@ RUN echo "deb [signed-by=/usr/share/keyrings/ppa_ondrej_php.gpg] https://ppa.lau
 
 # update apt repo cache and install php.
 RUN apt update --yes
-RUN apt install --yes   \
-    php8.1-gd           \
-    php8.1-cli          \
-    php8.1-dev          \
-    php8.1-xml          \
-    php8.1-zip          \
-    php8.1-fpm          \
-    php8.1-curl         \
-    php8.1-imap         \
-    php8.1-soap         \
-    php8.1-intl         \
-    php8.1-pcov         \
-    php8.1-ldap         \
-    php8.1-mysql        \
-    php8.1-pgsql        \
-    php8.1-redis        \
-    php8.1-bcmath       \
-    php8.1-xdebug       \
-    php8.1-sqlite3      \
-    php8.1-msgpack      \
-    php8.1-mbstring     \
-    php8.1-igbinary     \
-    php8.1-readline     \
-    php8.1-memcached
+RUN apt install --yes         \
+    apache2                   \
+    php8.1-gd                 \
+    php8.1-cli                \
+    php8.1-dev                \
+    php8.1-xml                \
+    php8.1-zip                \
+    php8.1-fpm                \
+    php8.1-curl               \
+    php8.1-imap               \
+    php8.1-soap               \
+    php8.1-intl               \
+    php8.1-pcov               \
+    php8.1-ldap               \
+    php8.1-mysql              \
+    php8.1-pgsql              \
+    php8.1-redis              \
+    php8.1-bcmath             \
+    php8.1-xdebug             \
+    php8.1-sqlite3            \
+    php8.1-msgpack            \
+    php8.1-mbstring           \
+    php8.1-igbinary           \
+    php8.1-readline           \
+    php8.1-memcached          \
+    libapache2-mod-php8.1
 
 # install composer.
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
@@ -77,7 +102,6 @@ RUN apt update --yes
 RUN apt install --yes mysql-client
 RUN apt install --yes postgresql-client-$POSTGRES_VERSION
 
-
 # cleanup.
 RUN apt --yes autoremove
 RUN apt clean
@@ -85,27 +109,34 @@ RUN rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
-# create cyb group and user as www-data owner (www-data is usually uid=33).
-# give cyb uid 1337 that can be altred through environment variables through entry point.
-# we have to give ownership to www-data so that Nginx can create cache and update Laravel log files.
-RUN groupadd --force --gid $WWWGROUP cyb
-RUN useradd --create-home --shell /bin/bash --no-user-group --gid $WWWGROUP --uid 1337 cyb
+COPY php.ini                /etc/php/8.1/cli/conf.d/99-cyb.ini
+COPY envvars.env            /etc/apache2/envvars
+COPY entrypoint.sh          /usr/local/bin/entrypoint.sh
+COPY cyb-apache.conf        /etc/apache2/sites-available/cyb-apache.conf
+COPY cyb-php-fpm.conf       /etc/php/8.1/fpm/pool.d/cyb.conf
+COPY cyb-apache-port.conf   /etc/apache2/ports.conf
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY www.conf /etc/php/8.1/fpm/pool.d/www.conf
-COPY php.ini /etc/php/8.1/cli/conf.d/99-cyb.ini
+# remove default configuration files.
+RUN rm /etc/php/8.1/fpm/pool.d/www.conf
+
+# disbale default apache site.
+RUN a2dissite 000-default.conf
+
+# stop all services.
+RUN service php8.1-fpm stop
+RUN service apache2 stop
+RUN service nginx stop
+
+# change owner of apache directories.
+RUN chown cyb:www-data /var/log/apache2
+
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# get cyb project from git repository.
 RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/dockerization.zip" --output ~/cyb.zip
-RUN unzip ~/cyb.zip -d ~/
+RUN unzip -qq ~/cyb.zip -d ~/
 
 # set volume for mounting.
 VOLUME /var/www/html
-
-# for artisan serve
-EXPOSE 8000
-
-# for php-fpm
-EXPOSE 9000
 
 ENTRYPOINT ["entrypoint.sh"]

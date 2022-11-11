@@ -7,10 +7,11 @@ services:
   cyb:
     image: cyb/stable
     build:
-      context: ${PWD}/docker
+      context: docker
       dockerfile: Dockerfile
       args:
-        WWWGROUP: 33
+        CYBGID: 1000
+        CYBUID: 1000
     container_name: cyb
     restart: "unless-stopped"
     security_opt:
@@ -24,38 +25,14 @@ services:
     env_file:
       - docker.production.env
     environment:
-      APP_ENTRY_MODE: "php-fpm"
+      APP_ENTRY_MODE: "apache"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html"
     depends_on:
       cyb-mariadb:
         condition: service_healthy
-      cyb-redis:
-        condition: service_healthy
-
-  cyb-horizon:
-    image: cyb/stable
-    build:
-      context: ${PWD}/docker
-      dockerfile: Dockerfile
-      args:
-        WWWGROUP: 33
-    container_name: cyb-horizon
-    restart: "unless-stopped"
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - cyb-network
-    env_file:
-      - docker.production.env
-    environment:
-      APP_ENTRY_MODE: "horizon"
-    volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-    depends_on:
-      cyb:
       cyb-redis:
         condition: service_healthy
 
@@ -79,8 +56,8 @@ services:
         "mysqladmin" , "ping",
         "--host", "localhost",
         "--port", "3306",
-        "--user=${MYSQL_USER}",
-        "--password=${MYSQL_PASSWORD}"
+        "--user=cyb",
+        "--password=simpleYetNotSecure"
       ]
       timeout: 2s
       retries: 100
