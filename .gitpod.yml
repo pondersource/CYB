@@ -1,3 +1,3 @@
 tasks:
   - name: Setup & Build
-    command: ./gitpod-command.sh
+    command: ./cyb-app/run-docker gitpod build && ./cyb-app/run-docker gitpod up
