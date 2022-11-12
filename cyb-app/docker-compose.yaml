@@ -2,6 +2,7 @@ version: "3"
 
 networks:
   cyb-network:
+    name: "cyb-net"
 
 services:
   cyb:
@@ -25,15 +26,72 @@ services:
     env_file:
       - docker.production.env
     environment:
-      APP_ENTRY_MODE: "apache"
+      APP_CONTAINER_ROLE: "app"
+      APP_WEBSERVER_TYPE: "apache"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "${PWD}/docker-volume-production:/var/www/html"
+    healthcheck:
+      test: [ "CMD", "node" , "/cyb-src/healthcheck.js" ]
+      timeout: 2s
+      retries: 100
     depends_on:
       cyb-mariadb:
         condition: service_healthy
       cyb-redis:
+        condition: service_healthy
+
+  cyb-horizon:
+    image: cyb/stable
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+    container_name: cyb-horizon
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.production.env
+    environment:
+      APP_CONTAINER_ROLE: "horizon"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html:ro"
+    depends_on:
+      cyb:
+        condition: service_healthy
+
+  cyb-scheduler:
+    image: cyb/stable
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+    container_name: cyb-scheduler
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.production.env
+    environment:
+      APP_CONTAINER_ROLE: "scheduler"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html:ro"
+    depends_on:
+      cyb:
         condition: service_healthy
 
   cyb-mariadb:
