@@ -5,6 +5,7 @@
 /public/vendor
 /storage/*.key
 /vendor
+**/docker-volume-production
 .env
 .env.backup
 .env.production

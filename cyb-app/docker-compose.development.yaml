@@ -24,10 +24,10 @@ services:
         published: 8000
         mode: host
     env_file:
-      - docker.gitpod.env
+      - docker.development.env
     environment:
       APP_CONTAINER_ROLE: "app"
-      APP_WEBSERVER_TYPE: "nginx"
+      APP_WEBSERVER_TYPE: "artisan"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
@@ -57,7 +57,7 @@ services:
     networks:
       - cyb-network
     env_file:
-      - docker.gitpod.env
+      - docker.development.env
     environment:
       APP_CONTAINER_ROLE: "horizon"
     volumes:
@@ -83,7 +83,7 @@ services:
     networks:
       - cyb-network
     env_file:
-      - docker.gitpod.env
+      - docker.development.env
     environment:
       APP_CONTAINER_ROLE: "scheduler"
     volumes:
@@ -104,7 +104,7 @@ services:
       - cyb-network
     command: mysqld --max-allowed-packet=64MB
     env_file:
-      - docker.gitpod.env
+      - docker.development.env
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"

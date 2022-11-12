@@ -16,14 +16,23 @@ See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on t
 
 ## Usage
 
+### for developing on local machine:
 ```sh
 cd cyb-app
-docker compose up -d
-docker exec -it cyb php artisan horizon
+./docker.sh dev build
+./docker.sh dev up
 ```
 
-Or:
+### for developing on Gitpod:
 ```sh
 cd cyb-app
-./docker-debug.sh
-./docker-clean.sh # careful! This kills all your containers, also unrelated ones!
+./docker.sh gitpod build
+./docker.sh gitpod up
+```
+
+# for deploying on VPS:
+```sh
+cd cyb-app
+./docker.sh prod build
+./docker.sh prod up
+```

@@ -2,13 +2,17 @@ version: "3"
 
 networks:
   cyb-network:
-
+    name: "cyb-net"
 
 services:
   cyb:
-    image: "lara-test"
+    image: cyb/stable
     build:
-      context: .
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
     container_name: cyb
     restart: "unless-stopped"
     security_opt:
@@ -19,30 +23,75 @@ services:
       - target: 8000
         published: 8000
         mode: host
+    env_file:
+      - docker.production.env
     environment:
-      APP_NAME: Laravel
-      APP_ENV: local
-      APP_KEY: base64:1IKnsyc2Om+mWPqSKr44xdSTkzFQNS3xR9IRsX0ovG8=
-      APP_DEBUG: true
-      # Database Configuration.
-      DB_CONNECTION: mysql
-      DB_HOST: cyb-mariadb
-      DB_PORT: 3306
-      DB_DATABASE: cyb_db
-      DB_USERNAME: cyb
-      DB_PASSWORD: "simpleYetNotSecure"
-      # Redis Configuration.
-      REDIS_HOST: cyb-redis
-      REDIS_PASSWORD: null
-      REDIS_PORT: 6379
-      REDIS_CLIENT: predis
+      APP_CONTAINER_ROLE: "app"
+      APP_WEBSERVER_TYPE: "nginx"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html"
+    healthcheck:
+      test: [ "CMD", "node" , "/cyb-src/healthcheck.js" ]
+      timeout: 2s
+      retries: 100
     depends_on:
       cyb-mariadb:
         condition: service_healthy
       cyb-redis:
+        condition: service_healthy
+
+  cyb-horizon:
+    image: cyb/stable
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+    container_name: cyb-horizon
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.production.env
+    environment:
+      APP_CONTAINER_ROLE: "horizon"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html:ro"
+    depends_on:
+      cyb:
+        condition: service_healthy
+
+  cyb-scheduler:
+    image: cyb/stable
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+    container_name: cyb-scheduler
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.production.env
+    environment:
+      APP_CONTAINER_ROLE: "scheduler"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}/docker-volume-production:/var/www/html:ro"
+    depends_on:
+      cyb:
         condition: service_healthy
 
   cyb-mariadb:
@@ -54,11 +103,8 @@ services:
     networks:
       - cyb-network
     command: mysqld --max-allowed-packet=64MB
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: "cyb_db"
-      MYSQL_USER: "cyb"
-      MYSQL_PASSWORD: "simpleYetNotSecure"
+    env_file:
+      - docker.production.env
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
