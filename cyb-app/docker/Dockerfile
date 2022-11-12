@@ -109,9 +109,12 @@ RUN rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
+RUN mkdir --parent /cyb-src
+
 COPY php.ini                /etc/php/8.1/cli/conf.d/99-cyb.ini
 COPY envvars.env            /etc/apache2/envvars
 COPY entrypoint.sh          /usr/local/bin/entrypoint.sh
+COPY healthcheck.js         /cyb-src/healthcheck.js
 COPY cyb-apache.conf        /etc/apache2/sites-available/cyb-apache.conf
 COPY cyb-php-fpm.conf       /etc/php/8.1/fpm/pool.d/cyb.conf
 COPY cyb-apache-port.conf   /etc/apache2/ports.conf
@@ -133,8 +136,8 @@ RUN chown cyb:www-data /var/log/apache2
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # get cyb project from git repository.
-RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/dockerization.zip" --output ~/cyb.zip
-RUN unzip -qq ~/cyb.zip -d ~/
+RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/dockerization.zip" --output /cyb-src/cyb.zip
+RUN unzip -qq /cyb-src/cyb.zip -d /cyb-src
 
 # set volume for mounting.
 VOLUME /var/www/html
