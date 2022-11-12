@@ -11,8 +11,8 @@ services:
       context: docker
       dockerfile: Dockerfile
       args:
-        CYBGID: 1000
-        CYBUID: 1000
+        CYBGID: 33333
+        CYBUID: 33333
     container_name: cyb
     restart: "unless-stopped"
     security_opt:
@@ -27,7 +27,7 @@ services:
       - docker.gitpod.env
     environment:
       APP_CONTAINER_ROLE: "app"
-      APP_WEBSERVER_TYPE: "nginx"
+      APP_WEBSERVER_TYPE: "artisan"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
