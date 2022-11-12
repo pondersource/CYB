@@ -27,7 +27,7 @@ services:
       - docker.development.env
     environment:
       APP_CONTAINER_ROLE: "app"
-      APP_WEBSERVER_TYPE: "apache"
+      APP_WEBSERVER_TYPE: "nginx"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"

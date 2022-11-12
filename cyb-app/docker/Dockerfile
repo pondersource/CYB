@@ -114,6 +114,7 @@ RUN mkdir --parent /cyb-src
 COPY php.ini                /etc/php/8.1/cli/conf.d/99-cyb.ini
 COPY envvars.env            /etc/apache2/envvars
 COPY entrypoint.sh          /usr/local/bin/entrypoint.sh
+COPY cyb-nginx.conf         /etc/nginx/nginx.conf
 COPY healthcheck.js         /cyb-src/healthcheck.js
 COPY cyb-apache.conf        /etc/apache2/sites-available/cyb-apache.conf
 COPY cyb-php-fpm.conf       /etc/php/8.1/fpm/pool.d/cyb.conf

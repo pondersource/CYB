@@ -67,6 +67,9 @@ else
             a2enmod rewrite
             # enable apache php executor.
             a2enmod php8.1
+            # show logs in terminal.
+            ln --symbolic --force /dev/stderr /var/log/apache2/error.log
+            ln --symbolic --force /dev/stdout /var/log/apache2/access.log
             # start apache2 and bring it to foreground.
             exec apachectl -DFOREGROUND
         else
@@ -74,6 +77,14 @@ else
             service php8.1-fpm reload
             service php8.1-fpm restart
             service php8.1-fpm status
+            # check nginx status.
+            service nginx status
+            echo "starting nginx"
+            # show logs in terminal.
+            ln --symbolic --force /dev/stderr /var/log/nginx/error.log
+            ln --symbolic --force /dev/stdout /var/log/nginx/access.log
+            # start nginx.
+            nginx
         fi
     fi
 fi
