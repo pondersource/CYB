@@ -31,7 +31,7 @@ else
     chmod --recursive ugo+rw /.composer
 
     # populate /var/www/html with cyb app.
-    cp --archive --recursive --no-clobber /cyb-src/CYB-dockerization/cyb-app/. /var/www/html
+    cp --archive --recursive --no-clobber /cyb-src/CYB-queue/cyb-app/. /var/www/html
 
     # install packages.
     /usr/bin/composer install --no-interaction --optimize-autoloader --no-dev
