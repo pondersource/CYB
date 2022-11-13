@@ -43,7 +43,7 @@ services:
         condition: service_healthy
 
   cyb-horizon:
-    image: cyb/stable
+    image: ghcr.io/pondersource/cyb:github_actions
     build:
       context: docker
       dockerfile: Dockerfile
@@ -69,7 +69,7 @@ services:
         condition: service_healthy
 
   cyb-scheduler:
-    image: cyb/stable
+    image: ghcr.io/pondersource/cyb:github_actions
     build:
       context: docker
       dockerfile: Dockerfile
