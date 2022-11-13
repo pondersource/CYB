@@ -1,4 +1,4 @@
-name: create docker imager and push to ghcr.io for other branches
+name: create branch docker image
 
 on:
   push:
