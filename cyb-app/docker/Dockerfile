@@ -1,6 +1,11 @@
 FROM ubuntu:22.04
 
-LABEL maintainer="Mohammad Mahdi Baghbani Pourvahid"
+# keys for oci taken from:
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.title="Connect Your Books"
+LABEL org.opencontainers.image.source=https://github.com/pondersource/CYB
+LABEL org.opencontainers.image.authors="Mohammad Mahdi Baghbani Pourvahid"
 
 # set environment variables and timezone.
 ARG CYBGID=1337
