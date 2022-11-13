@@ -4,8 +4,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")" || exit
 
 if [[ "${1}" == "prod" ]]; then
     if [[ "${2}" == "build" ]]; then
-        docker compose build
         docker compose pull
+        docker compose build
     elif [[ "${2}" == "up" ]]; then
         docker compose up --detach
     elif [[ "${2}" == "down" ]]; then
@@ -13,8 +13,8 @@ if [[ "${1}" == "prod" ]]; then
     fi
 elif [[ "${1}" == "dev" ]]; then
     if [[ "${2}" == "build" ]]; then
-        docker compose --file docker-compose.development.yaml build
         docker compose --file docker-compose.development.yaml pull
+        docker compose --file docker-compose.development.yaml build
     elif [[ "${2}" == "up" ]]; then
         docker compose --file docker-compose.development.yaml up --detach
     elif [[ "${2}" == "down" ]]; then
@@ -22,8 +22,8 @@ elif [[ "${1}" == "dev" ]]; then
     fi
 elif [[ "${1}" == "gitpod" ]]; then
     if [[ "${2}" == "build" ]]; then
-        docker compose --file docker-compose.gitpod.yaml build
         docker compose --file docker-compose.gitpod.yaml pull
+        docker compose --file docker-compose.gitpod.yaml build
     elif [[ "${2}" == "up" ]]; then
         docker compose --file docker-compose.gitpod.yaml up --detach
     elif [[ "${2}" == "down" ]]; then
