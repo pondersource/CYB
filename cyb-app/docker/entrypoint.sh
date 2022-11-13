@@ -23,15 +23,26 @@ elif [[ "${APP_CONTAINER_ROLE}" == "scheduler" ]]; then
         done
     fi
 else
-    # create composer directory.
+    # create composer directory if it doesn't exist.
     if [ ! -d /.composer ]; then
         mkdir /.composer
     fi
 
     chmod --recursive ugo+rw /.composer
 
-    # populate /var/www/html with cyb app.
-    cp --archive --recursive --no-clobber /cyb-src/CYB-queue/cyb-app/. /var/www/html
+    # create composer directory if it doesn't exist.
+    if [ ! -d /var/www/html ]; then
+        mkdir --parent /var/www/html
+    fi
+
+    # if /var/www/html has any files in it, do not copy cyb src into it.
+    if [ -n "$(find /var/www/html -prune -empty -type d 2>/dev/null)" ]; then
+        echo "/var/www/html is an empty directory, populating it with cyb app."
+        # populate /var/www/html with cyb app.
+        cp --archive --recursive --no-clobber /cyb-src/cyb/cyb-app/. /var/www/html
+    else
+        echo "/var/www/html contains files, doing noting."
+    fi
 
     # install packages.
     /usr/bin/composer install --no-interaction --optimize-autoloader --no-dev
@@ -40,7 +51,7 @@ else
     /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan horizon:install --no-interaction --quiet
     /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan horizon:publish --no-interaction --quiet
 
-    # set file ownership.
+    # set file ownership and permissions.
     chown --recursive cyb:www-data /var/www/html
     find /var/www/html -type f -exec chmod 644 {} \;
     find /var/www/html -type d -exec chmod 755 {} \;
@@ -79,7 +90,6 @@ else
             service php8.1-fpm status
             # check nginx status.
             service nginx status
-            echo "starting nginx"
             # show logs in terminal.
             ln --symbolic --force /dev/stderr /var/log/nginx/error.log
             ln --symbolic --force /dev/stdout /var/log/nginx/access.log

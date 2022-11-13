@@ -141,9 +141,13 @@ RUN chown cyb:www-data /var/log/apache2
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+ARG BUILD_BRANCH=main
+ARG DOWNLOAD_LOCATION="https://github.com/pondersource/CYB/archive/refs/heads/${BUILD_BRANCH}.zip"
+
 # get cyb project from git repository.
-RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/queue.zip" --output /cyb-src/cyb.zip
+RUN curl --fail --silent --show-error --location "${DOWNLOAD_LOCATION}" --output /cyb-src/cyb.zip
 RUN unzip -qq /cyb-src/cyb.zip -d /cyb-src
+RUN mv /cyb-src/CYB* /cyb-src/cyb
 
 # set volume for mounting.
 VOLUME /var/www/html
