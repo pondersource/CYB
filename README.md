@@ -30,7 +30,7 @@ cd cyb-app
 ./docker.sh gitpod up
 ```
 
-# for deploying on VPS:
+### for deploying on VPS:
 ```sh
 cd cyb-app
 ./docker.sh prod build

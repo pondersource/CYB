@@ -1,6 +1,11 @@
 FROM ubuntu:22.04
 
-LABEL maintainer="Mohammad Mahdi Baghbani Pourvahid"
+# keys for oci taken from:
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.title="Connect Your Books"
+LABEL org.opencontainers.image.source=https://github.com/pondersource/CYB
+LABEL org.opencontainers.image.authors="Mohammad Mahdi Baghbani Pourvahid"
 
 # set environment variables and timezone.
 ARG CYBGID=1337
@@ -136,9 +141,14 @@ RUN chown cyb:www-data /var/log/apache2
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+ARG BUILD_REPO="https://github.com/pondersource/CYB/archive/refs/heads"
+ARG BUILD_BRANCH="main"
+ARG DOWNLOAD_LOCATION="${BUILD_REPO}/${BUILD_BRANCH}.zip"
+
 # get cyb project from git repository.
-RUN curl --fail --silent --show-error --location "https://github.com/pondersource/CYB/archive/refs/heads/queue.zip" --output /cyb-src/cyb.zip
+RUN curl --fail --silent --show-error --location "${DOWNLOAD_LOCATION}" --output /cyb-src/cyb.zip
 RUN unzip -qq /cyb-src/cyb.zip -d /cyb-src
+RUN mv /cyb-src/CYB* /cyb-src/cyb
 
 # set volume for mounting.
 VOLUME /var/www/html

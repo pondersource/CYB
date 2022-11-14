@@ -6,13 +6,17 @@ networks:
 
 services:
   cyb:
-    image: cyb/stable
+    image: ghcr.io/pondersource/cyb:github_actions
     build:
       context: docker
       dockerfile: Dockerfile
       args:
         CYBGID: 33333
         CYBUID: 33333
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: "main"
     container_name: cyb
     restart: "unless-stopped"
     security_opt:
@@ -43,13 +47,17 @@ services:
         condition: service_healthy
 
   cyb-horizon:
-    image: cyb/stable
+    image: ghcr.io/pondersource/cyb:github_actions
     build:
       context: docker
       dockerfile: Dockerfile
       args:
         CYBGID: 1000
         CYBUID: 1000
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: "main"
     container_name: cyb-horizon
     restart: "unless-stopped"
     security_opt:
@@ -69,13 +77,17 @@ services:
         condition: service_healthy
 
   cyb-scheduler:
-    image: cyb/stable
+    image: ghcr.io/pondersource/cyb:github_actions
     build:
       context: docker
       dockerfile: Dockerfile
       args:
         CYBGID: 1000
         CYBUID: 1000
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: "main"
     container_name: cyb-scheduler
     restart: "unless-stopped"
     security_opt:
