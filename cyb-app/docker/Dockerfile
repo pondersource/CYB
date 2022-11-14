@@ -143,7 +143,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ARG BUILD_REPO="https://github.com/pondersource/CYB/archive/refs/heads"
 ARG BUILD_BRANCH="main"
-ARG DOWNLOAD_LOCATION="${BUILD_REPO}${BUILD_BRANCH}.zip"
+ARG DOWNLOAD_LOCATION="${BUILD_REPO}/${BUILD_BRANCH}.zip"
 
 # get cyb project from git repository.
 RUN curl --fail --silent --show-error --location "${DOWNLOAD_LOCATION}" --output /cyb-src/cyb.zip
