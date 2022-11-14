@@ -1,0 +1,3 @@
+tasks:
+  - name: Setup & Build
+    command: chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod pull && ./cyb-app/run-docker.sh gitpod up

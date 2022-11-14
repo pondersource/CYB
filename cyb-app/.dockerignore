@@ -1,0 +1,18 @@
+# docker related files.
+Dockerfile
+docker-compose.yaml
+docker-clean.sh
+docker-debug.sh
+
+# directories.
+**/node_modules
+**/vendor
+
+# lock files.
+composer.lock
+package-lock.json
+
+# other.
+.editorconfig
+.gitattributes
+.gitignore

@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // enforce https for laravel. this fixes horizon dashboard not accessible via https.
+        if (env('APP_HTTPS', 'false') == 'true') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

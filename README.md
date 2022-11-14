@@ -13,3 +13,26 @@ This gateway will let you connect various data sources and sinks for bookkeeping
 The name CYB stands for "Connect Your Books".
 
 See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on the vision behind it.
+
+## Usage
+
+### for developing on local machine:
+```sh
+cd cyb-app
+./docker.sh dev build
+./docker.sh dev up
+```
+
+### for developing on Gitpod:
+```sh
+cd cyb-app
+./docker.sh gitpod build
+./docker.sh gitpod up
+```
+
+### for deploying on VPS:
+```sh
+cd cyb-app
+./docker.sh prod build
+./docker.sh prod up
+```
