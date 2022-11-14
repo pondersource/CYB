@@ -6,9 +6,6 @@ on:
       - 'main'
     tags-ignore:
       - 'v*'
-  pull_request:
-    branches-ignore:
-      - 'main'
 
 env:
   REGISTRY: ghcr.io
