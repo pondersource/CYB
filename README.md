@@ -19,20 +19,23 @@ See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on t
 ### for developing on local machine:
 ```sh
 cd cyb-app
-./docker.sh dev build
-./docker.sh dev up
+chmod u+x ./run-docker.sh
+./run-docker.sh dev pull
+./run-docker.sh dev up --detach
 ```
 
 ### for developing on Gitpod:
 ```sh
 cd cyb-app
-./docker.sh gitpod build
-./docker.sh gitpod up
+chmod u+x ./run-docker.sh
+./run-docker.sh gitpod pull
+./run-docker.sh gitpod up --detach
 ```
 
 ### for deploying on VPS:
 ```sh
 cd cyb-app
-./docker.sh prod build
-./docker.sh prod up
+chmod u+x ./run-docker.sh
+./run-docker.sh prod pull
+./run-docker.sh prod up --detach
 ```
