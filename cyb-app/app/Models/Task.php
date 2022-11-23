@@ -10,10 +10,13 @@ class Task
 
     public $data_type;
 
+    public $behavior;
+
     public function __construct($parameters)
     {
         $this->from_auth = $parameters['from_auth'];
         $this->to_auth = $parameters['to_auth'];
         $this->data_type = $parameters['data_type'];
+        $this->behavior = $parameters['behavior'];
     }
 }

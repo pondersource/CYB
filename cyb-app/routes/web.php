@@ -67,3 +67,8 @@ Route::post('/writeOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
 Route::post('/writeOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::writeOff($auth_id, $data_type);
 });
+
+Route::get('/test/tasks', function (Request $request) {
+    $success = explode(',', $request->query('success'));
+    return ApplicationManager::test($success);
+});

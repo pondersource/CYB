@@ -39,6 +39,13 @@
                 <input id="{{ $auth['id'] }}-{{ $data_type['name'] }}-write" type="checkbox" onclick="writeToggle(event);" {{ $data_type['write'] ? 'checked':'' }}>Write</input><br>
             @endforeach
         @endforeach
+
+        <h2>Tests</h2>
+        <input id="first" type="checkbox">First will fail</input><br>
+        <input id="second" type="checkbox">Second will fail</input><br>
+        <span onclick="test2OnSameThread();">2 calls on the same thread</span><br>
+        <span onclick="test2OnSepareteThraeds();">2 calls on separate threads</span><br>
+        <span onclick="test2WithDelay();">2 calls with proper delay</span><br>
     </body>
 
     <script>
@@ -78,6 +85,41 @@
                     alert('Write is now off');
 	            });
             }
+        }
+
+        function test2OnSameThread() {
+            var first = document.getElementById('first').checked ? 0 : 1;
+            var second = document.getElementById('second').checked ? 0 : 1;
+            axios.get('/test/tasks?success='+first+","+second).then(response => {
+
+            });
+        }
+
+        function test2OnSepareteThraeds() {
+            var first = document.getElementById('first').checked ? 0 : 1;
+            var second = document.getElementById('second').checked ? 0 : 1;
+            axios.get('/test/tasks?success='+first).then(response => {
+
+            });
+            axios.get('/test/tasks?success='+second).then(response => {
+
+            });
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function test2WithDelay() {
+            var first = document.getElementById('first').checked ? 0 : 1;
+            var second = document.getElementById('second').checked ? 0 : 1;
+            axios.get('/test/tasks?success='+first).then(response => {
+
+            });
+            await sleep(2000);
+            axios.get('/test/tasks?success='+second).then(response => {
+
+            });
         }
     </script>
 </html>

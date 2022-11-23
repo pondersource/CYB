@@ -10,6 +10,7 @@ use App\Models\Authentication;
 use App\Models\AuthFunction;
 use App\Models\Task;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ApplicationManager
@@ -302,6 +303,16 @@ class ApplicationManager
         }
     }
 
+    public static function test($success)
+    {
+        $from = ApplicationManager::getAuthentication(1);
+        $to = ApplicationManager::getAuthentication(2);
+        foreach ($success as $s) {
+            $task = new Task(['from_auth' => $from, 'to_auth' => $to, 'data_type' => 'timesheet', 'behavior' => $s]);
+            TaskProcess::dispatch($task);
+        }
+    }
+
     public static function taskHandler(Task $task)
     {
         $src_app = ApplicationManager::getApplication($task->from_auth->app_code_name);
@@ -315,6 +326,11 @@ class ApplicationManager
         $change_interpreter = DataTypeManager::getChangeInterpreter($task->data_type);
 
         $changes = $change_interpreter->getStateChanges($src_reader, $dst_reader);
+
+        if ($task->behavior == 0) {
+            throw new Exception('Manual fail!');
+        }
+
         $writer->applyStateChanges($changes);
     }
 }
