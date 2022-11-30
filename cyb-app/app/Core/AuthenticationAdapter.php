@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Models\Authentication;
+use App\Models\AuthFunction as AuthFun;
 
 interface AuthenticationAdapter
 {
@@ -18,9 +19,9 @@ interface AuthenticationAdapter
 
     public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool;
 
-    public function registerUpdateNotifier($auth, $data_type): bool;
+    public function registerUpdateNotifier(AuthFun $function): bool;
 
-    public function unregisterUpdateNotifier($auth, $data_type): bool;
+    public function unregisterUpdateNotifier(AuthFun $function): bool;
 
     public function getSupportedDataTypes($auth);
 

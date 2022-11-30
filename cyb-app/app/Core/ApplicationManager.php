@@ -220,7 +220,7 @@ class ApplicationManager
 
         if ($function->save()) {
             if ($read) {
-                if ($app->registerUpdateNotifier($auth, $data_type)) {
+                if ($app->registerUpdateNotifier($function)) {
                     return 'success!';
                 } else {
                     $function['read'] = false;
@@ -230,7 +230,7 @@ class ApplicationManager
                     return 'Registering update notifier failed!';
                 }
             } else {
-                if ($app->unregisterUpdateNotifier($auth, $data_type)) {
+                if ($app->unregisterUpdateNotifier($function)) {
                     return 'success!';
                 } else {
                     $function['read'] = true;

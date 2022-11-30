@@ -6,6 +6,7 @@ use App\Core\ApplicationManager;
 use App\Core\AuthenticationAdapter;
 use App\Core\AuthInfo;
 use App\Models\Authentication;
+use App\Models\AuthFunction;
 
 class TeamworkAuthenticationAdapter implements AuthenticationAdapter
 {
@@ -48,18 +49,26 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter
         return $auth['app_user_id'] == $auth_info->app_user_id;
     }
 
-    public function registerUpdateNotifier($auth, $data_type): bool
+    public function registerUpdateNotifier(AuthFunction $function): bool
     {
         // TODO Do registration stuff
+        // TODO Schedule check for changes
 
-        // Imagining an update case happens immediately!
-        ApplicationManager::onNewUpdate($auth, $data_type);
-
+        // return $this->checkForChanges($function->id);
         return true;
     }
 
-    public function unregisterUpdateNotifier($auth, $data_type): bool
+    public static function checkForChanges($function_id): bool
     {
+        // Imagining there is always an update!
+        $function = AuthFunction::query()->where('id', $function_id)->first();
+        ApplicationManager::onNewUpdate($function['auth_id'], $function['data_type']);
+        return true;
+    }
+
+    public function unregisterUpdateNotifier(AuthFunction $function): bool
+    {
+        // TODO Unschedule check for changes
         return true;
     }
 

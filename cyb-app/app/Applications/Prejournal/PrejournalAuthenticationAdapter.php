@@ -6,6 +6,8 @@ use App\Core\ApplicationManager;
 use App\Core\AuthenticationAdapter;
 use App\Core\AuthInfo;
 use App\Models\Authentication;
+use App\Models\AuthFunction;
+use App\Models\RecurringTask;
 
 class PrejournalAuthenticationAdapter implements AuthenticationAdapter
 {
@@ -48,18 +50,35 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter
         return $auth['app_user_id'] == $auth_info->app_user_id;
     }
 
-    public function registerUpdateNotifier($auth, $data_type): bool
+    public function registerUpdateNotifier(AuthFunction $function): bool
     {
         // TODO Do registration stuff
+        // TODO Schedule check for changes
 
-        // Imagining an update case happens immediately!
-        ApplicationManager::onNewUpdate($auth, $data_type);
+        $recurring_task = new RecurringTask();
+        $recurring_task['interval'] = 1;
+        $recurring_task['function'] = 'App\Applications\Prejournal\PrejournalAuthenticationAdapter::checkForChanges';
+        $recurring_task['parameters'] = "[$function->id]";
+        return $recurring_task->save();
 
+        // $schedule_id = RecurringManager::scheduleTask(1, 'checkForChanges', [1]);
+        // $function['schedule_id'] = $schedule_id;
+        // return $function->save();
+        
+        // return $this->checkForChanges($function->id);
+    }
+
+    public static function checkForChanges($function_id): bool
+    {
+        // Imagining there is always an update!
+        $function = AuthFunction::query()->where('id', $function_id)->first();
+        ApplicationManager::onNewUpdate($function['auth_id'], $function['data_type']);
         return true;
     }
 
-    public function unregisterUpdateNotifier($auth, $data_type): bool
+    public function unregisterUpdateNotifier(AuthFunction $function): bool
     {
+        // TODO Unschedule check for changes
         return true;
     }
 
