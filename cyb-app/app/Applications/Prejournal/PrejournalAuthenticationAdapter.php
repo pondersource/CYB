@@ -73,7 +73,7 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter
         $recurring_task['function'] = 'App\Applications\Prejournal\PrejournalAuthenticationAdapter::checkForChanges';
         // each item in parameters should be separated with ','
         // example: "$item1,$item2->something,$item3"
-        $recurring_task['parameters'] = "$function->id";
+        $recurring_task['parameters'] = "$function[id]";
 
         return $recurring_task->save();
 
