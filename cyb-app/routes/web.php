@@ -70,5 +70,7 @@ Route::post('/writeOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
 
 Route::get('/test/tasks', function (Request $request) {
     $success = explode(',', $request->query('success'));
+
+    // FIXME: 'void' method 'test' result used
     return ApplicationManager::test($success);
 });

@@ -63,6 +63,7 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter
         // Imagining there is always an update!
         $function = AuthFunction::query()->where('id', $function_id)->first();
         ApplicationManager::onNewUpdate($function['auth_id'], $function['data_type']);
+
         return true;
     }
 

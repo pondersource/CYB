@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\RecurringTask;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,6 +22,17 @@ class Kernel extends ConsoleKernel
         // regarding your job and queue wait times and throughput.
         // metrics dashboard needs below command executed periodically.
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
+
+        // recurring tasks schedule.
+        $tasks = RecurringTask::all();
+
+        foreach ($tasks as $task) {
+            $function = $task->function;
+            $interval = $task->interval;
+            $parameters = explode(',', $task->parameters);
+
+            $schedule->call($function($parameters))->cron($interval);
+        }
     }
 
     /**

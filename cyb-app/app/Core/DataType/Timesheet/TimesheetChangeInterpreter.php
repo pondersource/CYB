@@ -12,6 +12,7 @@ class TimesheetChangeInterpreter implements ChangeInterpreter
         error_log('Change interpreter started');
         sleep(1);
         error_log('Change interpreter ended');
+
         return null;
     }
 }
