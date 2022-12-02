@@ -15,7 +15,7 @@ services:
         CYBUID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
         BUILD_BRANCH: "main"
     container_name: cyb
     restart: "unless-stopped"
@@ -56,7 +56,7 @@ services:
         CYBUID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
         BUILD_BRANCH: "main"
     container_name: cyb-horizon
     restart: "unless-stopped"
@@ -86,7 +86,7 @@ services:
         CYBUID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
         BUILD_BRANCH: "main"
     container_name: cyb-scheduler
     restart: "unless-stopped"
