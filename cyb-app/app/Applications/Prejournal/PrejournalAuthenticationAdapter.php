@@ -11,12 +11,12 @@ use App\Models\RecurringTask;
 
 class PrejournalAuthenticationAdapter implements AuthenticationAdapter
 {
-    public function getAppCodeName()
+    public function getAppCodeName(): string
     {
         return 'prejournal';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'Prejournal';
     }
@@ -98,22 +98,22 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter
 
     public function unregisterUpdateNotifier(AuthFunction $function): bool
     {
-        // TODO Unschedule check for changes
+        // TODO Unscheduled check for changes
         return true;
     }
 
-    public function getSupportedDataTypes($auth)
+    public function getSupportedDataTypes($auth): array
     {
         return ['timesheet'];
     }
 
-    public function getReader($auth, $data_type)
+    public function getReader($auth, $data_type): PrejournalTimesheetReader
     {
         // Datatype is always timesheet in this case
         return new PrejournalTimesheetReader();
     }
 
-    public function getWriter($auth, $data_type)
+    public function getWriter($auth, $data_type): PrejournalTimesheetWriter
     {
         // Datatype is always timesheet in this case
         return new PrejournalTimesheetWriter();
