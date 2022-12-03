@@ -87,7 +87,8 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter
     public static function checkForChanges($parameters): bool
     {
         // extract variables.
-        $function_id = $parameters[0];
+        // cast id from string to integer.
+        $function_id = (int) $parameters[0];
 
         // Imagining there is always an update!
         $function = AuthFunction::query()->where('id', $function_id)->first();

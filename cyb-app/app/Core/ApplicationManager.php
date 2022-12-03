@@ -293,6 +293,7 @@ class ApplicationManager
         }
     }
 
+    // TODO: please fix the order of arguments, if it should be $auth, $data_type or $data_type, $auth
     public static function onNewUpdate($auth, $data_type)
     {
         $write_auths = ApplicationManager::getWriteAuthentications($data_type, $auth);
