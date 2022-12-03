@@ -71,7 +71,7 @@ services:
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "${PWD}/docker-volume-production:/var/www/html:ro"
+      - "${PWD}/docker-volume-production:/var/www/html"
     depends_on:
       cyb:
         condition: service_healthy
@@ -101,7 +101,7 @@ services:
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - "${PWD}/docker-volume-production:/var/www/html:ro"
+      - "${PWD}/docker-volume-production:/var/www/html"
     depends_on:
       cyb:
         condition: service_healthy
