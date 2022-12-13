@@ -30,6 +30,6 @@ elif [[ "${1}" == "gitpod" ]]; then
     elif [[ "${2}" == "up" ]]; then
         docker compose --file docker-compose.gitpod.yaml up --no-build --detach
     elif [[ "${2}" == "down" ]]; then
-        docker compose --file docker-compose.gitpod.yaml dow
+        docker compose --file docker-compose.gitpod.yaml down
     fi
 fi

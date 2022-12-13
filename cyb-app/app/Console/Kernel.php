@@ -29,9 +29,11 @@ class Kernel extends ConsoleKernel
         foreach ($tasks as $task) {
             $function = $task->function;
             $interval = $task->interval;
-            $parameters = explode(',', $task->parameters);
+            $parameters = json_decode($task->parameters, true);
 
-            $schedule->call($function($parameters))->cron($interval);
+            $schedule->call(
+                new $function($parameters)
+            )->everyMinute();
         }
     }
 

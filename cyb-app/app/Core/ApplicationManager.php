@@ -164,12 +164,12 @@ class ApplicationManager
         return new AuthFunction(['auth_id' => $auth_id, 'data_type' => $data_type, 'read' => false, 'write' => false]);
     }
 
-    public static function getWriteAuthentications($data_type, $except): array
+    public static function getWriteAuthentications($data_type, $except_auth_id): array
     {
         $auth_ids = AuthFunction::query()
                 ->where('data_type', $data_type)
                 ->where('write', true)
-                ->where('auth_id', '!=', $except['id'])
+                ->where('auth_id', '!=', $except_auth_id)
                 ->pluck('auth_id')
                 ->all();
 
@@ -296,7 +296,7 @@ class ApplicationManager
     // TODO: please fix the order of arguments, if it should be $auth, $data_type or $data_type, $auth
     public static function onNewUpdate($auth, $data_type)
     {
-        $write_auths = ApplicationManager::getWriteAuthentications($data_type, $auth);
+        $write_auths = ApplicationManager::getWriteAuthentications($data_type, $auth['id']);
 
         foreach ($write_auths as $write_auth) {
             $task = new Task(['from_auth' => $auth, 'to_auth' => $write_auth, 'data_type' => $data_type]);
