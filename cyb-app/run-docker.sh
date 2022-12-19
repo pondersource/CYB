@@ -23,13 +23,14 @@ elif [[ "${1}" == "dev" ]]; then
         docker compose --file docker-compose.development.yaml down
     fi
 elif [[ "${1}" == "gitpod" ]]; then
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
     if [[ "${2}" == "pull" ]]; then
-        docker compose --file docker-compose.gitpod.yaml pull
+        IMAGE_LABEL=BRANCH docker compose --file docker-compose.gitpod.yaml pull
     elif [[ "${2}" == "build" ]]; then
-        docker compose --file docker-compose.gitpod.yaml build
+        IMAGE_LABEL=BRANCH docker compose --file docker-compose.gitpod.yaml build
     elif [[ "${2}" == "up" ]]; then
-        docker compose --file docker-compose.gitpod.yaml up --no-build --detach
+        IMAGE_LABEL=BRANCH docker compose --file docker-compose.gitpod.yaml up --no-build --detach
     elif [[ "${2}" == "down" ]]; then
-        docker compose --file docker-compose.gitpod.yaml down
+        IMAGE_LABEL=BRANCH docker compose --file docker-compose.gitpod.yaml down
     fi
 fi
