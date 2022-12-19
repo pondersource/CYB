@@ -58,6 +58,9 @@ else
     chgrp --recursive www-data /var/www/html/storage /var/www/html/bootstrap/cache
     chmod --recursive ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
 
+    # set run-docker script permission
+    chmod +x /var/www/html/run-docker.sh
+
     # optimize app sources.
     /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan optimize
 
