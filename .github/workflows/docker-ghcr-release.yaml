@@ -53,12 +53,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dZ:%H:%M:%S')"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: ./cyb-app/docker
           build-args: |
+            CACHE_BUSTER=${{ steps.date.outputs.date }}
             BUILD_BRANCH=${{ steps.extract_branch.outputs.branch }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

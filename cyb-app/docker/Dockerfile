@@ -143,6 +143,10 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ARG BUILD_REPO="https://github.com/pondersource/CYB/archive/refs/heads"
 ARG BUILD_BRANCH="main"
+
+# use cache buster to force download source code.
+ARG CACHE_BUSTER
+RUN echo "command with external dependencies, cache buster value is ${CACHE_BUSTER}"
 ARG DOWNLOAD_LOCATION="${BUILD_REPO}/${BUILD_BRANCH}.zip"
 
 # get cyb project from git repository.
