@@ -2,9 +2,9 @@
 
 namespace App\Applications\Teamwork;
 
-use App\Core\ApplicationManager;
 use App\Core\AuthenticationAdapter;
 use App\Core\AuthInfo;
+use App\Core\Scheduler;
 use App\Models\Authentication;
 use App\Models\AuthFunction;
 
@@ -51,26 +51,20 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter
 
     public function registerUpdateNotifier(AuthFunction $function): bool
     {
-        // TODO Do registration stuff
-        // TODO Schedule check for changes
+        $schedule_id = Scheduler::scheduleTask('1 * * * *', 'App\Applications\Teamwork\UpdateChecker', [$function['id']]);
 
-        // return $this->checkForChanges($function->id);
-        return true;
-    }
+        if ($schedule_id > 0) {
+            $function['recurring_task_id'] = $schedule_id;
 
-    public static function checkForChanges($function_id): bool
-    {
-        // Imagining there is always an update!
-        $function = AuthFunction::query()->where('id', $function_id)->first();
-        ApplicationManager::onNewUpdate($function['auth_id'], $function['data_type']);
+            return $function->save();
+        }
 
-        return true;
+        return false;
     }
 
     public function unregisterUpdateNotifier(AuthFunction $function): bool
     {
-        // TODO Unschedule check for changes
-        return true;
+        return Scheduler::unscheduleTask($function['schedule_id']);
     }
 
     public function getSupportedDataTypes($auth)

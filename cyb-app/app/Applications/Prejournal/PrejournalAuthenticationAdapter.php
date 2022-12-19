@@ -2,13 +2,11 @@
 
 namespace App\Applications\Prejournal;
 
-use App\Core\ApplicationManager;
 use App\Core\AuthenticationAdapter;
 use App\Core\AuthInfo;
 use App\Core\Scheduler;
 use App\Models\Authentication;
 use App\Models\AuthFunction;
-use App\Models\RecurringTask;
 
 class PrejournalAuthenticationAdapter implements AuthenticationAdapter
 {
@@ -57,9 +55,10 @@ class PrejournalAuthenticationAdapter implements AuthenticationAdapter
 
         if ($schedule_id > 0) {
             $function['recurring_task_id'] = $schedule_id;
+
             return $function->save();
         }
-        
+
         return false;
     }
 

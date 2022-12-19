@@ -4,8 +4,8 @@ namespace App\Core;
 
 use App\Models\RecurringTask;
 
-class Scheduler {
-
+class Scheduler
+{
     public static function scheduleTask(string $interval, string $invoke_target, array $parameters): int
     {
         $recurring_task = new RecurringTask();
@@ -24,7 +24,7 @@ class Scheduler {
         $recurring_task['function'] = $invoke_target;
         $recurring_task['parameters'] = json_encode($parameters);
 
-        if (!$recurring_task->save()) {
+        if (! $recurring_task->save()) {
             return 0;
         }
 
@@ -35,5 +35,4 @@ class Scheduler {
     {
         return RecurringTask::where('id', $id)->delete() > 0;
     }
-
 }
