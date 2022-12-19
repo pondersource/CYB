@@ -21,7 +21,8 @@ See [Federated Bookkeeping](https://federatedbookkeeping.org) for more info on t
 cd cyb-app
 chmod u+x ./run-docker.sh
 ./run-docker.sh dev pull
-./run-docker.sh dev up --detach
+./run-docker.sh dev up
+
 ```
 
 ### for developing on Gitpod:
@@ -29,7 +30,7 @@ chmod u+x ./run-docker.sh
 cd cyb-app
 chmod u+x ./run-docker.sh
 ./run-docker.sh gitpod pull
-./run-docker.sh gitpod up --detach
+./run-docker.sh gitpod up
 ```
 
 ### for deploying on VPS:
@@ -37,5 +38,5 @@ chmod u+x ./run-docker.sh
 cd cyb-app
 chmod u+x ./run-docker.sh
 ./run-docker.sh prod pull
-./run-docker.sh prod up --detach
+./run-docker.sh prod up
 ```
