@@ -1,0 +1,8 @@
+{
+  "name": "cyb-codespace",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+  },
+  "onCreateCommand": "chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod pull",
+  "postStartCommand": "chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod up"
+}
