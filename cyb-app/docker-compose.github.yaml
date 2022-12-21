@@ -1,0 +1,149 @@
+version: "3"
+
+networks:
+  cyb-network:
+    name: "cyb-net"
+
+services:
+  cyb:
+    image: ghcr.io/pondersource/cyb:${IMAGE_LABEL:-latest}
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: ${IMAGE_LABEL:-main}
+    container_name: cyb
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    ports:
+      - target: 8000
+        published: 8000
+        mode: host
+    env_file:
+      - docker.gitpod.env
+    environment:
+      APP_CONTAINER_ROLE: "app"
+      APP_WEBSERVER_TYPE: "artisan"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}:/var/www/html"
+    healthcheck:
+      test: [ "CMD", "node" , "/cyb-src/healthcheck.js" ]
+      timeout: 2s
+      retries: 100
+    depends_on:
+      cyb-mariadb:
+        condition: service_healthy
+      cyb-redis:
+        condition: service_healthy
+
+  cyb-horizon:
+    image: ghcr.io/pondersource/cyb:${IMAGE_LABEL:-latest}
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: ${IMAGE_LABEL:-main}
+    container_name: cyb-horizon
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.gitpod.env
+    environment:
+      APP_CONTAINER_ROLE: "horizon"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}:/var/www/html"
+    depends_on:
+      cyb:
+        condition: service_healthy
+
+  cyb-scheduler:
+    image: ghcr.io/pondersource/cyb:${IMAGE_LABEL:-latest}
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      args:
+        CYBGID: 1000
+        CYBUID: 1000
+        # change this if ypu want to build cyb image from a specific
+        # repository and branch.
+        BUILD_REPO: "https://github.com/pondersource/CYB/archive/refs/heads"
+        BUILD_BRANCH: ${IMAGE_LABEL:-main}
+    container_name: cyb-scheduler
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    env_file:
+      - docker.gitpod.env
+    environment:
+      APP_CONTAINER_ROLE: "scheduler"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "${PWD}:/var/www/html"
+    depends_on:
+      cyb:
+        condition: service_healthy
+
+  cyb-mariadb:
+    image: "mariadb:10.9.2-jammy"
+    container_name: cyb-mariadb
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    command: mysqld --max-allowed-packet=64MB
+    env_file:
+      - docker.gitpod.env
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    healthcheck:
+      test: [
+        "CMD",
+        "mysqladmin" , "ping",
+        "--host", "localhost",
+        "--port", "3306",
+        "--user=cyb",
+        "--password=simpleYetNotSecure"
+      ]
+      timeout: 2s
+      retries: 100
+
+  cyb-redis:
+    image: "redis:7.0.4-bullseye"
+    container_name: cyb-redis
+    restart: "unless-stopped"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - cyb-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      timeout: 2s
+      retries: 100
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"

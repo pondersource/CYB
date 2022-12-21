@@ -33,4 +33,15 @@ elif [[ "${1}" == "gitpod" ]]; then
     elif [[ "${2}" == "down" ]]; then
         IMAGE_LABEL=$BRANCH docker compose --file docker-compose.gitpod.yaml down
     fi
+elif [[ "${1}" == "github" ]]; then
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    if [[ "${2}" == "pull" ]]; then
+        IMAGE_LABEL=$BRANCH docker compose --file docker-compose.github.yaml pull
+    elif [[ "${2}" == "build" ]]; then
+        IMAGE_LABEL=$BRANCH docker compose --file docker-compose.github.yaml build
+    elif [[ "${2}" == "up" ]]; then
+        IMAGE_LABEL=$BRANCH docker compose --file docker-compose.github.yaml up --no-build --detach
+    elif [[ "${2}" == "down" ]]; then
+        IMAGE_LABEL=$BRANCH docker compose --file docker-compose.github.yaml down
+    fi
 fi
