@@ -2,8 +2,10 @@
 
 use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
+use App\Http\Controllers\TeamworkWriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
+    // START configurtion
     $applications = ApplicationManager::getApplications();
     $authentications = ApplicationManager::getAuthentications();
 
@@ -47,6 +50,8 @@ Route::get('/', function () {
 
     return view('welcome', compact('applications', 'view_authentications'));
 });
+
+Route::get('/teamwork/write', TeamworkWriteController::class);
 
 Route::post('/apps/{app_code_name}/auth', function (Request $request, $app_code_name) {
     return ApplicationManager::finalizeAuthentication($request, $app_code_name);

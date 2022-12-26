@@ -19,6 +19,10 @@ return [
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
+    'teamwork' => [
+        'domain' => env('TEAMWORK_DOMAIN'),
+        'secret' => env('TEAMWORK_SECRET'),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
