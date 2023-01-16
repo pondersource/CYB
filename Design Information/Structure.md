@@ -6,7 +6,7 @@ Connect Your Books wants to create an application level internet. The first type
 The goal is to avoid becoming yet another connector that people will have to pay to use. Meaning the software will be opensource and free. We try to make our sense presence as minimum as possible. Almost no web pages. No signup. Only connections.
 
 ## Overview
-<img src="https://github.com/pondersource/CYB/blob/main/concept.png?raw=true"/>
+<img src="https://github.com/pondersource/CYB/blob/main/Design%20Information/concept.png?raw=true"/>
 
 The goal is to allow individuals to have their data synced between different softwares that they are using. We avoid playing the role of privacy or access management. This is considered the concern of respective applications that the person is using.
 
