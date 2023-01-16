@@ -33,9 +33,13 @@ This common structure uses the meta-knowledge on the real-world task being handl
 
 Important to note than in order to perform translation without ambiguities or loss of information, it is necessary to keep track of the formats used for translating a message.
 
+## Structure Description
+
+This part is covered [here](https://github.com/pondersource/CYB/blob/main/Design%20Information/Structure.md)
+
 ## Logic Description
 
-(...)
+
 
 ### Note
 
