@@ -39,8 +39,10 @@ This part is covered [here](https://github.com/pondersource/CYB/blob/main/Design
 
 ## Logic Description
 
+Since we are not making assumptions about the systems to be syncronizing, our aplication must check to see resources it might have available to simplify the task, as in example is presented below for one-way sync:
 
+<img src="https://github.com/pondersource/CYB/blob/main/Design%20Information/one_way_sync.jpg?raw=true"/>
 
 ### Note
 
-To edit the diagrams download a copy and open it in [here](https://app.diagrams.net/).
+To edit diagrams download a copy and open it in [here](https://app.diagrams.net/).
