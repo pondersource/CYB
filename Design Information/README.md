@@ -1,6 +1,6 @@
 # Summary
 
-The goal in this project is to automate the syncronization of data across different apps where the formats aren't identical. Doing so requires assuming that the data in both ends relates to the same real-world task (billing, task-tracking, calendar) from where some meta-knowledge can be derived, and also that both systems have data they are interested in sharing.
+The goal in this project is to automate the synchronization of data across different apps where the formats aren't identical. Doing so requires assuming that the data in both ends relates to the same real-world task (billing, task-tracking, calendar) from where some meta-knowledge can be derived, and also that both systems have data they are interested in sharing.
 
 The main idea for doing so consists of translating each different format into a common structure, which is used to compare the data stored in each database. From these versions it is possible to analyze what is currently available on each end, and with some additional logic this comparison results in a sequence of instructions (ADD, REMOVE, UPDATE) to be executed on each database.
 
@@ -15,9 +15,9 @@ The main idea for doing so consists of translating each different format into a 
 
 ## Part Description
 
-1. **Authentication** - Grants CYB access to the user's data for syncronization purposes.
+1. **Authentication** - Grants CYB access to the user's data for synchronization purposes.
 
-2. **Update Notifier** - Checks the available resources of the application being synced to set up a notification system that will make requests either when a new entry is made (if webhooks are available) or periodically.
+2. **Update Notifier** - Checks the available resources of applications being synched by CYB, to set up a separate notification system for each that will make requests either when a new entry is made (if webhooks are available) or periodically.
 
 4. **Reader** - Makes query requests for a particular format in a particular application. Is also capable of filtering, making lists and store information about the last request made.
 
@@ -47,7 +47,7 @@ Consider the image presented below as an example for one-way sync:
 
 We are trying to syncronize data from system A to system B. Since we are not making assumptions about these systems to be syncronizing, our aplication must check to see resources it might have available to simplify the task. This diagram only considers "ADD" instructions but it can somewhat be generalized for other instructions.
 
-The logic I'm trying to present goes like this: Do we care about copying data that was added to A and paste it in B? Yes! Do we have a webhook we can set-up to make system calls for CYB? If so, we can use these events for syncronization. If not, we need to periodically check for new entries. Are there changelogs available in system A? If so, we can periodically check the changelogs and generate instructions from there. If not we need to periodically query the API from system A. Is there any monotonic values in the API from system A we can use to reduce the amount of information asked in our queries? If not, then we need to periodically request all data from a given user and check for differences between the data in system A and system B.
+The logic I'm trying to present goes like this: Do we care about copying data that was added to A and paste it in B? Yes! Do we have a webhook we can set-up to make system calls for CYB? If so, we can use these events for synchronization. If not, we need to periodically check for new entries. Are there changelogs available in system A? If so, we can periodically check the changelogs and generate instructions from there. If not we need to periodically query the API from system A. Is there any monotonic values in the API from system A we can use to reduce the amount of information asked in our queries? If not, then we need to periodically request all data from a given user and check for differences between the data in system A and system B.
 
 In practice this logic will all be handled when setting up the update notifier instead of called for every "ADD" instruction, but I wanted to clarify this very common design pattern, where trying to generalize for the most systems can make the algorithm more and more convoluted. This is the level of generalization we are trying to achieve in this project.
 
