@@ -14,7 +14,7 @@ To start connecting their books, a person opens our website. On the website ther
 
 No authentication is required. After the first application login, we automatically create a user id and authenticate them in our service.
 
-For each application that we support, we create read and write adopters. These adopters are developed as semi-independet services.
+For each application that we support, we create read and write adapters. These adapters are developed as semi-independet services.
 
 There is also the matter of sync start point in time. Do we sync everything that happens after the application authentication or do we try to sync all of the data or some thing in the middle? It can even be yet another setting that is disposed to the individual to decide.
 
@@ -25,7 +25,7 @@ There is also the matter of sync start point in time. Do we sync everything that
 - A user profile record on our database is basically just an identifier that the authenticated applications point to. Indicating that these accounts belong to the same person.
 - If someone without a session logs into an application that we have already created a user for, we have to recognize this and other than providing the session, update the UI to show all the logged in applications.
 - If someone logs into application A in one browser and logs into application B in another browser and then logs into B from the first browser, we have to recognize this as well and merge the 2 user profiles that we have created. This can be addressed later!
-- We need to maintain a set of authentication adopters. Each adopter would have a name, an icon, and an authentication UI.
+- We need to maintain a set of authentication adapters. Each adapter would have a name, an icon, and an authentication UI.
 
 ## Synchronization
 - For each data type and application combination, we have an update notifier, a reader and a writer implementation
