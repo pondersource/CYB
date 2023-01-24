@@ -2,8 +2,8 @@
 
 namespace App\Core;
 
-use App\Applications\Prejournal\PrejournalAuthenticationAdapter;
-use App\Applications\Teamwork\TeamworkAuthenticationAdapter;
+use App\Connectors\Prejournal\PrejournalConnector;
+use App\Connectors\Teamwork\TeamworkConnector;
 use App\Core\DataType\DataTypeManager;
 use App\Jobs\TaskProcess;
 use App\Models\Authentication;
@@ -15,19 +15,19 @@ use Illuminate\Support\Facades\Auth;
 
 class ApplicationManager
 {
-    public static function getApplications()
+    public static function getConnectors()
     {
         // Read from an static array
-        return [new PrejournalAuthenticationAdapter(), new TeamworkAuthenticationAdapter()];
+        return [new PrejournalConnector(), new TeamworkConnector()];
     }
 
-    public static function getApplication($code_name): ?AuthenticationAdapter
+    public static function getConnector($code_name): ?Connector
     {
-        $apps = ApplicationManager::getApplications();
+        $connectors = ApplicationManager::getConnectors();
 
-        foreach ($apps as $app) {
-            if ($app->getAppCodeName() == $code_name) {
-                return $app;
+        foreach ($connectors as $connector) {
+            if ($connector->getAppCodeName() == $code_name) {
+                return $connector;
             }
         }
 
@@ -36,10 +36,10 @@ class ApplicationManager
 
     public static function finalizeAuthentication($request, $app_code_name)
     {
-        $app = ApplicationManager::getApplication($app_code_name);
+        $connector = ApplicationManager::getConnector($app_code_name);
 
-        if ($app !== null) {
-            $auth_info = $app->finalizeAuthentication();
+        if ($connector !== null) {
+            $auth_info = $connector->finalizeAuthentication();
 
             // TODO store auth object
             if ($auth_info == null) {
@@ -56,7 +56,7 @@ class ApplicationManager
             $matching_auth = null;
 
             foreach ($auths as $auth) {
-                if ($app->areTheSame($auth->getModel(), $auth_info)) {
+                if ($connector->areTheSame($auth->getModel(), $auth_info)) {
                     $matching_auth = $auth;
                     break;
                 }
@@ -196,10 +196,10 @@ class ApplicationManager
             return 'ERROR: Auth not found!';
         }
 
-        $app = ApplicationManager::getApplication($auth->app_code_name);
+        $connector = ApplicationManager::getConnector($auth->app_code_name);
 
-        if ($app === null) {
-            return 'ERROR: App not found!';
+        if ($connector === null) {
+            return 'ERROR: Connector not found!';
         }
 
         $function = AuthFunction::query()
@@ -220,7 +220,7 @@ class ApplicationManager
 
         if ($function->save()) {
             if ($read) {
-                if ($app->registerUpdateNotifier($auth, $data_type)) {
+                if ($connector->registerUpdateNotifier($auth, $data_type)) {
                     return 'success!';
                 } else {
                     $function['read'] = false;
@@ -230,7 +230,7 @@ class ApplicationManager
                     return 'Registering update notifier failed!';
                 }
             } else {
-                if ($app->unregisterUpdateNotifier($auth, $data_type)) {
+                if ($connector->unregisterUpdateNotifier($auth, $data_type)) {
                     return 'success!';
                 } else {
                     $function['read'] = true;
@@ -264,10 +264,10 @@ class ApplicationManager
             return 'ERROR: Auth not found!';
         }
 
-        $app = ApplicationManager::getApplication($auth->app_code_name);
+        $connector = ApplicationManager::getConnector($auth->app_code_name);
 
-        if ($app === null) {
-            return 'ERROR: App not found!';
+        if ($connector === null) {
+            return 'ERROR: Connector not found!';
         }
 
         $function = AuthFunction::query()
@@ -307,6 +307,7 @@ class ApplicationManager
     {
         $from = ApplicationManager::getAuthentication(1);
         $to = ApplicationManager::getAuthentication(2);
+
         foreach ($success as $s) {
             $task = new Task(['from_auth' => $from, 'to_auth' => $to, 'data_type' => 'timesheet', 'behavior' => $s]);
             TaskProcess::dispatch($task);
@@ -315,12 +316,12 @@ class ApplicationManager
 
     public static function taskHandler(Task $task)
     {
-        $src_app = ApplicationManager::getApplication($task->from_auth->app_code_name);
-        $dst_app = ApplicationManager::getApplication($task->to_auth->app_code_name);
+        $src_connector = ApplicationManager::getConnector($task->from_auth->app_code_name);
+        $dst_connector = ApplicationManager::getConnector($task->to_auth->app_code_name);
 
-        $src_reader = $src_app->getReader($task->from_auth, $task->data_type);
-        $dst_reader = $dst_app->getReader($task->to_auth, $task->data_type);
-        $writer = $dst_app->getWriter($task->to_auth, $task->data_type);
+        $src_reader = $src_connector->getReader($task->from_auth, $task->data_type);
+        $dst_reader = $dst_connector->getReader($task->to_auth, $task->data_type);
+        $writer = $dst_connector->getWriter($task->to_auth, $task->data_type);
 
         // In the future, we should support custom implementations.
         $change_interpreter = DataTypeManager::getChangeInterpreter($task->data_type);

@@ -17,6 +17,6 @@ class Task
         $this->from_auth = $parameters['from_auth'];
         $this->to_auth = $parameters['to_auth'];
         $this->data_type = $parameters['data_type'];
-        $this->behavior = $parameters['behavior'];
+        $this->behavior = isset($parameters['behavior']) ? $parameters['behavior'] : true;
     }
 }

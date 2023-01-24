@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Applications\Prejournal;
+namespace App\Connectors\Teamwork;
 
 use App\Core\DataType\Timesheet\TimesheetReader;
 
-class PrejournalTimesheetReader implements TimesheetReader
+class TeamworkTimesheetReader implements TimesheetReader
 {
     public function getData($from_date, $to_date)
     {

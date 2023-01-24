@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Applications\Teamwork;
+namespace App\Connectors\Prejournal;
 
 use App\Core\ApplicationManager;
-use App\Core\AuthenticationAdapter;
+use App\Core\Connector;
 use App\Core\AuthInfo;
 use App\Models\Authentication;
 
-class TeamworkAuthenticationAdapter implements AuthenticationAdapter
+class PrejournalConnector implements Connector
 {
     public function getAppCodeName()
     {
-        return 'teamwork';
+        return 'prejournal';
     }
 
     public function getName()
     {
-        return 'Teamwork';
+        return 'Prejournal';
     }
 
     public function getIconURL()
@@ -35,7 +35,7 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter
     {
         $auth_info = new AuthInfo();
         $auth_info
-            ->setAppCodeName('teamwork')
+            ->setAppCodeName('prejournal')
             ->setDisplayName('Ismoil')
             ->setAppUserId('1')
             ->setMetadata('xxxxxxxxxxxxxxxxx');
@@ -71,12 +71,12 @@ class TeamworkAuthenticationAdapter implements AuthenticationAdapter
     public function getReader($auth, $data_type)
     {
         // Datatype is always timesheet in this case
-        return new TeamworkTimesheetReader();
+        return new PrejournalTimesheetReader();
     }
 
     public function getWriter($auth, $data_type)
     {
         // Datatype is always timesheet in this case
-        return new TeamworkTimesheetWriter();
+        return new PrejournalTimesheetWriter();
     }
 }

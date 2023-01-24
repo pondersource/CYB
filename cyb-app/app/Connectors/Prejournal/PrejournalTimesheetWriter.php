@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Applications\Prejournal;
+namespace App\Connectors\Prejournal;
 
 use App\Core\Writer;
 

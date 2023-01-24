@@ -25,9 +25,9 @@
     </head>
     <body class="antialiased">
         <h2>Authenticate in an app</h2>
-        @foreach($applications as $app)
-            <b>{{ $app->getName() }}</b><br>
-            {{ $app->getAuthenticationUI() }} <br>
+        @foreach($connectors as $connector)
+            <b>{{ $connector->getName() }}</b><br>
+            {{ $connector->getAuthenticationUI() }} <br>
         @endforeach
 
         <h2>Authenticated accounts</h2>

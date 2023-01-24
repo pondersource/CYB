@@ -4,7 +4,7 @@ namespace App\Core;
 
 use App\Models\Authentication;
 
-interface AuthenticationAdapter
+interface Connector
 {
     public function getAppCodeName();
 

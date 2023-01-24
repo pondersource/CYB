@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-    $applications = ApplicationManager::getApplications();
+    $connectors = ApplicationManager::getConnectors();
     $authentications = ApplicationManager::getAuthentications();
 
     $view_authentications = [];
@@ -24,8 +24,8 @@ Route::get('/', function () {
     foreach ($authentications as $auth) {
         $view_auth = $auth->getAttributes();
 
-        $app = ApplicationManager::getApplication($auth->app_code_name);
-        $data_types = $app->getSupportedDataTypes($auth);
+        $connector = ApplicationManager::getConnector($auth->app_code_name);
+        $data_types = $connector->getSupportedDataTypes($auth);
 
         $view_data_types = [];
 
@@ -45,7 +45,7 @@ Route::get('/', function () {
         $view_authentications[] = $view_auth;
     }
 
-    return view('welcome', compact('applications', 'view_authentications'));
+    return view('welcome', compact('connectors', 'view_authentications'));
 });
 
 Route::post('/apps/{app_code_name}/auth', function (Request $request, $app_code_name) {

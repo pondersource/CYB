@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Applications\Teamwork;
+namespace App\Connectors\Teamwork;
 
 use App\Core\Writer;
 
