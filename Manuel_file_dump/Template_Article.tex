@@ -1,0 +1,1209 @@
+
+%% bare_jrnl.tex
+%% V1.4b
+%% 2015/08/26
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/pkg/ieeetran
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. The IEEE's font choices and paper sizes can   ***
+% *** trigger bugs that do not appear when using other class files.       ***                          ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+\documentclass[journal]{IEEEtran}
+\pagestyle{empty}
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/pkg/ifpdf
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of the IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 5.0 (2009-03-20) and later if using hyperref.sty.
+% The latest version can be obtained at:
+% http://www.ctan.org/pkg/cite
+% The documentation is contained in the cite.sty file itself.
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{./Images/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/pkg/graphicx
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/pkg/epslatex
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics.
+%
+% Note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/amsmath
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/pkg/algorithms
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/pkg/algorithmicx
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+\usepackage{array}
+\setlength\extrarowheight{4pt}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/array
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+% *** SUBFIGURE PACKAGES ***
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
+% for subfigure.sty, the latter of which is no longer maintained and is
+% incompatible with some LaTeX packages including fixltx2e. However,
+% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
+% which will override IEEEtran.cls' handling of captions and this will result
+% in non-IEEE style figure/table captions. To prevent this problem, be sure
+% and invoke subfig.sty's "caption=false" package option (available since
+% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
+% handling of captions.
+% Note that the Computer Society format requires a larger sans serif font
+% than the serif footnote size font used in traditional IEEE formatting
+% and thus the need to invoke different subfig.sty package options depending
+% on whether compsoc mode has been enabled.
+%
+% The latest version and documentation of subfig.sty can be obtained at:
+% http://www.ctan.org/pkg/subfig
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure.
+% Be aware that LaTeX2e kernels dated 2015 and later have fixltx2e.sty's
+% corrections already built into the system in which case a warning will
+% be issued if an attempt is made to load fixltx2e.sty as it is no longer
+% needed.
+% The latest version and documentation can be found at:
+% http://www.ctan.org/pkg/fixltx2e
+
+\usepackage{caption}
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/stfloats
+% Do not use the stfloats baselinefloat ability as the IEEE does not allow
+% \baselineskip to stretch. Authors submitting work to the IEEE should note
+% that the IEEE rarely uses double column equations and that authors should try
+% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
+% packages (also by Sigitas Tolusis) as the IEEE does not format its papers in
+% such ways.
+% Do not attempt to use stfloats with fixltx2e as they are incompatible.
+% Instead, use Morten Hogholm'a dblfloatfix which combines the features
+% of both fixltx2e and stfloats:
+%
+% \usepackage{dblfloatfix}
+% The latest version can be found at:
+% http://www.ctan.org/pkg/dblfloatfix
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and 
+% Axel Sommerfeldt. This package may be useful when used in conjunction with 
+% IEEEtran.cls'  captionsoff option. Some IEEE journals/societies require that
+% submissions have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.4.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/pkg/endfloat
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/url
+% Basically, \url{my_url_here}.
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\captionsetup[figure]{font=normal}
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Novel Reinforcement Learning \\ Methods for Robotics}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+
+\author{Manuel~Esménio \\ manuel.esmenio@ist.utl.pt \\ Instituto Superior Técnico, Universidade de Lisboa, Portugal \\ October 2020}% <-this % stops a space
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+% The paper headers
+%\markboth{Novel Reinforcement Methods for Robotics}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2015 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+% make the title area
+\maketitle
+\thispagestyle{empty}
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract or keywords.
+\begin{abstract}
+	This work aims to evaluate a set of similar Deep Reinforcement Learning algorithms in a set of diversified of environments. The adaptations required by the vanilla algorithms to get to the presented results in each environment are a key aspect of this work. The experiments are performed by using agents described with hyper-parameter tables and neural network schematics to evaluate differences in the documented configurations, in spite of the stochastic results. The goal is to use the presented results to support a more generic description for agents, environments and their interaction, an exercise which can fall outside the traditional scope of optimization. 
+\end{abstract}
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+Markov decision process, Deep Reinforcement Learning, Actor-Critic, Hyper-parameters.
+\end{IEEEkeywords}
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+\section{Introduction}
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps.
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by the IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+\IEEEPARstart{T}{he} Reinforcement Learning (RL) problem is described by a Markov Decision Process (MDP) \cite{Eugene_A._Feinberg-MDP}, where environments consist of a state space $S$ containing observable states and an action space $A$ with available actions. If the environment approximates the Markov property \cite{Sutton-RL}, which considers that the transition dynamics only depend on the current state and action regardless of the trajectory leading to those, it is possible to define the environment dynamics (transition function) and the goal for a given task (reward function) as functions of state-action pairs:
+
+	\begin{itemize}
+		 
+		 \item $P(s_{t+1}|s_t,a_t) = P(s_{t+1}|s_t,a_t,s_{t-1},a_{t-1},...,s_0,a_0) = P(s'|s,a)$ - Transition function
+		 	
+		 \item $P(r_{t+1}|s_t,a_t) = P(r_{t+1}|s_t,a_t,s_{t-1},a_{t-1},...,s_0,a_0) = P(r|s,a)$ - Reward function
+		 	
+	\end{itemize}
+	
+	These functions describe the observation and reward signals returned by the environment after every action the agent performs, as depicted in Figure \ref{fig:LOOP}:
+	
+	\begin{figure}[ht]
+		\hfill\includegraphics[scale = 0.6]{A_E_LOOP}\hspace*{\fill}
+		\caption{Agent-environment interaction loop}
+		\label{fig:LOOP}
+	\end{figure}
+	
+	The goal for an RL agent is to maximize the cumulative reward (value) obtained from its environment. To do so it requires a function which maps states into actions, also known as a policy $\pi(s)$:
+	
+	\begin{itemize}
+		 
+		 \item $\pi(s) = P(a|s)$ - Stochastic policy describing the probabilities of every action in a given state.
+		 	
+		 \item $\pi(s) = a$ - Deterministic policy assigning a particular action to a given state.
+		 
+	\end{itemize}
+		
+	Policies are evaluated by the expected value to be obtained by following a given policy starting from a given state $V^\pi(s)$. A discount factor $\gamma$ is also included so it is possible to consider an infinite horizon while keeping the policy value a real number \cite{Eugene_A._Feinberg-MDP}. The policy value is defined by Equation (\ref{eq:policy_value}) and an optimal policy, which maximizes the value of all states, is defined in Equation (\ref{eq:optimal_policy}): 	
+		 
+	\begin{equation} \label{eq:policy_value}
+		V^\pi(s) = E[\sum_{t=0}^{\infty} \gamma^t r_{t+1}| s, \pi]
+	\end{equation}
+		
+	\begin{equation} \label{eq:optimal_policy}
+		\pi^*(s) = \max_\pi V^\pi(s), \forall s \in S
+	\end{equation}
+		
+	An alternative approach is to consider the set of available actions instead of an explicit policy, resulting in the Q-value function $Q(s,a)$\cite{watkins1989learning}, or the expected value to be obtained from performing a given action in a given state and acting optimally afterwards, as defined in Equation (\ref{eq:Q-value}):
+		
+	\begin{equation} \label{eq:Q-value}
+		Q(s,a) =  E[\sum_{t=0}^{\infty} \gamma^t r_{t+1}| s, a]
+	\end{equation}
+
+\section{Algorithms}
+
+	The algorithms presented are derived from two known optimization conditions: Bellman Equation \cite{Bellman-DP} represented in Equations (\ref{eq:Bellman}) and (\ref{eq:BellmanQ}); Gradient Descent \cite{lee2016gradient} represented in Equation (\ref{eq:Gradient})
+	
+	\begin{equation} \label{eq:Bellman}
+		V^\pi(s) = \sum_a P(a|s) \sum_r P(r|s,a) \sum_{s'} P(s'|s,a) (r + \gamma V^\pi(s'))
+	\end{equation}
+	
+	\begin{equation} \label{eq:BellmanQ}
+		Q(s,a) = \sum_r P(r|s,a) \sum_{s'} P(s'|s,a) (r + \gamma V(s'))
+	\end{equation}
+	
+	\begin{equation} \label{eq:Gradient}
+		\Delta \theta = - \alpha \nabla_\theta J_\theta
+	\end{equation}
+		
+	The Bellman equation separates immediately obtainable rewards from subsequent decisions to be made while Gradient Descent minimizes a parametrized objective function by following the direction of its gradient. 
+	
+	Function Approximation \cite{xu2014reinforcement} combines both these conditions to improve the scalability of the resulting algorithms. Neural networks (NNs) are able to learn through prediction and back propagation of error signals and serve the role of generic black box function approximations in RL, proving vital in many RL implementations \cite{Tesauro1994TD} and in the formulation of generic algorithms. A Deep RL agent requires at least the following functions to find an optimal policy:
+
+	\begin{itemize}
+				
+		\item \textbf{Neural network model} - An effective brain for the agent consisting on layers of neurons where each neuron acts as a linear function with multiple inputs and outputs. The parameters for each neuron are optimized from a random initialization using an iterative training/learning process.
+				
+		\item \textbf{Acting} - Selecting the action to perform on the current state of the environment. During training some initial noise is required in this decision process \cite{ten2003exploration} to prevent the agent from converging on policies with some immediate value over better long term solutions.
+				
+		\item \textbf{Training} - When an action is performed the environment returns a reward signal and the resulting state. These elements are combined with a terminal state flag $d$ as transitions $t(s,a,r,s',d)$. Most algorithms also require preprocessing raw environment data, commonly due to array shaping or image pre-processing.
+				
+		\item \textbf{Learning} - The function which updates NN parameters according to the transitions observed in training. It is possible to learn from pre-existing information (off-line learning) \cite{silver2014deterministic} but agents implemented in this work periodically learn with batches of an available pool as they train (on-line learning).
+				
+		\end{itemize}
+	
+	Additional parts such as experience replay \cite{schaul2015prioritized} or target NNs \cite{gao2017adaptive} become necessary with environment complexity. Image-based environments require the inclusion of convolutional layers in the NN model \cite{minsky2017perceptrons} and commonly benefit from additional image-processing, typically to reduce environment complexity (such as image downscale or grey scale), algorithm variance (such as pixel normalization) or the correlation between transitions observed in training (such as frame-skipping \cite{braylan2015frame}).
+
+	\subsection{Deep-Q-Network}
+	
+		 A Deep-Q-Network (DQN) algorithm results from applying an NN as a Q-value function approximation. The label from the Bellman Equation, defined in Equation (\ref{eq:label}), is taken by the NN as a correct prediction for a given transition and used to compute the error signal $\delta_W$ between the mentioned label and the current NN estimate, as described in Equation (\ref{eq:error}):
+	 
+	 	\begin{equation} \label{eq:label}
+			Q(s,a) = r + \gamma V(s')
+		\end{equation}
+		
+		\begin{equation} \label{eq:error}
+			\delta_W = Q(s,a) - \tilde{Q}_W(s,a)
+		\end{equation}
+		
+		This error signal can be set as an objective function for gradient descent to minimize, as shown in Equation (\ref{eq:NNerror}) where $W$ is the set of trainable NN parameters. $\delta_W$ is typically transformed by a loss function (such as the mean square error) before being applied to $W$ by the NN optimizer.
+		
+		\begin{equation} \label{eq:NNerror}
+			\Delta W = - \alpha \nabla_W \delta_W
+		\end{equation}
+		
+		 $V(s')$ is an unknown term which must be estimated by the NN. In DQN this is achievable by estimating the Q-value of all available actions in $s'$ and using the highest predicted Q-value as an estimate for the state value of $s'$, which results in the label defined by Equation (\ref{eq:labelDQN}). The associated algorithm is written in Figure \ref{alg:DQN code}
+		 
+		\begin{equation} \label{eq:labelDQN}
+			Q(s,a) = r + \gamma \max_{a' \in A} \tilde{Q}_W(s',a')
+		\end{equation}
+	
+		\begin{figure}
+			\begin{algorithmic}[h]
+			
+				\STATE Initialize $M$ empty, $W$ randomly, $W^+ = W$, $opt$, $T=0$
+			
+				\FOR{episode}
+			
+					\STATE Initialize $s$, $d = false$
+				
+					\WHILE{$d = false$}
+					
+						\STATE $a = policy (s, T)$
+						
+						\STATE $s', r, d = step (a)$
+					
+						\STATE $M \leftarrow add(s,a,r,s',d)$
+						
+						\STATE $f(s,a,r,s',d) \leftarrow batch(M)$
+						
+						\STATE $label = f(r) + \gamma \max_{a' \in A} W^+(f(s'),a') * f(d)$
+						
+						\STATE $loss = (W(f(s),f(a)) - label)^2/size(f)$
+						
+						\STATE $W \leftarrow gradients(opt, loss)$			
+						
+						\STATE $s = s'$, $T = T+1$
+						
+						\IF{$T/Ncopy = integer$}
+					
+							\STATE $W^+ = W$
+							
+						\ENDIF
+					\ENDWHILE
+				\ENDFOR
+
+			\end{algorithmic}
+			\caption{Pseudo-code for DQN with memory as $M$, optimizer as $opt$, training NN as $W$ and target NN as $W^+$}
+			\label{alg:DQN code}
+		\end{figure}
+		
+		In Figure \ref{alg:DQN code}, when an NN is defined as a function of $(s,a)$, that term calls a prediction from the NN. Without it the term calls the respective NN parameters. This notation also holds for Figure \ref{alg:A2C code}.
+		
+		An important note is that predicting the Q-values for all available actions in a given state requires the environment to have a discrete set of actions.
+
+	\subsection{Advantage Actor-Critic}
+	
+		An Advantage Actor-Critic (A2C) algorithm generates explicit representations of both Q-value and policy functions as NNs and trains the two respective sets of parameters $W$ and $\theta$ separately, to make the resulting algorithm more sample-efficient than a value function approximation on its own \cite{konda2000actor}.
+		
+		The NN which estimates Q-values, referred as critic, learns similarly to a DQN algorithm except $V(s')$ is estimated by taking the action predicted by the policy function NN, referred as actor, as an optimal action. This results in Equation (\ref{eq:criticA2C}):
+		
+		\begin{equation} \label{eq:criticA2C}
+			Q(s,a) = r + \gamma W(s', \theta(s'))
+		\end{equation}
+		
+		The actor learns by maximizing the expected policy value $J_\theta = V^\pi(s)$,  using the result from the policy gradient theorem \cite{Sutton-PGRL} described in Equation (\ref{eq:PG theorem}). When applied to a sampling method \cite{Aihara-BOOT_PG} this theorem results in Equation (\ref{eq:PG sampling}). Taking the Q-value predicted by the critic as $Q^\pi(s,a)$ results in Equation (\ref{eq:actorDDPG}): 
+		
+		\begin{equation} \label{eq:PG theorem}
+			\nabla_\theta V^\pi(s) = \sum_s d^\pi(s) \sum_a \frac{\delta P(a|s, \theta)}{\delta_\theta} Q^\pi(s,a)
+		\end{equation}
+		
+		\begin{equation} \label{eq:PG sampling}
+			\nabla_\theta V^\pi(s) = \frac{\delta \log P(a|s, \theta)}{\delta_\theta} Q^\pi(s,a)
+		\end{equation}
+		
+		\begin{equation} \label{eq:actorDDPG}
+			\nabla_\theta V^\pi(s) = \frac{\delta \log P(a|s, \theta)}{\delta_\theta} W(s, \theta(s))
+		\end{equation}
+		
+		Having the actor update its parameters according to the Q-values predicted by the critic makes the actor loss not converge towards a zero mean, which adds variance to the algorithm \cite{bhatnagar2008incremental}. This issue can be addressed by subtracting a baseline in Equation (\ref{eq:actorDDPG}). A common baseline is the advantage function $A(s,a) = Q(s,a) - V(s)$ \cite{su2017sample}, or the difference in value between a specific action and the known optimal action in given state. Applying this baseline to Equation (\ref{eq:actorDDPG}) results in Equation (\ref{eq:actorA2C}) and in the A2C algorithm written in Figure \ref{alg:A2C code}
+
+		\begin{equation} \label{eq:actorA2C}
+			\nabla_\theta V^\pi(s) = \frac{\delta \log P(a|s, \theta)}{\delta_\theta} (W(s, \theta(s)) - W(s,a))
+		\end{equation}
+
+		\begin{figure}
+			\begin{algorithmic}[h]
+			
+				\STATE Initialize $M$ empty, $\theta$ and $W$ randomly
+				
+				\STATE Initialize $\theta^+ = \theta$, $W^+ = W$, $T = 0$, $opt1$, $opt2$	
+			
+				\FOR{episode}
+			
+					\STATE Initialize $s$, $d = false$
+				
+					\WHILE{$d = false$}
+					
+						\STATE $a = policy (s, T)$
+						
+						\STATE $s', r, d = step (a)$
+					
+						\STATE $M \leftarrow add(s,a,r,s',d)$
+						
+						\STATE $f(s,a,r,s',d) \leftarrow batch(M)$
+						
+						\STATE $a_1 = \theta^+(f(s'))$
+						
+						\STATE $label1 = f(r) + \gamma W^+(f(s'),a_1) * f(d)$
+						
+						\STATE $loss1 = (W(f(s),f(a)) - label1)^2/size(f)$
+						
+						\STATE $W \leftarrow gradients(opt1, loss1)$
+						
+						\STATE $a_2 = \theta(f(s))$
+						
+						\STATE $label2 = W(f(s),a_2)$
+						
+						\STATE $loss2 = -(label2 - W^+(f(s),f(a)))/size(f)$
+						
+						\STATE $\theta \leftarrow gradients(opt2, loss2)$
+						
+						\STATE $\theta^+ = \tau * (\theta - \theta^+)$
+						
+						\STATE $W^+ = \tau * (W - W^+)$		
+						
+						\STATE $s = s'$, $T = T+1$
+
+					\ENDWHILE
+				\ENDFOR		
+			
+			\end{algorithmic}
+			\caption{Pseudo-code for A2C with actor as $\theta$, target actor as $\theta^+$, critic as $W$ and target critic as $W^+$}
+			\label{alg:A2C code}
+		\end{figure}
+		
+		An important note is that updating the target NN with soft-increment $\tau$ allows multiple agents with different initializations to train the same targets, which leads to the asynchronous A2C (A3C) algorithm \cite{babaeizadeh2016ga3c}.
+
+\section{Environments}
+
+	Due to the complications that arise when designing reward functions \cite{Egg_Survey} and to maintain focus of this work on the design and evaluation of agents, the environments listed in this section were imported from the OpenAiGym library \cite{OpenAiGym}, which contains a sizeable collection of environments including classic control problems, old-school Atari games, 2D physics engine with tasks, among others.
+
+	\subsection{Lunar Lander}
+	
+		The goal in this task is to get an agent to land on a pad without crashing, with a body consisting of an hull and two pads to soften ground contact. The environment includes an action wrapper that allows agents to solve it using either discrete or continuous actions. This environment is described in Table \ref{table:ENV1} and Figure \ref{fig:ENV1}:
+	
+		\begin{table}[ht!]
+			\centering
+			
+			\begin{tabular}{m{2.5cm} || m{5cm}}
+			
+				Element & Description \\
+			
+				\hline \hline
+				States & agent's position and speed in components x and y, angular position and speed, 2 ground contact flags.\\
+			
+				\hline
+				Discrete actions & "do nothing", "fire left engine", "fire main engine", "fire right engine" \\
+			
+				\hline
+				Continuous actions & Input values for the main and side engines, normalized to [-1,1] \\
+			
+				\hline
+				Rewards & +100 towards the center of the landing pad \newline -0.3 for fuel unit on main engine \newline -0.03 for fuel unit on side engine \newline +10 for ground contact \newline +100 for landing \newline -100 for crashing \\ 	
+				
+				\hline
+				Solved condition & Average score of 200 over 100 episodes \\
+			
+			\end{tabular}
+			
+			\caption{Environment description for Lunar Lander}
+			\label{table:ENV1}
+		\end{table}
+	
+		\begin{figure}[ht!]
+			\hfill\includegraphics[scale = 0.55]{LLANDER}\hspace*{\fill}
+			\caption{Screen shot for Lunar Lander}
+			\label{fig:ENV1}
+		\end{figure}
+		
+		This environment provides an useful baseline for comparing vanilla implementations of the described algorithms under similar conditions and is also used to approach some stochastic properties of RL training.
+	
+	\subsection{Space Invaders}
+	
+		The goal for this environment is to have an agent learn how to play the old-school Atari game "Space Invaders" using only game information. The original state space is a $160\times210$ image coded with the RGB colour model where each pixel is described by 3 integers between [0,255]. This environment is described in Table \ref{table:ENV2} and Figure \ref{fig:ENV2}. Figure \ref{fig:ENV2.1} contains a screen-shot of the environment after pre-processing:
+	
+		\begin{table}[ht]
+			\centering
+			
+			\begin{tabular}{ m{2.5cm} || m{5cm}}
+			
+				Element & Description \\
+			
+				\hline \hline
+				States & Screen pixel values for each frame \\
+			
+				\hline
+				Actions & "do nothing", "shoot", "move left", "move right", "move left and shoot", "move right and shoot".\\
+			
+				\hline
+				Rewards & In-game score. \\
+				
+				\hline
+				Solved condition & Open \\	
+			
+			\end{tabular}
+			
+			\caption{Environment description for Space Invaders}
+			\label{table:ENV2}
+		\end{table}
+		
+		\begin{figure}[ht]
+			\hfill\includegraphics[scale = 0.3]{SPACEINV}\hspace*{\fill}
+			\caption{Screen shot for Space Invaders}
+			\label{fig:ENV2}
+		\end{figure}
+		
+		\begin{figure}[ht]
+			\hfill\includegraphics[scale = 0.3]{SPACEINV1}\hspace*{\fill}
+			\caption{Pre-processed screen shot for Space Invaders}
+			\label{fig:ENV2.1}
+		\end{figure}
+		
+	This environment is documented by many open sources and was also featured in a popular RL article \cite{Nature_DQN-SI}, which made it a solid reference for validation of the implemented image-processing and a stepping stone for more complex image-based environments.	
+	
+	\subsection{Bipedal Walker}
+	
+		In this environment the agent learns how to walk through a slightly irregular surface and reach a goal line to the far right, with a body consisting of an hull and two legs which the agent can control through joints located on its hips and knees, and a LIDAR system \cite{hall2011high} which keeps track of the ground through range measurements. This environment is described in Table \ref{table:ENV3} and Figure \ref{fig:ENV3}:
+	
+		\begin{table}[ht]
+			\centering
+			
+			\begin{tabular}{ m{2.5cm} || m{5cm}}
+			
+				Element & Description \\
+			
+				\hline \hline
+				States & Angular position and speed of the hull and the 4 joints at both hips/knees, horizontal and vertical speed of the hull, 2 ground contact flags, 10 LIDAR readings. \\
+			
+				\hline
+				Actions & Input values for the torque to be applied at each hip/knee joint, normalized to [-1,1]. \\
+			
+				\hline
+				Rewards & +4.333 for unit moved horizontally \newline -0.00035 for torque unit \newline -5.0 each radian the hull is tilted \newline -100 for falling \\ 	
+				
+				\hline
+				Solved condition & Average score of 300 over 100 episodes \\	
+			
+			\end{tabular}
+			
+			\caption{Environment description for Bipedal Walker}
+			\label{table:ENV3}
+		\end{table}
+		
+		\begin{figure}[ht]
+			\hfill\includegraphics[scale = 0.3]{WALKER}\hspace*{\fill}
+			\caption{Screen shot for Bipedal Walker}
+			\label{fig:ENV3}
+		\end{figure}
+		
+		The complexity and precision associated with walking patterns make this environment difficult to explore and optimize, meaning both additional engineering tricks \cite{zhu2017effective} and fine hyper-parameter tuning are required.
+	
+	\subsection{Duckietown}
+	
+		This environment is a self-driving car simulation task where the agent attempts to navigate different Duckietown maps, with a body consisting of an hull with 4 wheels and a frontal camera, from where states are recorded as $640\times480$ images. This environment is described in Table \ref{table:ENV4} and Figure \ref{fig:ENV4}. The pre-processing applied generated Figure \ref{fig:ENV4.1}:
+	
+		\begin{table}[ht]
+			\centering
+			
+			\begin{tabular}{m{2.5cm} || m{5cm}}
+			
+				Element & Description \\
+			
+				\hline \hline
+				States & Screen pixel values for each frame. \\
+			
+				\hline
+				Actions & Input values for the speed and the steering of the hull, normalized to [-1,1].\\
+			
+				\hline
+				Rewards & +1 aligning the agent's velocity with the road. \newline -10 for relative position in lane. \newline -40 for proximity with road obstacles. \newline -1000 for crashing into a obstacle or leaving the road.\\
+				
+				\hline
+				Solved condition & Open \\		
+			
+			\end{tabular}
+			
+			\caption{Environment description for Duckietown}
+			\label{table:ENV4}
+		\end{table}
+		
+		\begin{figure}[ht]
+			\hfill\includegraphics[scale = 0.55]{DUCKIETOWN}\hspace*{\fill}
+			\caption{Screen shot for Duckietown}
+			\label{fig:ENV4}
+		\end{figure}
+		
+		\begin{figure}[ht]
+			\hfill\includegraphics[scale = 0.25]{DUCKIETOWN1}\hspace*{\fill}
+			\caption{Pre-processed screen shot for Duckietown}
+			\label{fig:ENV4.1}
+		\end{figure}
+		
+		The open ended nature of this environment, its customizable structure and the inclusion of properties designed to approximate issues prevalent in real-world environments (irregular roads, irregular lighting, first person perspective, distracting landscape, among others) combine to make this an interactive and challenging sandbox for RL algorithms.
+
+\section{Experiments}
+
+	The experiment performed on Lunar Lander evaluated two potential variations for baseline estimates in an A2C algorithm. Space Invaders was used for validation on additional components relating with image-processing. The experiment in Bipedal Walker was to design a "naive" Bayesian optimization function \cite{snoek2012practical} which reduced the need for manual hyper-parameter tuning. The information from these environments was incorporated in the agents designed for the Duckietown environment, which led to it being the most appropriate environment to feature in this paper. 
+
+	 The experiment showcased was performed on the Duckietown map shown in Figure \ref{fig:DTLOOP}, where static obstacles were also included:
+
+	\begin{figure}[hbt!]
+		\centering
+		
+		\includegraphics[scale = 0.6]{DT_LOOP}
+		\caption{Duckietown map: loop}
+  		\label{fig:DTLOOP}
+	\end{figure}
+	
+	The components for the reward function shown in Table \ref{table:ENV4} are hyper-parametrized as described in Equation (\ref{eq:DTHYPREW}):
+		
+	\begin{equation} \label{eq:DTHYPREW}
+		\begin{array}{ll}
+			
+			\Delta W = K_1 * F_1 K_2 * F_2 K_3 * F_3 & done=false \\
+			\Delta W = crash & done=true \\
+				
+		\end{array}
+	\end{equation}
+	
+	Where $F_1$ is proportional to the alignment between the agent velocity and the direction of the road, $F_2$ is proportional to its distance to the center of the right lane and $F_3$ is proportional to its proximity to any obstacles.
+	
+	This experiment intends to evaluate the effects of modifying the magnitudes of the reward functions on a stable configuration. Agents 1,2,3 and 4 are A2C algorithms using the hyper-parameters of Table \ref{table:HPDT1} and the NN structure of Figure \ref{fig:NNDT1}. The reward function employed by each agent is described by Equation (\ref{eq:DTHYPREW}) and Table (\ref{table:RWDT1}):
+		
+	\begin{table}[hbt!]
+	\centering
+			
+		\begin{tabular}{c}
+			
+			Memory size = 200000\\
+					
+			\hline
+			Initial buffer = 20000\\
+					
+			\hline
+			$\gamma$ = 0.99\\
+				
+			\hline
+			Actor $\alpha$ = 0.00003\\
+					
+			\hline
+			Critic $\alpha$ = 0.0001\\
+					
+			\hline
+			Batch size = 32\\
+				
+			\hline
+			Actor $\tau$ = 0.003\\
+					
+			\hline
+			Critic $\tau$ = 0.002\\
+					
+			\hline
+			$\sigma^2$ decay steps  = 250000\\
+			
+			\hline
+			$\sigma^2$ max = 1\\
+					
+			\hline
+			$\sigma^2$ min = 0.025\\
+
+			\hline
+			Frame-skip = 2\\
+					
+			\hline
+			Contrast = 0.9\\
+					
+			\hline
+			Brightness = -10\\
+					
+			\hline
+			Learn Steps = 1\\
+			
+		\end{tabular}
+			
+	\caption{Hyper-parameters for agents 1,2,3 and 4 in Duckietown}
+	\label{table:HPDT1}
+	\end{table}
+			
+	\begin{figure}[hbt!]
+		\hfill\includegraphics[scale = 0.45]{NNDT1}\hspace*{\fill}
+		\caption{Neural network scheme for agents 1, 2, 3 and 4 in Duckietown}
+		\label{fig:NNDT1}
+	\end{figure}
+		
+	\begin{table}[hbt!]
+		\centering
+			
+		\begin{tabular}{ c || c | c | c | c }
+				
+			Agent 1 & $K_1 = 0.9$ & $K_2 = -6$ & $K_3 = -15$ & $crash = -50$\\
+					
+			\hline
+			Agent 2 & $K_1 = 0.5$ & $K_2 = -5$ & $K_3 = -10$ & $crash = -40$\\
+					
+			\hline
+			Agent 3 & $K_1 = 0.5$ & $K_2 = -5$ & $K_3 = -10$ & $crash = -35$\\
+					
+			\hline
+			Agent 4 & $K_1 = 0.3$ & $K_2 = -3$ & $K_3 = -10$ & $crash = -25$\\
+					
+		\end{tabular}
+				
+		\caption{Magnitudes for reward function of agents 1,2,3 and 4 in Duckietown}
+		\label{table:RWDT1}
+	\end{table}
+	
+	The results include some generic RL metrics (average score, NN loss, average episode step duration) and additional metrics used for this environment and defined as: an average reward criteria or the percentage of transitions the agent received a reward superior to half the value of its parameter $K_1$ and referred as "Positive"; the percentage of transitions the agent is "Turning", defined as performing an action with $|speed| < 0.8$ and $|steering| > 0.5$. A run performed by agent 1 in the loop with static obstacles resulted in Figure \ref{fig:agentDT1} and agent 2 presented Figure \ref{fig:agentDT2} in the same map:
+			
+		\begin{figure}[hbt!]
+			\centering
+			
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT1A_REWARD}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT1A_LOSS}
+			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT1A_EPTIME}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT1A_CUSTOM}
+			\end{minipage}
+			
+			\caption{Results for agent 1 in Duckietown:Loop static}
+  			\label{fig:agentDT1}
+		\end{figure}
+		
+		\begin{figure}[hbt!]
+			\centering
+			
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT2A_REWARD}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT2A_LOSS}
+			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT2A_EPTIME}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT2A_CUSTOM}
+			\end{minipage}
+			
+			\caption{Results for agent 2 in Duckietown:Loop static}
+  			\label{fig:agentDT2}
+		\end{figure}
+		
+		Upon testing and observing the agents, the policy for agent 1 had converged to going straight forward until reaching the end of lane, rotating itself approximately 180 degrees, then repeat until it could not stop in time and leave road. Upon meeting obstacles the agent would either rotate itself or crash into the obstacle, being that the its shape did not seem to matter. The policy for agent 2 converged in shorter accelerations and more 180 degree rotations. The agent also moves away from obstacles or rotates before going near them, but crosses the end of lane while rotating.
+		
+		The results for agent 3 in the static loop are in Figure \ref{fig:agentDT3} and agent 4 in the same map is shown in Figure \ref{fig:agentDT4}:
+		
+		\begin{figure}[hbt!]
+			\centering
+			
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT3A_REWARD}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT3A_LOSS}
+			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT3A_EPTIME}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT3A_CUSTOM}
+			\end{minipage}
+			
+			\caption{Results for agent 3 in Duckietown:Loop static}
+  			\label{fig:agentDT3}
+		\end{figure}
+		
+		\begin{figure}[hbt!]
+			\centering
+			
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT4A_REWARD}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT4A_LOSS}
+			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT4A_EPTIME}
+ 			\end{minipage}
+			\quad
+			\begin{minipage}[b]{4cm}
+  				\includegraphics[width = 4cm]{DT4A_CUSTOM}
+			\end{minipage}
+			
+			\caption{Results for agent 4 in Duckietown:Loop static}
+  			\label{fig:agentDT4}
+		\end{figure}
+		
+		The results for agent 3 are interesting in the sense that it is unclear why the agent was able to move past the larger portion of training where its metrics do not exhibit any response, which was eventually broken by an apparent random mutation. Upon testing and observing the agents, agent 3 showed signs of attempting to navigate the map along the right lane and dodging duck shaped obstacles. However an initial position where the agent was not aligned with the road caused it to immediately cross the end of lane. Even when navigating properly the agent would often cross the end of lane on some turns or crash into not duck shaped obstacles. Agent 4 also navigates the map along the right lane but does so with an hesitant pendular movement. Also while it is really careful with the end of lane, it mostly disregards all obstacles and crashes into them. Another pattern exhibited by agent 4 was that when it faced perpendicular to an end of lane, it would sometimes get stuck in a back to forth or a side to side movement. These results indicate that even though reducing the original reward magnitudes initially proved advantageous, doing so indefinitely is not.
+
+\section{Conclusion}
+\label{section:Conclusions}
+
+	Training and testing the algorithms described across the mentioned set of environments allowed finding more generic patterns for some underlying forces at hand: environments have an implicit complexity and magnitude of noise associated; agents have varying susceptibility to bias and variance errors \cite{neal2018modern}; the agent under-fits or over-fits during training, when the noise generated by the environment prevents the agent from finding an optimal policy or from stabilizing on an optimal policy.
+	
+	Table \ref{table:PROPS} contains the characteristics mentioned in this section and the notion of learning, training and testing frequencies, which can be useful for converting discrete training steps into continuous time values, all of which considered properties of agents, environments or agent-environment interactions:
+		
+		\begin{table}[ht!]
+			\centering
+			
+			\begin{tabular}{ m{2.5cm} | m{2.5cm} | m{2.5cm}}
+			
+				Agent & Environment & Agent-Environment \\
+			
+				\hline \hline
+				Learning frequency & Task complexity & Training/testing frequency \\
+			
+				\hline
+				Bias/Variance & Noise & Underfitting/Overfitting\\
+			
+			\end{tabular}
+			
+			\caption{Generic properties for agents, environments and their interaction}
+			\label{table:PROPS}
+		\end{table}
+		
+	The algorithms featured in this paper are not state-of-the-art, but the basis provided is enough to continue adding components and generate more advanced versions: Asynchronous A2C (A3C) \cite{babaeizadeh2016ga3c} uses multiple agents with different initializations to train the same target networks; Dueling DQN (DDQN) \cite{wang2016dueling} separates the state value from the advantage of a given action in that state; Trust Region Policy Optimization (TRPO) \cite{schulman2015trust} includes the region inside which learning leads to monotonic improvements in the policy value; Soft Actor-Critic (SAC) \cite{haarnoja2018soft} includes an entropy measurement to have an agent optimize a task while also acting as randomly as possible.
+
+% use section* for acknowledgment
+\section*{Acknowledgment}
+	The author would like to thank Pedro Lima for the opportunity to be a part of this work and for the patience he demonstrated throughout the entire process, and Tiago Veiga for his hands-on approach and useful feedback, which provided an invaluable help in finishing this work.
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+\bibliographystyle{./IEEEtran}
+\bibliography{./IEEEabrv, ./biblio}
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that the IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command,
+% and the \label for the overall figure must come after \caption.
+% \hfil is used as a separator to get equal spacing.
+% Watch out that the combined width of all the subfigures on a 
+% line do not exceed the text width or a line break will occur.
+%
+%\begin{figure*}[!t]
+%\centering
+%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
+%\label{fig_second_case}}
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat[]), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
+% labels, the optional argument to \subfloat must be present. If a
+% subcaption is not desired, just leave its contents blank,
+% e.g., \subfloat[].
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table and, given that table
+% captions serve much like titles, are usually capitalized except for words
+% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
+% and up, which are usually not capitalized unless they are the first or
+% last word of the caption. Table text will default to \footnotesize as
+% the IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that the IEEE does not put floats in the very first column
+% - or typically anywhere on the first page for that matter. Also,
+% in-text middle ("here") positioning is typically not used, but it
+% is allowed and encouraged for Computer Society conferences (but
+% not Computer Society journals). Most IEEE journals/conferences use
+% top floats exclusively. 
+% Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the
+% \fnbelowfloat command of the stfloats package.
+
+% that's all folks
+\end{document}
+
+

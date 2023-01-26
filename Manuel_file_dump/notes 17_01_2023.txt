@@ -1,0 +1,10 @@
+Two-way sync:
+
+Maybe merge information as stated by different users in order to have 1 truth that supports multiples truths (e.g: Manuel said X, Michiel said Y);
+
+Maybe expose a Github interface;
+One-layer for state
+One-layer for history of state changes
+One layer for merge operations
+
+Use an additional node containing an external truth to sync nodes. Differences are made by comparing to this node.
