@@ -7,8 +7,8 @@
 
 Members of a federated system can be connected to non-federated members. Non-federated members which are part of the system can:
 
-Receive data from only one member
-Send data to only one member
+1. Receive data from only one member
+2. Send data to only one member
 
 Members of a federated system only know their neighbours.
 (They are aware to some degree of other members in the federation???)
