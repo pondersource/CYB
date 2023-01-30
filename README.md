@@ -39,3 +39,16 @@ chmod u+x ./run-docker.sh
 ./run-docker.sh prod pull
 ./run-docker.sh prod up --detach
 ```
+
+## Development
+### How to add a new connector
+1. Pick a name for your connector. Must be all lowercase and url safe. Ex. time_mld, github
+2. Create a new folder under `app/Connectors` and name it in the studly form of your connector name. Ex. TimeMld, Github
+3. Put an implementation of `\app\Core\Connector` in the newly created folder. Ex. GithubConnector.php
+4. Modify `\app\Core\ApplicationManager::getConnectors` and add an instance of your Connector to it.
+
+### Routes
+In order to support custom routes for your connector, create a folder named `routes` under your connector's root folder. Then you can create `api.php` and `web.php` files there to define your routes. The newly added routes will be under `/api/connector/{connector name}` and `/connector/{connector name}` respectively. And the routes can be addressed under the name `connector.{connector name}`.
+
+### Returning views for your connector web routes
+Suggested approach is to create a `resources\views` folder under your connector's root folder. Then you can reference those views by using the View facade (`Illuminate\Support\Facades\View`) and calling `View::file` method with the full address to your view file.

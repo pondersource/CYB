@@ -72,3 +72,18 @@ Route::get('/test/tasks', function (Request $request) {
     $success = explode(',', $request->query('success'));
     return ApplicationManager::test($success);
 });
+
+Route::name('connector.')->prefix('connector')->group(function() {
+    $connectors = ApplicationManager::getConnectors();
+
+    foreach ($connectors as $connector) {
+        $app_code = $connector->getAppCodeName();
+        $app_folder = Str::studly($app_code);
+
+        $route_file = base_path("app/Connectors/$app_folder/routes/web.php");
+
+        if (File::exists($route_file)) {
+            Route::name("$app_code.")->prefix($app_code)->group($route_file);
+        }
+    }
+});
