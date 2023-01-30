@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Connectors\LetsPeppol\LetsPeppolConnector;
 use App\Connectors\Prejournal\PrejournalConnector;
 use App\Connectors\Teamwork\TeamworkConnector;
 use App\Core\DataType\DataTypeManager;
@@ -18,7 +19,7 @@ class ApplicationManager
     public static function getConnectors()
     {
         // Read from an static array
-        return [new PrejournalConnector(), new TeamworkConnector()];
+        return [new LetsPeppolConnector, new PrejournalConnector(), new TeamworkConnector()];
     }
 
     public static function getConnector($code_name): ?Connector
