@@ -43,6 +43,10 @@ class TeamworkConnector implements Connector
         return $auth_info;
     }
 
+    public function getAuthenticatedUI($auth) {
+        return view('sample_authenticated', compact('auth'));
+    }
+
     public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool
     {
         return $auth['app_user_id'] == $auth_info->app_user_id;

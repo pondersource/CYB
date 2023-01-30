@@ -32,12 +32,14 @@
 
         <h2>Authenticated accounts</h2>
         @foreach($view_authentications as $auth)
-            <b>{{ $auth['display_name'] }}</b> - {{ $auth['app_code_name'] }}<br>
+            <b>{{ $auth['display_name'] }}</b> - {{ $auth['app_name'] }}<br>
+            {{ $auth['ui'] }}
             @foreach($auth['data_types'] as $data_type)
                 <i>{{ $data_type['display_name'] }}</i><br>
                 <input id="{{ $auth['id'] }}-{{ $data_type['name'] }}-read" type="checkbox" onclick="readToggle(event);" {{ $data_type['read'] ? 'checked':'' }}>Read</input><br>
                 <input id="{{ $auth['id'] }}-{{ $data_type['name'] }}-write" type="checkbox" onclick="writeToggle(event);" {{ $data_type['write'] ? 'checked':'' }}>Write</input><br>
             @endforeach
+            <br>
         @endforeach
 
         <h2>Tests</h2>

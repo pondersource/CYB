@@ -16,6 +16,8 @@ interface Connector
 
     public function finalizeAuthentication(): ?AuthInfo;
 
+    public function getAuthenticatedUI($auth);
+
     public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool;
 
     public function registerUpdateNotifier($auth, $data_type): bool;

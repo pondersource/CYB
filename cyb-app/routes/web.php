@@ -25,6 +25,10 @@ Route::get('/', function () {
         $view_auth = $auth->getAttributes();
 
         $connector = ApplicationManager::getConnector($auth->app_code_name);
+
+        $view_auth['app_name'] = $connector->getName();
+        $view_auth['ui'] = $connector->getAuthenticatedUI($auth);
+
         $data_types = $connector->getSupportedDataTypes($auth);
 
         $view_data_types = [];
