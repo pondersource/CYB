@@ -19,3 +19,4 @@ yarn-error.log
 /.idea
 /.vscode
 /app/Connectors/LetsPeppol/ACube/Secrets.php
+/app/Connectors/LetsPeppol/ACube/token.db
