@@ -184,11 +184,13 @@ class ACube
     }
 
     /**
-     * Reads the received data and returns the uuid of the received document if any.
+     * Reads the received data and returns the id and type of the received document if any.
      * More info: https://docs.acubeapi.com/documentation/peppol/
      */
-    public function onDataReceivedFromWebHook($body): ?string {
-        return $body['success'] ? $body['document_id'] : null;
+    public function onDataReceivedFromWebHook($body): array {
+        return $body['success'] ?
+                ['id' => $body['document_id'], 'type' => $body['document_type']] :
+                ['id' => null, 'type' => null];
     }
 
     private function prepareRequest() {
