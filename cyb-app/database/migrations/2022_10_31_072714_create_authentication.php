@@ -19,7 +19,7 @@ class CreateAuthentication extends Migration
             $table->string('display_name');
             $table->string('app_user_id');
             $table->bigInteger('user_id')->unsigned();
-            $table->string('metadata');
+            $table->text('metadata');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
