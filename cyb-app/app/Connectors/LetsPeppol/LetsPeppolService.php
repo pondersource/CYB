@@ -5,7 +5,13 @@ namespace App\Connectors\LetsPeppol;
 use App\Connectors\LetsPeppol\ACube\ACube;
 use App\Connectors\LetsPeppol\Models\Identity;
 use App\Connectors\LetsPeppol\Models\Message;
+use App\Core\ApplicationManager;
+use App\Core\Helper;
 use App\Core\Settings;
+
+Helper::include_once(__DIR__.'/PonderSource');
+
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice;
 
 class LetsPeppolService {
 
@@ -18,7 +24,7 @@ class LetsPeppolService {
     private ACube $acube;
 
     public function __construct() {
-        $this->settings = new Settings();
+        $this->settings = new Settings(SETTINGS_FILE);
         $this->acube = new ACube();
 
         $has_changes = false;
@@ -272,12 +278,55 @@ class LetsPeppolService {
         file_put_contents(self::FILES_BASE_PATH.$file_name, $ubl);
         $message['file_name'] = $file_name;
 
-        // TODO read the invoice
-        // TODO discover identifier, identity and user id
-        // TODO complete the message object
-        // TODO check for update notifier to wake up
+        // read the invoice
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        $invoice = $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
 
+        // TODO discover identifier, identity and user id
+        $endpoint_ID = null;
+
+        if ($incoming) {
+            $endpoint_ID = $invoice->getAccountingCustomerParty()->getParty()->getEndpointID();
+        }
+        else {
+            $endpoint_ID = $invoice->getAccountingSupplierParty()->getParty()->getEndpointID();
+        }
+
+        $identifier_scheme = $endpoint_ID->getSchemeID();
+        $identifier_value = $endpoint_ID->getValue();
+
+        $identity = null;
+
+        try {
+            $identity = Identity::query()
+                    ->where('identifier_value', $identifier_value)
+                    ->where('registrar', self::REGISTRAR_ACUBE)
+                    ->where('identifier_scheme', $identifier_scheme)
+                    ->first();
+        } catch (\Exception $e) {
+            // Identity not found. Probably at some point we had this user but didn't remove it from acube.
+            // We just return because we don't want acube to send it again.
+            // TODO remove the identity from acube maybe?
+            return;
+        }
+
+        // complete the message object and save
+        $message['user_id'] = $identity['user_id'];
+        $message['identity_id'] = $identity['id'];
         $message->save();
+        
+        // check for update notifier to wake up
+        if (!empty($identity['auth_id'])) {
+            try {
+                $auth = Authentication::query()
+                    ->where('id', $identity['auth_id'])
+                    ->first();
+
+                ApplicationManager::onNewUpdate($auth, 'invoice');
+            } catch (\Exception $e) {
+                // If this fails, it is on us and acube sending again doesn't help it.
+            }
+        }
     }
 
 }
