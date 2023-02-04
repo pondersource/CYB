@@ -4,7 +4,6 @@ use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
