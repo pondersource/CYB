@@ -44,7 +44,7 @@ return new class extends Migration
             $table->integer('type');
             $table->integer('direction');
             $table->string('file_name')->nullable();
-            $table->timestamps();
+            $table->integer('receive_time');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('identity_id')->references('id')->on('lp_identities')->onDelete('cascade');

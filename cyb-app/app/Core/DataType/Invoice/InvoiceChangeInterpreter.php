@@ -6,12 +6,10 @@ use App\Core\ChangeInterpreter;
 
 class InvoiceChangeInterpreter implements ChangeInterpreter
 {
-    public function getStateChanges($src_reader, $dst_reader)
+    public function getStateChanges(InvoiceReader $src_reader, InvoiceReader $dst_reader, int $since_time)
     {
-        // TODO
-        error_log('Change interpreter started');
-        sleep(1);
-        error_log('Change interpreter ended');
-        return null;
+        $changes = $src_reader->getChanges();
+        $src_reader->changesNoLongerNeeded($since_time);
+        return $changes;
     }
 }

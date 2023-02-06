@@ -13,17 +13,17 @@ Helper::include_once(__DIR__.'/PonderSource');
 
 use OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice;
 
-class LetsPeppolService {
-
+class LetsPeppolService
+{
     public const REGISTRAR_ACUBE = 'acube';
 
-    private const FILES_BASE_PATH = __DIR__.'/files/';
     private const SETTINGS_FILE = __DIR__.'/settings.json';
 
     private Settings $settings;
     private ACube $acube;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->settings = new Settings(SETTINGS_FILE);
         $this->acube = new ACube();
 
@@ -62,14 +62,16 @@ class LetsPeppolService {
 
     /**
      * Properties are:
-     * name, address, city, country, zip
+     * name, address, city, region, country, zip
      */
-    public function createIdentity(int $user_id, array $properties): ?Identity {
+    public function createIdentity(int $user_id, array $properties): ?Identity
+    {
         $identity = new Identity();
         $identity['user_id'] = $user_id;
         $identity['name'] = $properties['name'];
         $identity['address'] = $properties['address'];
         $identity['city'] = $properties['city'];
+        $identity['region'] = $properties['region'];
         $identity['country'] = $properties['country'];
         $identity['zip'] = $properties['zip'];
         $identity['kyc_status'] = Identity::KYC_STATUS_PENDING_APPROVAL;
@@ -77,7 +79,8 @@ class LetsPeppolService {
         return $identity->save() ? $identity : null;
     }
 
-    public function getIdentities(): array {
+    public function getIdentities(): array
+    {
         $results = Identity::orderBy('created_at', 'desc')->get();
 
         $identities = [];
@@ -89,7 +92,8 @@ class LetsPeppolService {
         return $identities;
     }
 
-    public function getIdentity(int $user_id): ?Identity {
+    public function getIdentity(int $user_id): ?Identity
+    {
         try {
             return Identity::query()->where('user_id', $user_id)->first();
         } catch (\Exception $e) {
@@ -97,7 +101,8 @@ class LetsPeppolService {
         }
     }
 
-    public function updateIdentity(Identity $identity): bool {
+    public function updateIdentity(Identity $identity): bool
+    {
         Identity::beginTransaction();
 
         if (!$identity->save()) {
@@ -178,7 +183,54 @@ class LetsPeppolService {
         return true;
     }
 
-    public function sendMessage(int $user_id, string $ubl): bool {
+    public function sendMessage(int $user_id, string $ubl): bool
+    {
+        $identity = $this->getIdentity($user_id);
+
+        if (empty($identity)) {
+            // Identity not found
+            return false;
+        }
+
+        if ($identity['registrar'] != self::REGISTRAR_ACUBE) {
+            // No registrar
+            return false;
+        }
+
+        if (empty($identity['identifier_scheme']) || empty($identity['identifier_value'])) {
+            // No identifier
+            return false;
+        }
+
+        $supplier_scheme = null;
+        $supplier_value = null;
+        
+        try {
+            $invoice = $this->invoiceFromUBL($ubl);
+            $supplier_ID = $invoice->getAccountingSupplierParty()->getParty()->getEndpointID();
+
+            $supplier_scheme = $endpoint_ID->getSchemeID();
+            $supplier_value = $endpoint_ID->getValue();
+        } catch (\Exception $e) {
+            // Bad UBL
+            return false;
+        }
+
+        if ($identity['identifier_scheme'] != $supplier_scheme || $identity['identifier_value'] != $supplier_value) {
+            // Can not send invoice on behalf of someone else!
+            return false;
+        }
+
+        try {
+            return $this->acube->sendInvoice($ubl) != null;
+        } catch (\Exception $e) {
+            // Connection error, internal error (token), bad UBL, double sending?, internal error (state is lost)
+            return false;
+        }
+    }
+
+    public function addIncomingMessage(int $user_id, string $ubl): bool
+    {
         $identity = $this->getIdentity($user_id);
 
         if (empty($identity)) {
@@ -189,17 +241,47 @@ class LetsPeppolService {
             return false;
         }
 
+        if ($identity['registrar'] != self::REGISTRAR_ACUBE) {
+            // No registrar
+            return false;
+        }
+
+        if (empty($identity['identifier_scheme']) || empty($identity['identifier_value'])) {
+            // No identifier
+            return false;
+        }
+
+        $customer_scheme = null;
+        $customer_value = null;
+        
         try {
-            return $this->acube->sendInvoice($ubl) != null;
+            $invoice = $this->invoiceFromUBL($ubl);
+            $customer_ID = $invoice->getAccountingCustomerParty()->getParty()->getEndpointID();
+
+            $customer_scheme = $endpoint_ID->getSchemeID();
+            $customer_value = $endpoint_ID->getValue();
+        } catch (\Exception $e) {
+            // Bad UBL
+            return false;
+        }
+
+        if ($identity['identifier_scheme'] != $customer_scheme || $identity['identifier_value'] != $customer_value) {
+            // Can not add an invoice in behalf of someone else's account!
+            return false;
+        }
+
+        try {
+            return $this->acube->addIncomingInvoice($ubl) != null;
         } catch (\Exception $e) {
             return false;
         }
     }
 
-    public function getMessages(int $user_id): array {
+    public function getMessages(int $user_id): array
+    {
         $results = Message::query()
                 ->where('user_id', $user_id)
-                ->orderBy('created_at', 'asc')
+                ->orderBy('receive_time', 'asc')
                 ->get();
 
         $messages = [];
@@ -211,9 +293,10 @@ class LetsPeppolService {
         return $messages;
     }
 
-    public function getMessageContent(Message $message): ?string {
+    public function getMessageContent(Message $message): ?string
+    {
         if (!empty($message['file_name'])) {
-            return file_get_contents(self::FILES_BASE_PATH.$message['file_name']);
+            return file_get_contents(Message::STORAGE_BASE_PATH.$message['file_name']);
         }
 
         if ($message['registrar'] != self::REGISTRAR_ACUBE) {
@@ -234,7 +317,7 @@ class LetsPeppolService {
 
         $file_name = uniqid('message-');
 
-        file_put_contents(self::FILES_BASE_PATH.$file_name, $ubl);
+        file_put_contents(Message::STORAGE_BASE_PATH.$file_name, $ubl);
 
         $message['file_name'] = $file_name;
         $message->save();
@@ -242,15 +325,33 @@ class LetsPeppolService {
         return $ubl;
     }
 
-    public function removeMessage(Message $message): bool {
+    public function removeMessage(Message $message): bool
+    {
         if (!empty($message['file_name'])) {
-            unlink(self::FILES_BASE_PATH.$message['file_name']);
+            unlink(Message::STORAGE_BASE_PATH.$message['file_name']);
         }
 
         return $message->delete();
     }
 
-    public function newMessage(string $registrar, bool $incoming, $body) {
+    public function removeMessages(int $user_id, int $until): int
+    {
+        $removed_count = 0;
+
+        $results = Message::query()
+                ->where('user_id', $user_id)
+                ->where('receive_time', '<=', $until)
+                ->get();
+
+        foreach ($results as $result) {
+            $removed_count += $this->removeMessage($result->getModel()) ? 1 : 0;
+        }
+
+        return $removed_count;
+    }
+
+    public function newMessage(string $registrar, bool $incoming, $body)
+    {
         if ($registrar != self::REGISTRAR_ACUBE) {
             return;
         }
@@ -275,12 +376,11 @@ class LetsPeppolService {
         }
 
         $file_name = uniqid('message-');
-        file_put_contents(self::FILES_BASE_PATH.$file_name, $ubl);
+        file_put_contents(Message::STORAGE_BASE_PATH.$file_name, $ubl);
         $message['file_name'] = $file_name;
 
         // read the invoice
-        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        $invoice = $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
+        $invoice = $this->invoiceFromUBL($ubl);
 
         // TODO discover identifier, identity and user id
         $endpoint_ID = null;
@@ -313,6 +413,7 @@ class LetsPeppolService {
         // complete the message object and save
         $message['user_id'] = $identity['user_id'];
         $message['identity_id'] = $identity['id'];
+        $message['receive_time'] = time();
         $message->save();
         
         // check for update notifier to wake up
@@ -327,6 +428,12 @@ class LetsPeppolService {
                 // If this fails, it is on us and acube sending again doesn't help it.
             }
         }
+    }
+
+    private function invoiceFromUBL(string $ubl): Invoice
+    {
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
     }
 
 }

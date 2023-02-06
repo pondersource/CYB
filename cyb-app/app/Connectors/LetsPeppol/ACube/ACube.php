@@ -7,14 +7,15 @@ namespace App\Connectors\LetsPeppol\ACube;
  */
 class ACube
 {
-
     private Authentication $authentication;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->authentication = new Authentication();
     }
 
-    public function createWebhook(string $url, bool $incoming): ?string {
+    public function createWebhook(string $url, bool $incoming): ?string
+    {
         $body = [
             'event' => $incoming ? 'incoming-document' : 'outgoing-document',
             'url' => $url
@@ -30,7 +31,8 @@ class ACube
         }
     }
 
-    public function removeWebhook(string $uuid): bool {
+    public function removeWebhook(string $uuid): bool
+    {
         $response = $this->prepareRequest()->delete(Constants::BASE_URL.'/webhooks/'.$uuid);
 
         if ($response->successful()) {
@@ -59,7 +61,8 @@ class ACube
      * 
      * More info: https://docs.acubeapi.com/documentation/peppol/peppol/tag/LegalEntity/#tag/LegalEntity/operation/postLegalEntityCollection
      */
-    public function createLegalEntity(array $info): ?array {
+    public function createLegalEntity(array $info): ?array
+    {
         $info['receivedDocumentNotificationEmails'] = [];
 
         $response = $this->prepareRequest()
@@ -73,7 +76,8 @@ class ACube
         }
     }
 
-    public function getLegalEntity(string $uuid): ?array {
+    public function getLegalEntity(string $uuid): ?array
+    {
         $response = $this->prepareRequest()
             ->get(Constants::BASE_URL.'/legal-entities/'.$uuid);
 
@@ -85,7 +89,8 @@ class ACube
         }
     }
 
-    public function updateLegalEntity(string $uuid, array $info): ?array {
+    public function updateLegalEntity(string $uuid, array $info): ?array
+    {
         $info['receivedDocumentNotificationEmails'] = [];
 
         $response = $this->prepareRequest()
@@ -99,7 +104,8 @@ class ACube
         }
     }
 
-    public function removeLegalEntity(string $uuid): bool {
+    public function removeLegalEntity(string $uuid): bool
+    {
         $response = $this->prepareRequest()
             ->delete(Constants::BASE_URL.'/legal-entities/'.$uuid);
 
@@ -111,14 +117,16 @@ class ACube
         }
     }
 
-    public function setInvoiceCapability(string $uuid): bool {
+    public function setInvoiceCapability(string $uuid): bool
+    {
         return $this->setLegalEntityCapabilities($uuid, [
             'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1',
             'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0'
         ]);
     }
 
-    public function setLegalEntityCapabilities(string $uuid, array $document_types_and_processes): bool {
+    public function setLegalEntityCapabilities(string $uuid, array $document_types_and_processes): bool
+    {
         if (count($document_types_and_processes) % 2 != 0) {
             throw new \Exception('One process per document type is required');
         }
@@ -158,7 +166,8 @@ class ACube
      * 1) https://docs.acubeapi.com/documentation/peppol/peppol/tag/Invoice/#tag/Invoice/operation/post_outgoing_ublInvoiceCollection
      * 2) https://docs.acubeapi.com/documentation/peppol/manage-documents/sending-document/
      */
-    public function sendInvoice(string $ubl): ?string {
+    public function sendInvoice(string $ubl): ?string
+    {
         $response = $this->prepareRequest()
             ->withBody($ubl, 'application/xml')
             ->post(Constants::BASE_URL.'/invoices/outgoing/ubl');
@@ -171,7 +180,22 @@ class ACube
         }
     }
 
-    public function getInvoice(string $uuid): ?string {
+    public function addIncomingInvoice(string $ubl): ?string
+    {
+        $response = $this->prepareRequest()
+            ->withBody($ubl, 'application/xml')
+            ->post(Constants::BASE_URL.'/invoices/incoming/ubl');
+
+        if ($response->successful()) {
+            return $response['uuid'];
+        }
+        else {
+            return null;
+        }
+    }
+
+    public function getInvoice(string $uuid): ?string
+    {
         $response = $this->prepareRequest()
             ->get(Constants::BASE_URL.'/invoices/'.$uuid.'/source');
 
@@ -187,13 +211,15 @@ class ACube
      * Reads the received data and returns the id and type of the received document if any.
      * More info: https://docs.acubeapi.com/documentation/peppol/
      */
-    public function onDataReceivedFromWebHook($body): array {
+    public function onDataReceivedFromWebHook($body): array
+    {
         return $body['success'] ?
                 ['id' => $body['document_id'], 'type' => $body['document_type']] :
                 ['id' => null, 'type' => null];
     }
 
-    private function prepareRequest() {
+    private function prepareRequest()
+    {
         return Http::withToken($this->authentication->getValidToken())
             ->retry(3, 100, function ($exception, $request) {
                 if ($exception instanceof ConnectionException) {

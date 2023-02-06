@@ -6,6 +6,7 @@ use App\Core\ApplicationManager;
 use App\Core\Connector;
 use App\Core\AuthInfo;
 use App\Models\Authentication;
+use Illuminate\Http\Request;
 
 class TeamworkConnector implements Connector
 {
@@ -31,7 +32,7 @@ class TeamworkConnector implements Connector
         return view('sample_authentication', compact('app_code_name'));
     }
 
-    public function finalizeAuthentication(): ?AuthInfo
+    public function finalizeAuthentication(Request $request): ?AuthInfo
     {
         $auth_info = new AuthInfo();
         $auth_info

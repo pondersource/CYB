@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::name('acube-incoming')->post('/acube/incoming', function (Request $request) {
     try {
         $service = new LetsPeppolService();
-        $service->newMessage(LetsPeppolService::REGISTRAR_ACUBE, true, $request->all());
+        $service->newMessage(LetsPeppolService::REGISTRAR_ACUBE, true, $request->toArray());
 
         return ['message' => 'Thank you for sharing!'];
     } catch (\Exception $e) {
@@ -18,7 +18,7 @@ Route::name('acube-incoming')->post('/acube/incoming', function (Request $reques
 Route::name('acube-outgoing')->post('/acube/outgoing', function (Request $request) {
     try {
         $service = new LetsPeppolService();
-        $service->newMessage(LetsPeppolService::REGISTRAR_ACUBE, false, $request->all());
+        $service->newMessage(LetsPeppolService::REGISTRAR_ACUBE, false, $request->toArray());
 
         return ['message' => 'Thank you for sharing!'];
     } catch (\Exception $e) {
