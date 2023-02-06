@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Models\Authentication;
+use Illuminate\Http\Request;
 
 interface Connector
 {
@@ -14,7 +15,7 @@ interface Connector
 
     public function getAuthenticationUI();
 
-    public function finalizeAuthentication(): ?AuthInfo;
+    public function finalizeAuthentication(Request $request): ?AuthInfo;
 
     public function getAuthenticatedUI($auth);
 

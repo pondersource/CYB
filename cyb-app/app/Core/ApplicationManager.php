@@ -40,9 +40,9 @@ class ApplicationManager
         $connector = ApplicationManager::getConnector($app_code_name);
 
         if ($connector !== null) {
-            $auth_info = $connector->finalizeAuthentication();
+            $auth_info = $connector->finalizeAuthentication($request);
 
-            // TODO store auth object
+            // store auth object
             if ($auth_info == null) {
                 return 'Authentication failed!';
             }
@@ -327,7 +327,7 @@ class ApplicationManager
         // In the future, we should support custom implementations.
         $change_interpreter = DataTypeManager::getChangeInterpreter($task->data_type);
 
-        $changes = $change_interpreter->getStateChanges($src_reader, $dst_reader);
+        $changes = $change_interpreter->getStateChanges($src_reader, $dst_reader, $task->create_time);
 
         if ($task->behavior == 0) {
             throw new Exception('Manual fail!');

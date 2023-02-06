@@ -102,8 +102,20 @@
 
 <button type="button" onclick="lpCreate()">Let's Peppol!</button><br>
 
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
 <script>
     function lpCreate() {
-        alert('hiiii!')
+        var body = {
+            name: document.getElementById('lp-name').value,
+            address: document.getElementById('lp-address').value,
+            city: document.getElementById('lp-city').value,
+            region: document.getElementById('lp-region').value,
+            country: document.getElementById('lp-country').value,
+            zip: document.getElementById('lp-zip').value
+        };
+        axios.post('/apps/letspeppol/auth', body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
+            alert('Authorization done. Please refresh and wait for KYC confirmation.');
+        });
     }
 </script>
