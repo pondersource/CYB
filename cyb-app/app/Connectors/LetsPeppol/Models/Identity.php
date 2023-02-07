@@ -19,5 +19,17 @@ class Identity extends Model
         'identifier_scheme', 'identifier_value', 'registrar', 'reference'
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'user_id',
+        'auth_id',
+        'registrar',
+        'reference'
+    ];
+
     use HasFactory;
 }

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Connect Your Books</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -24,6 +24,12 @@
         <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     </head>
     <body class="antialiased">
+        <h1>Connect Your Books</h1>
+        
+        @if (!empty($api_key))
+            Your API key is: {{ $api_key }}<br>
+        @endif
+
         <h2>Authenticate in an app</h2>
         @foreach($connectors as $connector)
             <b>{{ $connector->getName() }}</b><br>

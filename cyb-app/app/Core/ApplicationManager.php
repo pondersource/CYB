@@ -47,88 +47,93 @@ class ApplicationManager
                 return 'Authentication failed!';
             }
 
-            $has_user = Auth::check();
+            return self::createAuthentication($auth_info);
+        }
 
-            $auths = Authentication::query()
-                    ->where('app_user_id', $auth_info->app_user_id)
-                    ->where('app_code_name', $auth_info->app_code_name)
-                    ->get();
+        return 'ERROR: App not found!';
+    }
 
-            $matching_auth = null;
+    public static function createAuthentication(AuthInfo $auth_info)
+    {
+        $has_user = Auth::check();
 
-            foreach ($auths as $auth) {
-                if ($connector->areTheSame($auth->getModel(), $auth_info)) {
-                    $matching_auth = $auth;
-                    break;
-                }
+        $auths = Authentication::query()
+                ->where('app_user_id', $auth_info->app_user_id)
+                ->where('app_code_name', $auth_info->app_code_name)
+                ->get();
+
+        $matching_auth = null;
+
+        foreach ($auths as $auth) {
+            if ($connector->areTheSame($auth->getModel(), $auth_info)) {
+                $matching_auth = $auth;
+                break;
             }
+        }
 
-            if ($has_user) {
-                $user = Auth::user();
+        if ($has_user) {
+            $user = Auth::user();
 
-                if ($matching_auth != null) {
-                    if ($user['id'] == $matching_auth['user_id']) {
-                        // Using pointing to the same data source again? Let's just update the auth we have.
-                        $matching_auth['display_name'] = $auth_info->display_name;
-                        $matching_auth['metadata'] = $auth_info->metadata;
-
-                        $matching_auth->update();
-
-                        return 'Auth updated!';
-                    } else {
-                        // TODO Merge this user with the other user.
-                        return 'To be merged!';
-                    }
-                } else {
-                    $auth = $auth_info->asAuthentication($user['id']);
-
-                    if ($auth->save()) {
-                        return 'New auth added!';
-                    } else {
-                        return 'Failed to add new auth.';
-                    }
-                }
-            } else {
-                if ($matching_auth == null) {
-                    // Create a new user
-                    $user = new User();
-                    $user['name'] = $auth_info->display_name;
-
-                    if ($user->save()) {
-                        $user_id = $user['id'];
-
-                        $auth = $auth_info->asAuthentication($user_id);
-
-                        if ($auth->save()) {
-                            Auth::login($user, $remember = false);
-                            //$request->session()->regenerate();
-
-                            return 'success: new user!';
-                        } else {
-                            return 'Failed to save the auth after user created.';
-                        }
-                    } else {
-                        return 'Saving user in db failed!';
-                    }
-                } else {
-                    // We already have a user. Authenticate them.
+            if ($matching_auth != null) {
+                if ($user['id'] == $matching_auth['user_id']) {
+                    // Using pointing to the same data source again? Let's just update the auth we have.
                     $matching_auth['display_name'] = $auth_info->display_name;
                     $matching_auth['metadata'] = $auth_info->metadata;
 
                     $matching_auth->update();
 
-                    if (Auth::loginUsingId($matching_auth['user_id'], $remember = false) != null) {
+                    return 'Auth updated!';
+                } else {
+                    // TODO Merge this user with the other user.
+                    return 'To be merged!';
+                }
+            } else {
+                $auth = $auth_info->asAuthentication($user['id']);
+
+                if ($auth->save()) {
+                    return 'New auth added!';
+                } else {
+                    return 'Failed to add new auth.';
+                }
+            }
+        } else {
+            if ($matching_auth == null) {
+                // Create a new user
+                $user = new User();
+                $user['name'] = $auth_info->display_name;
+
+                if ($user->save()) {
+                    $user_id = $user['id'];
+
+                    $auth = $auth_info->asAuthentication($user_id);
+
+                    if ($auth->save()) {
+                        Auth::login($user, $remember = false);
                         //$request->session()->regenerate();
 
-                        return 'success: returning user!';
+                        return 'success: new user!';
                     } else {
-                        return 'Failed to login using user id.';
+                        return 'Failed to save the auth after user created.';
                     }
+                } else {
+                    return 'Saving user in db failed!';
+                }
+            } else {
+                // We already have a user. Authenticate them.
+                $matching_auth['display_name'] = $auth_info->display_name;
+                $matching_auth['metadata'] = $auth_info->metadata;
+
+                $matching_auth->update();
+
+                if (Auth::loginUsingId($matching_auth['user_id'], $remember = false) != null) {
+                    //$request->session()->regenerate();
+
+                    return 'success: returning user!';
+                } else {
+                    return 'Failed to login using user id.';
                 }
             }
         }
-
-        return 'ERROR: App not found!';
     }
 
     public static function getAuthentications(): array
