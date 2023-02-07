@@ -3,6 +3,7 @@
 use App\Core\ApplicationManager;
 use App\Core\DataType\DataTypeManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
+    $api_key = '';
+
+    if (Auth::check()) {
+        $user = $request->user();
+
+        foreach ($user->tokens as $token) {
+            $api_key = $token->plainTextToken;
+            break;
+        }
+
+        if (empty($api_key)) {
+            $token = $user->createToken('default');
+
+            $api_key = $token->plainTextToken;
+        }
+    }
+
     $connectors = ApplicationManager::getConnectors();
     $authentications = ApplicationManager::getAuthentications();
 

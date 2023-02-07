@@ -1,7 +1,10 @@
 <?php
 
 use App\Core\ApplicationManager;
+use App\Service\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -19,6 +22,33 @@ use Illuminate\Support\Str;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/register', function (Request $request) {
+    $user_service = new UserService();
+    $user_service->register($request);
+    return ['result' => 'ok'];
+});
+
+Route::post('/generateToken', function (Request $request) {
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        $token = $request->user()->createToken('default');
+ 
+        return [
+            'result' => 'ok',
+            'token' => $token->plainTextToken
+        ];
+    }
+
+    return Response::json([
+        'result' => 'failure',
+        'reason' => 'Invalid credentials'
+    ], 401);
 });
 
 Route::name('connector.')->prefix('connector')->group(function() {
