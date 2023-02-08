@@ -1,5 +1,6 @@
 <?php
 
+use App\Connectors\LetsPeppol\Models\Identity;
 use App\Connectors\LetsPeppol\LetsPeppolService;
 use App\Core\ApplicationManager;
 use App\Core\AuthInfo;
@@ -30,7 +31,7 @@ Route::name('acube-outgoing')->post('/acube/outgoing', function (Request $reques
     }
 });
 
-Route::middleware('auth:sanctum')->post('/identity', function (Request $request) {
+Route::name('register')->middleware('auth:sanctum')->post('/identity', function (Request $request) {
     $user = $request->user();
     $service = new LetsPeppolService();
 
@@ -66,7 +67,7 @@ Route::middleware('auth:sanctum')->post('/identity', function (Request $request)
     }
 });
 
-Route::middleware('auth:sanctum')->get('/identity', function (Request $request) {
+Route::name('get-identity')->middleware('auth:sanctum')->get('/identity', function (Request $request) {
     $user = $request->user();
     $service = new LetsPeppolService();
 
@@ -86,12 +87,60 @@ Route::middleware('auth:sanctum')->get('/identity', function (Request $request) 
     }
 });
 
-// TODO Will have to guard against checking the validation status. And make another end point for admin role.
-Route::middleware('auth:sanctum')->put('/identity', function (Request $request) {
+Route::name('update-identity')->middleware('auth:sanctum')->put('/identity', function (Request $request) {
     $user = $request->user();
     $service = new LetsPeppolService();
 
     $identity = $service->getIdentity($user['id']);
+
+    if (empty($identity)) {
+        return Response::json([
+            'result' => 'failure',
+            'reason' => 'No identity exists'
+        ], 404);
+    }
+
+    if ($identity['kyc_status'] === Identity::KYC_STATUS_APPROVED) {
+        return Response::json([
+            'result' => 'failure',
+            'reason' => 'Can not modify identity after it has been approved'
+        ], 403);
+    }
+
+    foreach ($request->toArray() as $key => $value) {
+        if (array_key_exists($key, ['kyc_status', 'identifier_scheme', 'identifier_value', 'registrar', 'reference'])) {
+            return Response::json([
+                'result' => 'failure',
+                'reason' => 'Only admin can change identity protected fields'
+            ], 403);
+        }
+
+        if (array_key_exists($key, $identity)) {
+            $identity[$key] = $value;
+        }
+    }
+
+    $success = $service->updateIdentity($identity);
+
+    if ($success) {
+        return [
+            'result' => 'OK',
+            'data' => $identity
+        ];
+    }
+    else {
+        return Response::json([
+            'result' => 'failure',
+            'reason' => 'General failure'
+        ], 500);
+    }
+});
+
+// TODO Check for admin
+Route::name('admin-update-identity')->put('/admin/identity', function (Request $request) {
+    $service = new LetsPeppolService();
+
+    $identity = $service->getIdentity($request['user_id']);
 
     if (empty($identity)) {
         return Response::json([
@@ -122,7 +171,7 @@ Route::middleware('auth:sanctum')->put('/identity', function (Request $request) 
     }
 });
 
-Route::middleware('auth:sanctum')->post('/message', function (Request $request) {
+Route::name('send-message')->middleware('auth:sanctum')->post('/message', function (Request $request) {
     $ubl = $request->getContent();
 
     $user = $request->user();
