@@ -2,6 +2,8 @@
 
 namespace App\Connectors\LetsPeppol\ACube;
 
+use Illuminate\Support\Facades\Http;
+
 /**
  * All functions may throw Illuminate\Http\Client\ConnectionException
  */
@@ -12,6 +14,18 @@ class ACube
     public function __construct()
     {
         $this->authentication = new Authentication();
+    }
+
+    public function getWebhooks(): ?array
+    {
+        $response = $this->prepareRequest()->get(Constants::BASE_URL.'/webhooks');
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+        else {
+            return null;
+        }
     }
 
     public function createWebhook(string $url, bool $incoming): ?string
@@ -27,6 +41,8 @@ class ACube
             return $response['uuid'];
         }
         else {
+            echo $response->body();
+            $response->throw();
             return null;
         }
     }
@@ -239,7 +255,8 @@ class ACube
                 }
                 
                 return false;
-            }, throw: false);
+            }, throw: false)
+            ->accept('application/json');
     }
 
 }

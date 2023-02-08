@@ -24,34 +24,52 @@ class LetsPeppolService
 
     public function __construct()
     {
-        $this->settings = new Settings(SETTINGS_FILE);
+        $this->settings = new Settings(self::SETTINGS_FILE);
         $this->acube = new ACube();
 
         $has_changes = false;
 
         if (empty($this->settings['acube-incoming'])) {
             try {
-                $uuid = $this->acube->createWebhook(route('connector.lets_peppol.acube-incoming'), true);
+                $webhooks = $this->acube->getWebhooks();
 
-                if (!empty($uuid)) {
-                    $this->settings['acube-incoming'] = $uuid;
-                    $has_changes = true;
+                if (!empty($webhooks)) {
+                    foreach ($webhooks as $webhook) {
+                        echo var_export($webhooks).'<br>';
+                        if ($webhook['event'] === 'incoming-document') {
+                            $this->settings['acube-incoming'] = $webhook['uuid'];
+                            $has_changes = true;
+                        }
+                        else if ($webhook['event'] === 'outgoing-document') {
+                            $this->settings['acube-outgoing'] = $webhook['uuid'];
+                            $has_changes = true;
+                        }
+                    }
+                }
+
+                if (empty($this->settings['acube-incoming'])) {
+                    $uuid = $this->acube->createWebhook(route('connector.lets_peppol.acube-incoming'), true);
+                    
+                    if (!empty($uuid)) {
+                        $this->settings['acube-incoming'] = $uuid;
+                        $has_changes = true;
+                    }
                 }
             } catch (\Exception $e) {
-
+                
             }
         }
 
         if (empty($this->settings['acube-outgoing'])) {
             try {
                 $uuid = $this->acube->createWebhook(route('connector.lets_peppol.acube-outgoing'), false);
-
+                
                 if (!empty($uuid)) {
                     $this->settings['acube-outgoing'] = $uuid;
                     $has_changes = true;
                 }
             } catch (\Exception $e) {
-
+                
             }
         }
 

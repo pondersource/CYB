@@ -5,7 +5,7 @@ namespace App\Connectors\LetsPeppol\ACube;
 class Constants
 {
 
-    public const SANDBOX_BASE_URL = 'https://peppol-sandbox.api.acubeapi.co';
+    public const SANDBOX_BASE_URL = 'https://peppol-sandbox.api.acubeapi.com';
     public const SANDBOX_LOGIN_URL = 'https://common-sandbox.api.acubeapi.com/login';
 
     public const PRODUCTION_BASE_URL = 'https://peppol.api.acubeapi.com';

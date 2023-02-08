@@ -39,7 +39,7 @@
                     identifier_scheme: document.getElementById('id-scheme').value,
                     identifier_value: document.getElementById('id-value').value,
                 };
-                axios.post("{{ route('connectors.letspeppol.admin-update-identity') }}", body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
+                axios.post("{{ route('connector.lets_peppol.admin-update-identity') }}", body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
                     alert('Updated! Please refresh this page!');
                 });
             }
