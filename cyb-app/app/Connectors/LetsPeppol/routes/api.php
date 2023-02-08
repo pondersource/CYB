@@ -32,17 +32,9 @@ Route::name('acube-outgoing')->post('/acube/outgoing', function (Request $reques
 });
 
 Route::name('register')->middleware('auth:sanctum')->post('/identity', function (Request $request) {
-    $user = $request->user();
     $service = new LetsPeppolService();
 
-    if (!empty($service->getIdentity($user['id']))) {
-        return Response::json([
-            'result' => 'failure',
-            'reason' => 'An identity is already defined'
-        ], 409);
-    }
-
-    $identity = $service->createIdentity($user['id'], $request->toArray());
+    $identity = $service->createIdentity($request->toArray());
 
     if (!empty(($identity))) {
         $auth_info = new AuthInfo();
@@ -67,11 +59,10 @@ Route::name('register')->middleware('auth:sanctum')->post('/identity', function 
     }
 });
 
-Route::name('get-identity')->middleware('auth:sanctum')->get('/identity', function (Request $request) {
-    $user = $request->user();
+Route::name('get-identity')->middleware('auth:sanctum')->get('/identity/{identity_id}', function (Request $request, $identity_id) {
     $service = new LetsPeppolService();
 
-    $identity = $service->getIdentity($user['id']);
+    $identity = $service->getIdentity($identity_id);
 
     if (!empty(($identity))) {
         return [
@@ -87,11 +78,10 @@ Route::name('get-identity')->middleware('auth:sanctum')->get('/identity', functi
     }
 });
 
-Route::name('update-identity')->middleware('auth:sanctum')->put('/identity', function (Request $request) {
-    $user = $request->user();
+Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{identity_id}', function (Request $request, $identity_id) {
     $service = new LetsPeppolService();
 
-    $identity = $service->getIdentity($user['id']);
+    $identity = $service->getIdentity($identity_id);
 
     if (empty($identity)) {
         return Response::json([
@@ -140,7 +130,7 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity', fun
 Route::name('admin-update-identity')->put('/admin/identity', function (Request $request) {
     $service = new LetsPeppolService();
 
-    $identity = $service->getIdentity($request['user_id']);
+    $identity = $service->getIdentity($request['id']);
 
     if (empty($identity)) {
         return Response::json([
@@ -171,13 +161,24 @@ Route::name('admin-update-identity')->put('/admin/identity', function (Request $
     }
 });
 
-Route::name('send-message')->middleware('auth:sanctum')->post('/message', function (Request $request) {
+Route::name('send-message')->middleware('auth:sanctum')->post('/message/{identity_id}', function (Request $request, $identity_id) {
     $ubl = $request->getContent();
-
-    $user = $request->user();
+    
     $service = new LetsPeppolService();
 
-    if ($service->sendMessage($user['id'], $ubl)) {
+    $authentications = ApplicationManager::getAuthentications();
+    $authentications = array_filter($array_filter, function ($auth) {
+        return $auth['id'] === $identity_id;
+    });
+
+    if (empty($authentications)) {
+        return Response::json([
+            'result' => 'failure',
+            'reason' => 'Identity does not exist or not allowed for this user'
+        ], 403);
+    }
+
+    if ($service->sendMessage($identity_id, $ubl)) {
         return [ 'result' => 'OK' ];
     }
     else {

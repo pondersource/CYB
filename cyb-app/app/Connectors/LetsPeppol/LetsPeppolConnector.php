@@ -39,7 +39,7 @@ class LetsPeppolConnector implements Connector
 
     public function finalizeAuthentication(Request $request): ?AuthInfo
     {
-        $identity = $this->getService()->createIdentity($request->user()['id'], $request->toArray());
+        $identity = $this->getService()->createIdentity($request->toArray());
         
         if ($identity == null) {
             return null;
@@ -56,7 +56,7 @@ class LetsPeppolConnector implements Connector
     }
 
     public function getAuthenticatedUI($auth) {
-        $identity = $this->getService()->getIdentity($auth['user_id']);
+        $identity = $this->getService()->getIdentity($auth['metadata']);
         return View::file(__DIR__.'/resources/views/authenticated.blade.php', compact($identity));
     }
 
@@ -67,7 +67,7 @@ class LetsPeppolConnector implements Connector
 
     public function registerUpdateNotifier($auth, $data_type): bool
     {
-        $identity = $this->getService()->getIdentity($auth['user_id']);
+        $identity = $this->getService()->getIdentity($auth['metadata']);
 
         if ($identity == null) {
             return false;
@@ -80,7 +80,7 @@ class LetsPeppolConnector implements Connector
 
     public function unregisterUpdateNotifier($auth, $data_type): bool
     {
-        $identity = $this->getService()->getIdentity($auth['user_id']);
+        $identity = $this->getService()->getIdentity($auth['metadata']);
 
         if ($identity == null) {
             return false;
@@ -99,7 +99,7 @@ class LetsPeppolConnector implements Connector
     public function getReader($auth, $data_type)
     {
         $service = $this->getService();
-        $identity = $service->getIdentity($auth['user_id']);
+        $identity = $service->getIdentity($auth['metadata']);
 
         return new LetsPeppolReader($service, $identity);
     }
@@ -107,7 +107,7 @@ class LetsPeppolConnector implements Connector
     public function getWriter($auth, $data_type)
     {
         $service = $this->getService();
-        $identity = $service->getIdentity($auth['user_id']);
+        $identity = $service->getIdentity($auth['metadata']);
 
         return new LetsPeppolWriter($service, $identity);
     }

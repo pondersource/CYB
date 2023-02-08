@@ -28,10 +28,10 @@ class LetsPeppolWriter implements Writer
     private function applyInvoice(Invoice $invoice)
     {
         if ($invoice->getDirection() == Invoice::DIRECTION_INCOMING) {
-            $this->service->addIncomingMessage($identity['user_id'], $invoice->getContent());
+            $this->service->addIncomingMessage($identity['id'], $invoice->getContent());
         }
         else if ($invoice->getDirection() == Invoice::DIRECTION_OUTGOING) {
-            $this->service->sendMessage($identity['user_id'], $invoice->getContent());
+            $this->service->sendMessage($identity['id'], $invoice->getContent());
         }
     }
 

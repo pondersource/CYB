@@ -82,10 +82,9 @@ class LetsPeppolService
      * Properties are:
      * name, address, city, region, country, zip
      */
-    public function createIdentity(int $user_id, array $properties): ?Identity
+    public function createIdentity(array $properties): ?Identity
     {
         $identity = new Identity();
-        $identity['user_id'] = $user_id;
         $identity['name'] = $properties['name'];
         $identity['address'] = $properties['address'];
         $identity['city'] = $properties['city'];
@@ -110,10 +109,10 @@ class LetsPeppolService
         return $identities;
     }
 
-    public function getIdentity(int $user_id): ?Identity
+    public function getIdentity(int $id): ?Identity
     {
         try {
-            return Identity::query()->where('user_id', $user_id)->first();
+            return Identity::query()->where('id', $id)->first();
         } catch (\Exception $e) {
             return null;
         }
@@ -201,9 +200,9 @@ class LetsPeppolService
         return true;
     }
 
-    public function sendMessage(int $user_id, string $ubl): bool
+    public function sendMessage(int $identity_id, string $ubl): bool
     {
-        $identity = $this->getIdentity($user_id);
+        $identity = $this->getIdentity($identity_id);
 
         if (empty($identity)) {
             // Identity not found
@@ -247,9 +246,9 @@ class LetsPeppolService
         }
     }
 
-    public function addIncomingMessage(int $user_id, string $ubl): bool
+    public function addIncomingMessage(int $identity_id, string $ubl): bool
     {
-        $identity = $this->getIdentity($user_id);
+        $identity = $this->getIdentity($identity_id);
 
         if (empty($identity)) {
             return false;
@@ -295,10 +294,10 @@ class LetsPeppolService
         }
     }
 
-    public function getMessages(int $user_id): array
+    public function getMessages(int $identity_id): array
     {
         $results = Message::query()
-                ->where('user_id', $user_id)
+                ->where('identity_id', $identity_id)
                 ->orderBy('receive_time', 'asc')
                 ->get();
 
@@ -352,12 +351,12 @@ class LetsPeppolService
         return $message->delete();
     }
 
-    public function removeMessages(int $user_id, int $until): int
+    public function removeMessages(int $identity_id, int $until): int
     {
         $removed_count = 0;
 
         $results = Message::query()
-                ->where('user_id', $user_id)
+                ->where('identity_id', $identity_id)
                 ->where('receive_time', '<=', $until)
                 ->get();
 
@@ -400,7 +399,7 @@ class LetsPeppolService
         // read the invoice
         $invoice = $this->invoiceFromUBL($ubl);
 
-        // TODO discover identifier, identity and user id
+        // discover identifier and identity
         $endpoint_ID = null;
 
         if ($incoming) {
@@ -429,7 +428,6 @@ class LetsPeppolService
         }
 
         // complete the message object and save
-        $message['user_id'] = $identity['user_id'];
         $message['identity_id'] = $identity['id'];
         $message['receive_time'] = time();
         $message->save();
