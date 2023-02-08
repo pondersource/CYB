@@ -14,6 +14,10 @@
             Region: {{ $identity['region'] }}<br>
             Country: {{ $identity['country'] }}<br>
             Zip: {{ $identity['zip'] }}<br>
+            <label for="id-scheme">Identifier scheme:</label>
+            <input type="text" id="id-scheme" name="scheme" placeholder="Identifier scheme" value="{{ $identity['identifier_scheme'] }}"><br>
+            <label for="id-value">Identifier value:</label>
+            <input type="text" id="id-value" name="value" placeholder="Identifier value" value="{{ $identity['identifier_value'] }}"><br>
 
             @if ($identity['kyc_status'] === 0)
                 KYC Status: Pending approval<br>
@@ -23,7 +27,6 @@
                 <button type="button" onclick="approve("{{ $identity['user_id'] }}")">Approve</button><br>
             @else
                 KYC Status: Approved!<br>
-                Peppol identity: {{ $identity['identifier_scheme'] }}::{{ $identity['identifier_value'] }}<br>
             @endif
             <br><br>
         @endforeach
@@ -32,7 +35,9 @@
             function approve(id) {
                 var body = {
                     user_id: id,
-                    kyc_status: 2
+                    kyc_status: 2,
+                    identifier_scheme: document.getElementById('id-scheme').value,
+                    identifier_value: document.getElementById('id-value').value,
                 };
                 axios.post("{{ route('connectors.letspeppol.admin-update-identity') }}", body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
                     alert('Updated! Please refresh this page!');
