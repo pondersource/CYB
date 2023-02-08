@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('lp_identities', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
             // Having auth_id means update notifier is on
             $table->bigInteger('auth_id')->unsigned()->nullable();
             $table->string('name');
@@ -31,13 +30,11 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('auth_id')->references('id')->on('authentications')->onDelete('cascade');
         });
 
         Schema::create('lp_messages', function (Blueprint $table) {
             $table->id();
-            $table->bigIntegessssr('user_id')->unsigned();
             $table->bigInteger('identity_id')->unsigned();
             $table->string('registrar');
             $table->string('reference');
@@ -46,7 +43,6 @@ return new class extends Migration
             $table->string('file_name')->nullable();
             $table->integer('receive_time');
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('identity_id')->references('id')->on('lp_identities')->onDelete('cascade');
         });
     }

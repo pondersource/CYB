@@ -19,12 +19,12 @@ class LetsPeppolReader implements InvoiceReader
 
     public function getChanges(): array
     {
-        return $this->service->getMessages($this->identity['user_id']);
+        return $this->service->getMessages($this->identity['id']);
     }
 
     public function changesNoLongerNeeded(int $until)
     {
-        $service->removeMessages($this->identity['user_id'], $until);
+        $service->removeMessages($this->identity['id'], $until);
     }
 
 }

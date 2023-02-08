@@ -21,10 +21,10 @@
 
             @if ($identity['kyc_status'] === 0)
                 KYC Status: Pending approval<br>
-                <button type="button" onclick="approve("{{ $identity['user_id'] }}")">Approve</button><br>
+                <button type="button" onclick="approve("{{ $identity['id'] }}")">Approve</button><br>
             @elseif ($identity['kyc_status'] === 1)
                 KYC Status: Rejected!<br>
-                <button type="button" onclick="approve("{{ $identity['user_id'] }}")">Approve</button><br>
+                <button type="button" onclick="approve("{{ $identity['id'] }}")">Approve</button><br>
             @else
                 KYC Status: Approved!<br>
             @endif
@@ -34,7 +34,7 @@
         <script>
             function approve(id) {
                 var body = {
-                    user_id: id,
+                    id: id,
                     kyc_status: 2,
                     identifier_scheme: document.getElementById('id-scheme').value,
                     identifier_value: document.getElementById('id-value').value,
