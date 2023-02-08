@@ -5,6 +5,6 @@
     <body class="antialiased">
         <h1>Let's Peppol</h1>
         <p>Welcome to Let's Peppol, Peppol but free!</p>
-        <a href="{{ route('connector.letspeppol.admin-panel') }}">Go to admin panel</a>
+        <a href="{{ route('connector.lets_peppol.admin-panel') }}">Go to admin panel</a>
     </body>
 </html>

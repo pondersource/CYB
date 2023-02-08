@@ -28,7 +28,7 @@ class Authentication
 
         if ($response->successful()) {
             $token = $response['token'];
-            file_put_contents(__DIR__.'/'.TOKEN_FILE, $token);
+            file_put_contents(__DIR__.'/'.self::TOKEN_FILE, $token);
             return $token;
         }
         else {
@@ -52,7 +52,7 @@ class Authentication
         $token = $this->getToken();
 
         if (isset($token)) {
-            return json_decode(base64_decode(explode('.', $token)), true);
+            return json_decode(base64_decode(explode('.', $token)[1]), true);
         }
         else {
             return null;
@@ -60,8 +60,8 @@ class Authentication
     }
 
     public function getToken(): ?string {
-        if (file_exists(__DIR__.'/'.TOKEN_FILE)) {
-            return file_get_contents(__DIR__.'/'.TOKEN_FILE);
+        if (file_exists(__DIR__.'/'.self::TOKEN_FILE)) {
+            return file_get_contents(__DIR__.'/'.self::TOKEN_FILE);
         }
         else {
             return null;

@@ -40,7 +40,7 @@ class LetsPeppolConnector implements Connector
     public function finalizeAuthentication(Request $request): ?AuthInfo
     {
         $identity = $this->getService()->createIdentity($request->user()['id'], $request->toArray());
-
+        
         if ($identity == null) {
             return null;
         }

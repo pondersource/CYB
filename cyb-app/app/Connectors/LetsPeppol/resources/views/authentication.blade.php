@@ -114,7 +114,7 @@
             country: document.getElementById('lp-country').value,
             zip: document.getElementById('lp-zip').value
         };
-        axios.post('/apps/letspeppol/auth', body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
+        axios.post('/apps/lets_peppol/auth', body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
             alert('Authorization done. Please refresh and wait for KYC confirmation.');
         });
     }
