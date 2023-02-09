@@ -41,8 +41,6 @@ class ACube
             return $response['uuid'];
         }
         else {
-            echo $response->body();
-            $response->throw();
             return null;
         }
     }

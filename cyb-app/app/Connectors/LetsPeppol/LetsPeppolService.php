@@ -35,7 +35,6 @@ class LetsPeppolService
 
                 if (!empty($webhooks)) {
                     foreach ($webhooks as $webhook) {
-                        echo var_export($webhooks).'<br>';
                         if ($webhook['event'] === 'incoming-document') {
                             $this->settings['acube-incoming'] = $webhook['uuid'];
                             $has_changes = true;

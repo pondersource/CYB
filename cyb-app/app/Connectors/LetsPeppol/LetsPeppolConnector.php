@@ -48,7 +48,7 @@ class LetsPeppolConnector implements Connector
         $auth_info = new AuthInfo();
         $auth_info
             ->setAppCodeName(self::CODE_NAME)
-            ->setDisplayName($payload['name'])
+            ->setDisplayName($request['name'])
             ->setAppUserId($identity['id'])
             ->setMetadata($identity['id']);
 
