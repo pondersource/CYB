@@ -161,6 +161,7 @@ class LetsPeppolService
                         return false;
                     }
                 } catch (\Exception $e) {
+                    echo var_export($e).'<br>';
                     Identity::rollBack();
                     return false;
                 }
@@ -194,7 +195,7 @@ class LetsPeppolService
             }
         }
 
-        Identiy::commit();
+        Identity::commit();
 
         return true;
     }

@@ -21,10 +21,10 @@
 
             @if ($identity['kyc_status'] === 0)
                 KYC Status: Pending approval<br>
-                <button type="button" onclick="approve("{{ $identity['id'] }}")">Approve</button><br>
+                <button type="button" onClick="approve('{{ $identity['id'] }}')">Approve</button><br>
             @elseif ($identity['kyc_status'] === 1)
                 KYC Status: Rejected!<br>
-                <button type="button" onclick="approve("{{ $identity['id'] }}")">Approve</button><br>
+                <button type="button" onClick="approve('{{ $identity['id'] }}')">Approve</button><br>
             @else
                 KYC Status: Approved!<br>
             @endif
@@ -39,7 +39,7 @@
                     identifier_scheme: document.getElementById('id-scheme').value,
                     identifier_value: document.getElementById('id-value').value,
                 };
-                axios.post("{{ route('connector.lets_peppol.admin-update-identity') }}", body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
+                axios.put("{{ route('connector.lets_peppol.admin-update-identity') }}", body, {headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'}}).then(response => {
                     alert('Updated! Please refresh this page!');
                 });
             }

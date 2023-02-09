@@ -41,11 +41,11 @@ Route::post('/generateToken', function (Request $request) {
  
         return [
             'result' => 'ok',
-            'token' => $token->plainTextToken
+            'token' => explode('|', $token->plainTextToken)[1]
         ];
     }
 
-    return Response::json([
+    return response()->json([
         'result' => 'failure',
         'reason' => 'Invalid credentials'
     ], 401);

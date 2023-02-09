@@ -52,7 +52,7 @@ Route::name('register')->middleware('auth:sanctum')->post('/identity', function 
         ];
     }
     else {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'Failed to store identity in the database'
         ], 507);
@@ -71,7 +71,7 @@ Route::name('get-identity')->middleware('auth:sanctum')->get('/identity/{identit
         ];
     }
     else {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'No identity exists'
         ], 404);
@@ -84,14 +84,14 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
     $identity = $service->getIdentity($identity_id);
 
     if (empty($identity)) {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'No identity exists'
         ], 404);
     }
 
     if ($identity['kyc_status'] === Identity::KYC_STATUS_APPROVED) {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'Can not modify identity after it has been approved'
         ], 403);
@@ -99,15 +99,13 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
 
     foreach ($request->toArray() as $key => $value) {
         if (array_key_exists($key, ['kyc_status', 'identifier_scheme', 'identifier_value', 'registrar', 'reference'])) {
-            return Response::json([
+            return response()->json([
                 'result' => 'failure',
                 'reason' => 'Only admin can change identity protected fields'
             ], 403);
         }
 
-        if (array_key_exists($key, $identity)) {
-            $identity[$key] = $value;
-        }
+        $identity[$key] = $value;
     }
 
     $success = $service->updateIdentity($identity);
@@ -119,7 +117,7 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
         ];
     }
     else {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'General failure'
         ], 500);
@@ -133,16 +131,14 @@ Route::name('admin-update-identity')->put('/admin/identity', function (Request $
     $identity = $service->getIdentity($request['id']);
 
     if (empty($identity)) {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'No identity exists'
         ], 404);
     }
 
     foreach ($request->toArray() as $key => $value) {
-        if (array_key_exists($key, $identity)) {
-            $identity[$key] = $value;
-        }
+        $identity[$key] = $value;
     }
 
     $success = $service->updateIdentity($identity);
@@ -154,7 +150,7 @@ Route::name('admin-update-identity')->put('/admin/identity', function (Request $
         ];
     }
     else {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'General failure'
         ], 500);
@@ -172,7 +168,7 @@ Route::name('send-message')->middleware('auth:sanctum')->post('/message/{identit
     });
 
     if (empty($authentications)) {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'Identity does not exist or not allowed for this user'
         ], 403);
@@ -182,7 +178,7 @@ Route::name('send-message')->middleware('auth:sanctum')->post('/message/{identit
         return [ 'result' => 'OK' ];
     }
     else {
-        return Response::json([
+        return response()->json([
             'result' => 'failure',
             'reason' => 'General failure'
         ], 500);

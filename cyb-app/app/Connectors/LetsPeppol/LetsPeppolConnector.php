@@ -57,7 +57,7 @@ class LetsPeppolConnector implements Connector
 
     public function getAuthenticatedUI($auth) {
         $identity = $this->getService()->getIdentity($auth['metadata']);
-        return View::file(__DIR__.'/resources/views/authenticated.blade.php', compact($identity));
+        return View::file(__DIR__.'/resources/views/authenticated.blade.php', compact('identity'));
     }
 
     public function areTheSame(Authentication $auth, AuthInfo $auth_info): bool
