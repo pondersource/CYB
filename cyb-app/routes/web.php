@@ -16,21 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function (Request $request) {
-    $api_key = '';
+    $can_generate_token = false;
 
     if (Auth::check()) {
-        $user = $request->user();
-
-        foreach ($user->tokens as $token) {
-            $api_key = $token->plainTextToken;
-            break;
-        }
-
-        if (empty($api_key)) {
-            $token = $user->createToken('default');
-
-            $api_key = $token->plainTextToken;
-        }
+        $can_generate_token = true;
     }
 
     $connectors = ApplicationManager::getConnectors();
@@ -66,7 +55,7 @@ Route::get('/', function (Request $request) {
         $view_authentications[] = $view_auth;
     }
 
-    return view('welcome', compact('connectors', 'view_authentications'));
+    return view('welcome', compact('connectors', 'view_authentications', 'can_generate_token'));
 });
 
 Route::post('/apps/{app_code_name}/auth', function (Request $request, $app_code_name) {
@@ -87,6 +76,15 @@ Route::post('/writeOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
 
 Route::post('/writeOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
     return ApplicationManager::writeOff($auth_id, $data_type);
+});
+
+Route::middleware('auth')->post('/generateToken', function (Request $request) {
+    $token = $request->user()->createToken('default');
+
+    return [
+        'result' => 'ok',
+        'token' => explode('|', $token->plainTextToken)[1]
+    ];
 });
 
 Route::get('/test/tasks', function (Request $request) {

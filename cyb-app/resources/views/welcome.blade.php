@@ -26,8 +26,8 @@
     <body class="antialiased">
         <h1>Connect Your Books</h1>
         
-        @if (!empty($api_key))
-            Your API key is: {{ $api_key }}<br>
+        @if ($can_generate_token)
+            <button type="button" onClick="generateToken()">Get an API token</button><br>
         @endif
 
         <h2>Authenticate in an app</h2>
@@ -93,6 +93,12 @@
                     alert('Write is now off');
 	            });
             }
+        }
+
+        function generateToken() {
+            axios.post('/generateToken', {}).then(response => {
+                alert('Your token is: ' + response.data.token);
+            });
         }
 
         function test2OnSameThread() {
