@@ -11,12 +11,12 @@ services:
       context: docker
       dockerfile: Dockerfile
       args:
-        CYBGID: 1000
-        CYBUID: 1000
+        CYB_APP_GID: 1000
+        CYB_APP_UID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
-        BUILD_BRANCH: "main"
+        CYB_BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        CYB_BUILD_BRANCH: "main"
     container_name: cyb
     restart: "unless-stopped"
     security_opt:
@@ -31,7 +31,7 @@ services:
       - docker.production.env
     environment:
       CYB_APP_MODE: "production"
-      APP_CONTAINER_ROLE: "app"
+      CYB_APP_CONTAINER_ROLE: "app"
       APP_WEBSERVER_TYPE: "nginx"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
@@ -53,12 +53,12 @@ services:
       context: docker
       dockerfile: Dockerfile
       args:
-        CYBGID: 1000
-        CYBUID: 1000
+        CYB_APP_GID: 1000
+        CYB_APP_UID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
-        BUILD_BRANCH: "main"
+        CYB_BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        CYB_BUILD_BRANCH: "main"
     container_name: cyb-horizon
     restart: "unless-stopped"
     security_opt:
@@ -68,7 +68,7 @@ services:
     env_file:
       - docker.production.env
     environment:
-      APP_CONTAINER_ROLE: "horizon"
+      CYB_APP_CONTAINER_ROLE: "horizon"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
@@ -83,12 +83,12 @@ services:
       context: docker
       dockerfile: Dockerfile
       args:
-        CYBGID: 1000
-        CYBUID: 1000
+        CYB_APP_GID: 1000
+        CYB_APP_UID: 1000
         # change this if ypu want to build cyb image from a specific
         # repository and branch.
-        BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
-        BUILD_BRANCH: "main"
+        CYB_BUILD_REPO: "https://github:com/pondersource/CYB/archive/refs/heads"
+        CYB_BUILD_BRANCH: "main"
     container_name: cyb-scheduler
     restart: "unless-stopped"
     security_opt:
@@ -98,7 +98,7 @@ services:
     env_file:
       - docker.production.env
     environment:
-      APP_CONTAINER_ROLE: "scheduler"
+      CYB_APP_CONTAINER_ROLE: "scheduler"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"

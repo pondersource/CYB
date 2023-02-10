@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
 # set uid for cyb account, defaults to 1337
-if [ -n "${CYBUID}" ]; then
-    usermod --uid "${CYBUID}" cyb
+if [ -n "${CYB_APP_UID}" ]; then
+    usermod --uid "${CYB_APP_UID}" cyb
 fi
 
-if [[ "${APP_CONTAINER_ROLE}" == "horizon" ]]; then
+if [[ "${CYB_APP_CONTAINER_ROLE}" == "horizon" ]]; then
     if [ $# -gt 0 ]; then
-        exec gosu "${CYBUID}" "$@"
+        exec gosu "${CYB_APP_UID}" "$@"
     else
         # start horizon.
         exec /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan horizon
     fi
-elif [[ "${APP_CONTAINER_ROLE}" == "scheduler" ]]; then
+elif [[ "${CYB_APP_CONTAINER_ROLE}" == "scheduler" ]]; then
     if [ $# -gt 0 ]; then
-        exec gosu "${CYBUID}" "$@"
+        exec gosu "${CYB_APP_UID}" "$@"
     else
         # run scheduler task every minute.
         while true; do
@@ -66,15 +66,15 @@ else
     fi
 
     if [ $# -gt 0 ]; then
-        exec gosu "${CYBUID}" "$@"
+        exec gosu "${CYB_APP_UID}" "$@"
     else
         # run database migrations prior to launching app.
         /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan migrate --force
 
-        if [[ "${APP_WEBSERVER_TYPE}" == "artisan" ]]; then
+        if [[ "${CYB_APP_CONTAINER_ROLE}" == "artisan" ]]; then
             # serve application.
             exec /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=8000
-        elif [[ "${APP_WEBSERVER_TYPE}" == "apache" ]]; then
+        elif [[ "${CYB_APP_CONTAINER_ROLE}" == "apache" ]]; then
             # enable cyb website.
             a2ensite cyb-apache
             service apache2 reload
