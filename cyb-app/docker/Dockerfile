@@ -8,8 +8,8 @@ LABEL org.opencontainers.image.source=https://github.com/pondersource/CYB
 LABEL org.opencontainers.image.authors="Mohammad Mahdi Baghbani Pourvahid"
 
 # set environment variables and timezone.
-ARG CYB_APP_GID=1337
-ARG CYB_APP_UID=1337
+ARG CYBGID=1337
+ARG CYBUID=1337
 ARG NODE_VERSION=16
 ARG POSTGRES_VERSION=14
 ARG APACHE_RUN_USER=cyb
@@ -23,8 +23,8 @@ RUN ln --symbolic --no-dereference --force /usr/share/zoneinfo/$TZ /etc/localtim
 # create cyb group and user as www-data owner (www-data is usually uid=33).
 # give cyb uid 1337 that can be altred through environment variables through entry point.
 # we have to give ownership to www-data so that Nginx can create cache and update Laravel log files.
-RUN groupadd --force --gid $CYB_APP_GID cyb
-RUN useradd --create-home --shell /bin/bash --no-user-group --gid $CYB_APP_GID --uid $CYB_APP_UID cyb
+RUN groupadd --force --gid $CYBGID cyb
+RUN useradd --create-home --shell /bin/bash --no-user-group --gid $CYBGID --uid $CYBUID cyb
 RUN usermod --append --groups www-data cyb
 
 # app directory.
@@ -141,9 +141,9 @@ RUN chown cyb:www-data /var/log/apache2
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ARG CYB_BUILD_REPO="https://github.com/pondersource/CYB/archive/refs/heads"
-ARG CYB_BUILD_BRANCH="main"
-ARG DOWNLOAD_LOCATION="${CYB_BUILD_REPO}/${CYB_BUILD_BRANCH}.zip"
+ARG BUILD_REPO="https://github.com/pondersource/CYB/archive/refs/heads"
+ARG BUILD_BRANCH="main"
+ARG DOWNLOAD_LOCATION="${BUILD_REPO}/${BUILD_BRANCH}.zip"
 
 # get cyb project from git repository.
 RUN curl --fail --silent --show-error --location "${DOWNLOAD_LOCATION}" --output /cyb-src/cyb.zip

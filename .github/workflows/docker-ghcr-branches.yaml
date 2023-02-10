@@ -56,7 +56,7 @@ jobs:
         with:
           context: ./cyb-app/docker
           build-args: |
-            CYB_BUILD_BRANCH=${{ steps.extract_branch.outputs.branch }}
+            BUILD_BRANCH=${{ steps.extract_branch.outputs.branch }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
