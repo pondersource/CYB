@@ -30,6 +30,7 @@ services:
     env_file:
       - docker.gitpod.env
     environment:
+      CYB_APP_MODE: "development"
       APP_CONTAINER_ROLE: "app"
       APP_WEBSERVER_TYPE: "artisan"
     volumes:

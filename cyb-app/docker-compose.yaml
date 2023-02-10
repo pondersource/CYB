@@ -30,6 +30,7 @@ services:
     env_file:
       - docker.production.env
     environment:
+      CYB_APP_MODE: "production"
       APP_CONTAINER_ROLE: "app"
       APP_WEBSERVER_TYPE: "nginx"
     volumes:
