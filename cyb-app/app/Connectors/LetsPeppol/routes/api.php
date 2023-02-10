@@ -65,10 +65,19 @@ Route::name('get-identity')->middleware('auth:sanctum')->get('/identity/{identit
     $identity = $service->getIdentity($identity_id);
 
     if (!empty(($identity))) {
-        return [
-            'result' => 'OK',
-            'data' => $identity
-        ];
+        $authentications = ApplicationManager::getAuthentications();
+        $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
+            return $auth['metadata'] === $identity_id;
+        });
+
+        if (empty($authentications)) {
+            return response()->json([
+                'result' => 'failure',
+                'reason' => 'Not allowed for this user'
+            ], 403);
+        }
+        
+        return $identity;
     }
     else {
         return response()->json([
@@ -88,6 +97,18 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
             'result' => 'failure',
             'reason' => 'No identity exists'
         ], 404);
+    }
+
+    $authentications = ApplicationManager::getAuthentications();
+    $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
+        return $auth['metadata'] === $identity_id;
+    });
+
+    if (empty($authentications)) {
+        return response()->json([
+            'result' => 'failure',
+            'reason' => 'Not allowed for this user'
+        ], 403);
     }
 
     if ($identity['kyc_status'] === Identity::KYC_STATUS_APPROVED) {
@@ -163,8 +184,8 @@ Route::name('send-message')->middleware('auth:sanctum')->post('/message/{identit
     $service = new LetsPeppolService();
 
     $authentications = ApplicationManager::getAuthentications();
-    $authentications = array_filter($array_filter, function ($auth) {
-        return $auth['id'] === $identity_id;
+    $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
+        return $auth['metadata'] === $identity_id;
     });
 
     if (empty($authentications)) {

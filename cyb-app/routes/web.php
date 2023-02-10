@@ -63,19 +63,23 @@ Route::post('/apps/{app_code_name}/auth', function (Request $request, $app_code_
 });
 
 Route::post('/readOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
-    return ApplicationManager::readOn($auth_id, $data_type);
+    ApplicationManager::readOn($auth_id, $data_type);
+    return 'Done!';
 });
 
 Route::post('/readOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
-    return ApplicationManager::readOff($auth_id, $data_type);
+    ApplicationManager::readOff($auth_id, $data_type);
+    return 'Done!';
 });
 
 Route::post('/writeOn/{auth_id}/{data_type}', function ($auth_id, $data_type) {
-    return ApplicationManager::writeOn($auth_id, $data_type);
+    ApplicationManager::writeOn($auth_id, $data_type);
+    return 'Done!';
 });
 
 Route::post('/writeOff/{auth_id}/{data_type}', function ($auth_id, $data_type) {
-    return ApplicationManager::writeOff($auth_id, $data_type);
+    ApplicationManager::writeOff($auth_id, $data_type);
+    return 'Done!';
 });
 
 Route::middleware('auth')->post('/generateToken', function (Request $request) {

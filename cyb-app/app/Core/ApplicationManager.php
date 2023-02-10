@@ -199,13 +199,13 @@ class ApplicationManager
         $auth = ApplicationManager::getAuthentication($auth_id);
 
         if ($auth === null) {
-            return 'ERROR: Auth not found!';
+            throw new \Exception('Auth not found');
         }
 
         $connector = ApplicationManager::getConnector($auth->app_code_name);
 
         if ($connector === null) {
-            return 'ERROR: Connector not found!';
+            throw new \Exception('Connector not found');
         }
 
         $function = AuthFunction::query()
@@ -219,7 +219,8 @@ class ApplicationManager
             $function['data_type'] = $data_type;
             $function['write'] = false;
         } elseif ($function['read'] == $read) {
-            return 'Read already in the desired state!';
+            // Read is already in the desired state!
+            return;
         }
 
         $function['read'] = $read;
@@ -227,27 +228,29 @@ class ApplicationManager
         if ($function->save()) {
             if ($read) {
                 if ($connector->registerUpdateNotifier($auth, $data_type)) {
-                    return 'success!';
+                    // Success!
+                    return;
                 } else {
                     $function['read'] = false;
                     $function->save();
                     // TODO state might get lost here.
 
-                    return 'Registering update notifier failed!';
+                    throw new \Exception('Registering update notifier failed');
                 }
             } else {
                 if ($connector->unregisterUpdateNotifier($auth, $data_type)) {
-                    return 'success!';
+                    // Success!
+                    return;
                 } else {
                     $function['read'] = true;
                     $function->save();
                     // TODO state might get lost here.
 
-                    return 'Unregistering update notifier failed!';
+                    throw new \Exception('Unregistering update notifier failed');
                 }
             }
         } else {
-            return 'Failed to save/update function!';
+            throw new \Exception('Failed to save/update function');
         }
     }
 
@@ -263,17 +266,16 @@ class ApplicationManager
 
     public static function writeToggle($auth_id, $data_type, $write)
     {
-        error_log('write toggle '.$auth_id.' '.$write);
         $auth = ApplicationManager::getAuthentication($auth_id);
 
         if ($auth === null) {
-            return 'ERROR: Auth not found!';
+            throw new \Exception('Auth not found');
         }
 
         $connector = ApplicationManager::getConnector($auth->app_code_name);
 
         if ($connector === null) {
-            return 'ERROR: Connector not found!';
+            throw new \Exception('Connector not found');
         }
 
         $function = AuthFunction::query()
@@ -287,15 +289,17 @@ class ApplicationManager
             $function['data_type'] = $data_type;
             $function['read'] = false;
         } elseif ($function['write'] == $write) {
-            return 'Write already in the desired state!';
+            // Write is already in the desired state
+            return;
         }
 
         $function['write'] = $write;
 
         if ($function->save()) {
-            return 'success!';
+            // Success!
+            return;
         } else {
-            return 'Failed to save/update function!';
+            throw new \Exception('Failed to save/update function');
         }
     }
 
