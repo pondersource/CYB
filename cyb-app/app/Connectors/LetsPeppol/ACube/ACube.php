@@ -183,6 +183,7 @@ class ACube
     public function sendInvoice(string $ubl): ?string
     {
         $response = $this->prepareRequest()
+            ->withHeaders(['X-Validation-Rule' => 'eu.peppol.bis3:invoice:3.12.0'])
             ->withBody($ubl, 'application/xml')
             ->post(Constants::BASE_URL.'/invoices/outgoing/ubl');
 
@@ -190,6 +191,8 @@ class ACube
             return $response['uuid'];
         }
         else {
+            echo $response->body();
+            throw new \Exception($response->body());
             return null;
         }
     }

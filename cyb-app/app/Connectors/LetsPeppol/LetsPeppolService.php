@@ -226,14 +226,13 @@ class LetsPeppolService
             $invoice = $this->invoiceFromUBL($ubl);
             $supplier_ID = $invoice->getAccountingSupplierParty()->getParty()->getEndpointID();
 
-            $supplier_scheme = $endpoint_ID->getSchemeID();
-            $supplier_value = $endpoint_ID->getValue();
+            $supplier_scheme = $supplier_ID->getSchemeID();
+            $supplier_value = $supplier_ID->getValue();
         } catch (\Exception $e) {
-            // Bad UBL
             return false;
         }
 
-        if ($identity['identifier_scheme'] != $supplier_scheme || $identity['identifier_value'] != $supplier_value) {
+        if ($identity['identifier_value'] != $supplier_scheme.':'.$supplier_value) {
             // Can not send invoice on behalf of someone else!
             return false;
         }
@@ -241,7 +240,8 @@ class LetsPeppolService
         try {
             return $this->acube->sendInvoice($ubl) != null;
         } catch (\Exception $e) {
-            // Connection error, internal error (token), bad UBL, double sending?, internal error (state is lost)
+            throw $e;
+            // Connection error, internal error (token), bad UBL, double sending?no, internal error (state is lost)
             return false;
         }
     }
@@ -275,8 +275,8 @@ class LetsPeppolService
             $invoice = $this->invoiceFromUBL($ubl);
             $customer_ID = $invoice->getAccountingCustomerParty()->getParty()->getEndpointID();
 
-            $customer_scheme = $endpoint_ID->getSchemeID();
-            $customer_value = $endpoint_ID->getValue();
+            $customer_scheme = $customer_ID->getSchemeID();
+            $customer_value = $customer_ID->getValue();
         } catch (\Exception $e) {
             // Bad UBL
             return false;
@@ -449,6 +449,7 @@ class LetsPeppolService
     private function invoiceFromUBL(string $ubl): Invoice
     {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        //return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml')->getInvoice();
         return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
     }
 

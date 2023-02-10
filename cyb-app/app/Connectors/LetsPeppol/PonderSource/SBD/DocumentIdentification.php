@@ -42,9 +42,11 @@ class DocumentIdentification
     /**
      * @SerializedName("CreationDateAndTime")
      * @XmlElement(cdata=false, namespace=Namespaces::SBD)
-     * @Type("DateTime<'Y-m-d\TH:i:s.vP'>")
+     * @Type("DateTime<'Y-m-d\TH:i:sO'>")
      */
     private $creationDateAndTime;
+    // See https://jmsyst.com/libs/serializer/master/reference/annotations
+    // And see https://www.php.net/manual/en/class.datetime.php
 
     public function __construct($standard = null, $typeVersion = null, $instanceIdentifier = null, $type = null, $creationDateAndTime = null){
         $this->standard = $standard;

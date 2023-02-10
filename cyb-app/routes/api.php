@@ -51,6 +51,53 @@ Route::post('/generateToken', function (Request $request) {
     ], 401);
 });
 
+Route::middleware('auth:sanctum')->get('/authentication', function () {
+    return ApplicationManager::getAuthentications();
+});
+
+Route::middleware('auth:sanctum')->get('/function/{auth_id}/{data_type}', function (Request $request, $auth_id, $data_type) {
+    $authentication = ApplicationManager::getAuthentication($auth_id);
+
+    if ($authentication['user_id'] !== $request->user()['id']) {
+        return response()->json([
+            'result' => 'failure',
+            'reason' => 'Not allowed for this user'
+        ], 403);
+    }
+
+    return ApplicationManager::getFunction($auth_id, $data_type);
+});
+
+Route::middleware('auth:sanctum')->post('/read/{auth_id}/{data_type}', function (Request $request, $auth_id, $data_type) {
+    $authentication = ApplicationManager::getAuthentication($auth_id);
+
+    if ($authentication['user_id'] !== $request->user()['id']) {
+        return response()->json([
+            'result' => 'failure',
+            'reason' => 'Not allowed for this user'
+        ], 403);
+    }
+
+    ApplicationManager::readToggle($auth_id, $data_type, $request['read']);
+
+    return [ 'result' => 'ok' ];
+});
+
+Route::middleware('auth:sanctum')->post('/write/{auth_id}/{data_type}', function (Request $request, $auth_id, $data_type) {
+    $authentication = ApplicationManager::getAuthentication($auth_id);
+
+    if ($authentication['user_id'] !== $request->user()['id']) {
+        return response()->json([
+            'result' => 'failure',
+            'reason' => 'Not allowed for this user'
+        ], 403);
+    }
+
+    ApplicationManager::writeToggle($auth_id, $data_type, $request['write']);
+
+    return [ 'result' => 'ok' ];
+});
+
 Route::name('connector.')->prefix('connector')->group(function() {
     $connectors = ApplicationManager::getConnectors();
 
