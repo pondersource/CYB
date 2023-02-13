@@ -46,10 +46,7 @@ Route::name('register')->middleware('auth:sanctum')->post('/identity', function 
 
         ApplicationManager::createAuthentication($auth_info);
 
-        return [
-            'result' => 'OK',
-            'data' => $identity
-        ];
+        return $identity;
     }
     else {
         return response()->json([
