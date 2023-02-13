@@ -51,8 +51,11 @@ Route::post('/generateToken', function (Request $request) {
     ], 401);
 });
 
-Route::middleware('auth:sanctum')->get('/authentication', function () {
-    return ApplicationManager::getAuthentications();
+Route::middleware('auth:sanctum')->get('/authentication', function (Request $request) {
+    return ApplicationManager::getAuthentications(
+            $request->query('app_code_name', null),
+            $request->query('app_user_id', null)
+    );
 });
 
 Route::middleware('auth:sanctum')->get('/function/{auth_id}/{data_type}', function (Request $request, $auth_id, $data_type) {

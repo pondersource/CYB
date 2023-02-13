@@ -136,7 +136,7 @@ class ApplicationManager
         }
     }
 
-    public static function getAuthentications(): array
+    public static function getAuthentications(string $app_code_name = null, string $app_user_id = null): array
     {
         $user = Auth::user();
 
@@ -144,9 +144,17 @@ class ApplicationManager
             return [];
         }
 
-        $authentications = Authentication::query()
-                ->where('user_id', $user['id'])
-                ->get();
+        $query = Authentication::query()->where('user_id', $user['id']);
+
+        if (!empty($app_code_name)) {
+            $query = $query->where('app_code_name', $app_code_name);
+        }
+
+        if (!empty($app_user_id)) {
+            $query = $query->where('app_user_id', $app_user_id);
+        }
+
+        $authentications = $query->get();
 
         return $authentications->all();
     }
