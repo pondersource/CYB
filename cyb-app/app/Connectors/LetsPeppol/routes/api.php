@@ -1,6 +1,8 @@
 <?php
 
+use App\Connectors\LetsPeppol\AS4Direct\AS4DirectService;
 use App\Connectors\LetsPeppol\Models\Identity;
+use App\Connectors\LetsPeppol\KeyStore;
 use App\Connectors\LetsPeppol\LetsPeppolService;
 use App\Core\ApplicationManager;
 use App\Core\AuthInfo;
@@ -31,7 +33,19 @@ Route::name('acube-outgoing')->post('/acube/outgoing', function (Request $reques
     }
 });
 
-Route::name('register')->middleware('auth:sanctum')->post('/identity', function (Request $request) {
+Route::name('as4-direct.')->prefix('AS4Direct')->group(function() {
+    Route::name('info')->get('/info', function (Request $request) {
+        $service = new AS4DirectService();
+        return $service->getInfo();
+    });
+    
+    Route::name('endpoint')->post('/endpoint', function (Request $request) {
+        $service = new AS4DirectService();
+        return $service->endpointMessage($request);
+    }); 
+});
+
+Route::name('register')->post('/identity', function (Request $request) {
     $service = new LetsPeppolService();
 
     $identity = $service->createIdentity($request->toArray());
@@ -56,22 +70,44 @@ Route::name('register')->middleware('auth:sanctum')->post('/identity', function 
     }
 });
 
-Route::name('get-identity')->middleware('auth:sanctum')->get('/identity/{identity_id}', function (Request $request, $identity_id) {
+Route::name('get-identity')->get('/identity/{identity_id}', function (Request $request, $identity_id) {
     $service = new LetsPeppolService();
 
     $identity = $service->getIdentity($identity_id);
 
     if (!empty(($identity))) {
-        $authentications = ApplicationManager::getAuthentications();
-        $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
-            return $auth['metadata'] === $identity_id;
-        });
+        if (Auth::check()) {
+            $authentications = ApplicationManager::getAuthentications();
+            $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
+                return $auth['metadata'] === $identity_id;
+            });
 
-        if (empty($authentications)) {
-            return response()->json([
-                'result' => 'failure',
-                'reason' => 'Not allowed for this user'
-            ], 403);
+            if (empty($authentications)) {
+                return response()->json([
+                    'result' => 'failure',
+                    'reason' => 'Not allowed for this user'
+                ], 403);
+            }
+        }
+        else {
+            $signature = $request->query('signature');
+
+            if (!isset($signature)) {
+                return response()->json([
+                    'result' => 'failure',
+                    'reason' => 'Authentication or signature is required'
+                ], 401);
+            }
+
+            $signature = base64_decode($signature);
+            $expected_signed_message = 'I want identity id '.$identity_id;
+            
+            if (!KeyStore::verify($identity['as4direct_public_key'], $expected_signed_message, $signature)) {
+                return response()->json([
+                    'result' => 'failure',
+                    'reason' => 'Could not verify the signature'
+                ], 401);
+            }
         }
         
         return $identity;
@@ -84,7 +120,7 @@ Route::name('get-identity')->middleware('auth:sanctum')->get('/identity/{identit
     }
 });
 
-Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{identity_id}', function (Request $request, $identity_id) {
+Route::name('update-identity')->put('/identity/{identity_id}', function (Request $request, $identity_id) {
     $service = new LetsPeppolService();
 
     $identity = $service->getIdentity($identity_id);
@@ -96,23 +132,44 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
         ], 404);
     }
 
-    $authentications = ApplicationManager::getAuthentications();
-    $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
-        return $auth['metadata'] === $identity_id;
-    });
+    if (Auth::check()) {
+        $authentications = ApplicationManager::getAuthentications();
+        $authentications = array_filter($authentications, function ($auth) use ($identity_id) {
+            return $auth['metadata'] === $identity_id;
+        });
 
-    if (empty($authentications)) {
-        return response()->json([
-            'result' => 'failure',
-            'reason' => 'Not allowed for this user'
-        ], 403);
+        if (empty($authentications)) {
+            return response()->json([
+                'result' => 'failure',
+                'reason' => 'Not allowed for this user'
+            ], 403);
+        }
+    }
+    else {
+        $signature = $request->query('signature');
+
+        if (!isset($signature)) {
+            return response()->json([
+                'result' => 'failure',
+                'reason' => 'Authentication or signature is required'
+            ], 401);
+        }
+
+        $signature = base64_decode($signature);
+        $expected_signed_message = $request->getContent();
+        
+        if (!KeyStore::verify($identity['as4direct_public_key'], $expected_signed_message, $signature)) {
+            return response()->json([
+                'result' => 'failure',
+                'reason' => 'Could not verify the signature'
+            ], 401);
+        }
     }
 
+    $only_as4direct = false;
+
     if ($identity['kyc_status'] === Identity::KYC_STATUS_APPROVED) {
-        return response()->json([
-            'result' => 'failure',
-            'reason' => 'Can not modify identity after it has been approved'
-        ], 403);
+        $only_as4direct = true;
     }
 
     foreach ($request->toArray() as $key => $value) {
@@ -123,7 +180,20 @@ Route::name('update-identity')->middleware('auth:sanctum')->put('/identity/{iden
             ], 403);
         }
 
-        $identity[$key] = $value;
+        if ($only_as4direct) {
+            if ($key === 'as4direct_endpoint') {
+                $identity[$key] = $value;    
+            }
+            else {
+                return response()->json([
+                    'result' => 'failure',
+                    'reason' => 'Only AS4 direct endpoint can be modified after KYC approval'
+                ], 403);
+            }
+        }
+        else {
+            $identity[$key] = $value;
+        }
     }
 
     $success = $service->updateIdentity($identity);

@@ -90,6 +90,8 @@ class LetsPeppolService
         $identity['region'] = $properties['region'];
         $identity['country'] = $properties['country'];
         $identity['zip'] = $properties['zip'];
+        $identity['as4direct_endpoint'] = $properties['as4direct_endpoint'];
+        $identity['as4direct_public_key'] = $properties['as4direct_public_key'];
         $identity['kyc_status'] = Identity::KYC_STATUS_PENDING_APPROVAL;
 
         return $identity->save() ? $identity : null;
@@ -153,6 +155,9 @@ class LetsPeppolService
                     if ($this->acube->setInvoiceCapability($reference)) {
                         $identity['registrar'] = self::REGISTRAR_ACUBE;
                         $identity['reference'] = $reference;
+
+                        $key_store = new KeyStore();
+                        $identity['as4direct_certificate'] = $key_store->issueCertificate($identity['name'], $identity['as4direct_public_key']);
     
                         $identity->save();
                     }
@@ -182,6 +187,7 @@ class LetsPeppolService
                 if ($this->acube->removeLegalEntity($identity['reference'])) {
                     $identity['registrar'] = '';
                     $identity['reference'] = '';
+                    $identity['as4direct_certificate'] = '';
                     
                     $identity->save();
                 }

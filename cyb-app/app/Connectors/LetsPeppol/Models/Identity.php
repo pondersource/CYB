@@ -15,8 +15,11 @@ class Identity extends Model
 
     // Having auth_id means update notifier is on
     protected $fillable = [
-        'user_id', 'auth_id', 'name', 'address', 'city', 'region', 'country', 'zip', 'kyc_status',
-        'identifier_scheme', 'identifier_value', 'registrar', 'reference'
+        'name', 'address', 'city', 'region', 'country', 'zip',
+        'as4direct_endpoint', 'as4direct_public_key',
+        'kyc_status',
+        'identifier_scheme', 'identifier_value', 'registrar', 'reference', 'as4direct_certificate',
+        'auth_id',
     ];
 
     /**
@@ -25,10 +28,9 @@ class Identity extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'user_id',
-        'auth_id',
-        'registrar',
-        'reference'
+        'as4direct_public_key',
+        'registrar', 'reference',
+        'auth_id'
     ];
 
     use HasFactory;

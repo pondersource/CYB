@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string('identifier_value')->nullable();
             $table->string('registrar')->nullable();
             $table->string('reference')->nullable();
+            $table->string('as4direct_endpoint')->nullable();
+            $table->text('as4direct_public_key')->nullable();
+            $table->text('as4direct_certificate')->nullable();
             $table->timestamps();
 
             $table->foreign('auth_id')->references('id')->on('authentications')->onDelete('cascade');
