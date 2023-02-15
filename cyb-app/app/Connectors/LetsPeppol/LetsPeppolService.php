@@ -8,6 +8,7 @@ use App\Connectors\LetsPeppol\Models\Message;
 use App\Core\ApplicationManager;
 use App\Core\Helper;
 use App\Core\Settings;
+use App\Models\Authentication;
 
 Helper::include_once(__DIR__.'/PonderSource');
 
@@ -15,6 +16,7 @@ use OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice;
 
 class LetsPeppolService
 {
+    public const REGISTRAR_AS4_DIRECT = 'as4-direct';
     public const REGISTRAR_ACUBE = 'acube';
 
     private const SETTINGS_FILE = __DIR__.'/settings.json';
@@ -455,7 +457,6 @@ class LetsPeppolService
     private function invoiceFromUBL(string $ubl): Invoice
     {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        //return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml')->getInvoice();
         return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
     }
 

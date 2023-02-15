@@ -8,7 +8,8 @@ use phpseclib3\File\X509;
 
 class KeyStore
 {
-    private const NAME = 'Let\'s Peppol';
+    public const NAME = 'Let\'s Peppol';
+    
     private const IDENTITY_FILE = __DIR__.'/AS4DirectIdentity.json';
 	private const KEYSTORE_FILE = __DIR__.'/AS4DirectIdentity.p12';
     private const KEYSTORE_PASSWORD = 'keystorefilemustbeinaccessible';
@@ -38,11 +39,11 @@ class KeyStore
         
         $subject = new X509();
 		$subject->setPublicKey($public_key);
-		$subject->setDN('/O='.$name);
+		$subject->setDN('/CN='.$name);
 
 		$issuer = new X509();
 		$issuer->setPrivateKey($private_key);
-		$issuer->setDN('/O='.self::NAME);
+		$issuer->setDN('/CN='.self::NAME);
 
 		$x509 = new X509();
 		$result = $x509->sign($issuer, $subject); 
@@ -90,11 +91,11 @@ class KeyStore
 		
 		$subject = new X509();
 		$subject->setPublicKey($publicKey);
-		$subject->setDN('/O='.self::NAME);
+		$subject->setDN('/CN='.self::NAME);
 
 		$issuer = new X509();
 		$issuer->setPrivateKey($privateKey);
-		$issuer->setDN('/O='.self::NAME);
+		$issuer->setDN('/CN='.self::NAME);
 
 		$x509 = new X509();
 		$result = $x509->sign($issuer, $subject); 
@@ -122,5 +123,13 @@ class KeyStore
     public static function publicKeyFromString(string $public_key): AsymmetricKey
     {
         return RSA::loadPublicKey($public_key);
+    }
+
+    public static function certificateFromString(string $certificate): X509
+    {
+        $cert = new X509();
+		$cert->loadX509($certificate);
+
+        return $cert;
     }
 }
