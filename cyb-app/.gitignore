@@ -22,3 +22,5 @@ yarn-error.log
 /app/Connectors/LetsPeppol/ACube/token.db
 /app/Connectors/LetsPeppol/files
 /app/Connectors/LetsPeppol/settings.json
+/app/Connectors/LetsPeppol/AS4DirectIdentity.p12
+/app/Connectors/LetsPeppol/AS4DirectIdentity.json

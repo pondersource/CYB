@@ -3,6 +3,7 @@
 use App\Connectors\LetsPeppol\AS4Direct\AS4DirectService;
 use App\Connectors\LetsPeppol\Models\Identity;
 use App\Connectors\LetsPeppol\KeyStore;
+use App\Connectors\LetsPeppol\LetsPeppolConnector;
 use App\Connectors\LetsPeppol\LetsPeppolService;
 use App\Core\ApplicationManager;
 use App\Core\AuthInfo;
@@ -33,7 +34,7 @@ Route::name('acube-outgoing')->post('/acube/outgoing', function (Request $reques
     }
 });
 
-Route::name('as4-direct.')->prefix('AS4Direct')->group(function() {
+Route::name('as4-direct.')->prefix('as4direct')->group(function() {
     Route::name('info')->get('/info', function (Request $request) {
         $service = new AS4DirectService();
         return $service->getInfo();
@@ -53,14 +54,19 @@ Route::name('register')->post('/identity', function (Request $request) {
     if (!empty(($identity))) {
         $auth_info = new AuthInfo();
         $auth_info
-            ->setAppCodeName(self::CODE_NAME)
-            ->setDisplayName($payload['name'])
+            ->setAppCodeName(LetsPeppolConnector::CODE_NAME)
+            ->setDisplayName($request['name'])
             ->setAppUserId($identity['id'])
             ->setMetadata($identity['id']);
 
         ApplicationManager::createAuthentication($auth_info);
 
-        return $identity;
+        $token = Auth::user()->createToken('default');
+
+        return [
+            'identity' => $identity,
+            'api_token' => explode('|', $token->plainTextToken)[1]
+        ];
     }
     else {
         return response()->json([

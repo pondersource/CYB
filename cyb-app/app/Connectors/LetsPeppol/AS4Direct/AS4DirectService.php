@@ -61,7 +61,7 @@ class AS4DirectService
 
 		$info['endpoint'] = route('connector.lets_peppol.as4-direct.endpoint');
 
-        return info;
+        return $info;
     }
 
     public function endpointMessage(Request $request)

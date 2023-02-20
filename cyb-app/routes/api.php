@@ -25,9 +25,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', function (Request $request) {
-    $user_service = new UserService();
-    $user_service->register($request);
-    return ['result' => 'ok'];
+    try {
+        $user_service = new UserService();
+        $user_service->register($request);
+        return ['result' => 'ok'];
+    } catch (\Exception $e) {
+        return response()->json([
+            'result' => 'failure',
+            'reason' => $e->__tostring()
+        ], 400);
+    }
 });
 
 Route::post('/generateToken', function (Request $request) {

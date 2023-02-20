@@ -2,6 +2,7 @@
 
 namespace App\Connectors\LetsPeppol;
 
+use App\Core\Settings;
 use phpseclib3\Crypt\Common\AsymmetricKey;
 use phpseclib3\Crypt\{RSA, Random};
 use phpseclib3\File\X509;
@@ -110,7 +111,7 @@ class KeyStore
         file_put_contents(self::KEYSTORE_FILE, $keystore_content);
 
         $this->settings['identity_scheme'] = 'iso6523-actorid-upis';
-        $this->settings['identity_value'] = uniqid('as4direct-');
+        $this->settings['identity_value'] = '9915:'.uniqid('as4direct-');
         $this->settings['certificate'] = $certificate;
         $this->settings->save();
 	}
