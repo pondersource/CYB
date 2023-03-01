@@ -36,11 +36,12 @@ services:
       APP_CONTAINER_ROLE: "app"
       APP_WEBSERVER_TYPE: "artisan"
       XDEBUG_MODE: "develop,debug,coverage"
-      XDEBUG_CONFIG: "idekey=ECLIPSE client_host=host.docker.internal"
+      XDEBUG_CONFIG: "idekey=VSCODE client_host=host.docker.internal start_with_request=yes"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "${PWD}:/var/www/html"
+      - "${PWD}/20-xdebug.ini:/etc/php/8.1/cli/conf.d/20-xdebug.ini"
     healthcheck:
       test: [ "CMD", "node" , "/cyb-src/healthcheck.js" ]
       timeout: 2s
