@@ -3,6 +3,9 @@ image:
 
 vscode:
   extensions:
+    # Docker helper extension
+    - ms-azuretools.vscode-docker
+
     # PHP extension
     - felixfbecker.php-debug
 
@@ -11,7 +14,10 @@ vscode:
     - rogalmic.bash-debug
 
     # Env file highlight
-    - irongeek.vscode-env
+    - mikestead.dotenv
+
+    # Github Theme
+    - github.github-vscode-theme
 
 github:
   prebuilds:
