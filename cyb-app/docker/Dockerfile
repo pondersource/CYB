@@ -102,7 +102,7 @@ RUN apt  install --yes yarn
 
 # install postgresql client and mysql client.
 RUN curl --silent --show-error --location https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | tee /usr/share/keyrings/pgdg.gpg >/dev/null
-RUN echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 RUN apt update --yes
 RUN apt install --yes mysql-client
 RUN apt install --yes postgresql-client-$POSTGRES_VERSION
