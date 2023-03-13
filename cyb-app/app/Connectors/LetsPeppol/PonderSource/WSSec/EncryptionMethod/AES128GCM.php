@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod;
-          
+
 use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,Type,XmlNamespace,XmlAttribute,SerializedName};
 use phpseclib3\Crypt\{AES,Random};
 
-class AES128GCM {
+/**
+ * @XmlNamespace(uri=Namespaces::XENC, prefix="xenc")
+ * @XmlRoot("xenc:EncryptionMethod")
+ */
+class AES128GCM implements IEncryptionMethod {
     /**
      * @XmlAttribute
      * @SerializedName("Algorithm")
