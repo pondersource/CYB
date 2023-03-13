@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -50,14 +50,14 @@ class PostalAddress
     /**
      * @SerializedName("AddressLine")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\AddressLine")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AddressLine")
      */
     private $addressLine;
 
     /**
      * @SerializedName("Country")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Country")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Country")
      */
     private $country;
     

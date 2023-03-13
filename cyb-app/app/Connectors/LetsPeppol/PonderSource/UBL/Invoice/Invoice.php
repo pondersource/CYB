@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -165,135 +165,135 @@ class Invoice // https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/
     /**
      * @SerializedName("InvoicePeriod")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\InvoicePeriod")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\InvoicePeriod")
      */
     private $invoicePeriod;
 
     /**
      * @SerializedName("OrderReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\OrderReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\OrderReference")
      */
     private $orderReference;
 
     /**
      * @XmlList(inline=true, entry="BillingReference", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\BillingReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\BillingReference>")
      */
     private $billingReferences = [];
 
     /**
      * @SerializedName("DespatchDocumentReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\DespatchDocumentReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\DespatchDocumentReference")
      */
     private $despatchDocumentReference;
 
     /**
      * @SerializedName("ReceiptDocumentReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ReceiptDocumentReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ReceiptDocumentReference")
      */
     private $receiptDocumentReference;
 
     /**
      * @SerializedName("OriginatorDocumentReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\OriginatorDocumentReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\OriginatorDocumentReference")
      */
     private $originatorDocumentReference;
 
     /**
      * @SerializedName("ContractDocumentReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ContractDocumentReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ContractDocumentReference")
      */
     private $contractDocumentReference;
 
     /**
      * @XmlList(inline=true, entry="AdditionalDocumentReference", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\AdditionalDocumentReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AdditionalDocumentReference>")
      */
     private $additionalDocumentReferences = [];
 
     /**
      * @SerializedName("ProjectReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ProjectReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ProjectReference")
      */
     private $projectReference;
 
     /**
      * @SerializedName("AccountingSupplierParty")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\AccountingSupplierParty")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AccountingSupplierParty")
      */
     private $accountingSupplierParty;
 
     /**
      * @SerializedName("AccountingCustomerParty")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\AccountingCustomerParty")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AccountingCustomerParty")
      */
     private $accountingCustomerParty;
 
     /**
      * @SerializedName("PayeeParty")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PayeeParty")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PayeeParty")
      */
     private $payeeParty;
 
     /**
      * @SerializedName("TaxRepresentativeParty")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\TaxRepresentativeParty")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\TaxRepresentativeParty")
      */
     private $taxRepresentativeParty;
 
     /**
      * @SerializedName("Delivery")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Delivery")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Delivery")
      */
     private $delivery;
 
     /**
      * @XmlList(inline=true, entry="PaymentMeans", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMeans>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PaymentMeans>")
      */
     private $paymentMeans = [];
 
     /**
      * @SerializedName("PaymentTerms")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentTerms")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PaymentTerms")
      */
     private $paymentTerms;
 
     /**
      * @XmlList(inline=true, entry="AllowanceCharge", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\AllowanceCharge>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AllowanceCharge>")
      */
     private $allowanceCharges = [];
 
     /**
      * @SerializedName("TaxTotal")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\TaxTotal")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\TaxTotal")
      */
     private $taxTotal;
 
     /**
      * @SerializedName("LegalMonetaryTotal")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\LegalMonetaryTotal")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\LegalMonetaryTotal")
      */
     private $legalMonetaryTotal;
 
     /**
      * @XmlList(inline=true, entry="InvoiceLine", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\InvoiceLine>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\InvoiceLine>")
      */
     private $invoiceLines = [];
 

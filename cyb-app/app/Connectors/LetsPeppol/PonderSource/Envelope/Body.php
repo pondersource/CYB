@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\Envelope;
+namespace App\Connectors\LetsPeppol\PonderSource\Envelope;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**

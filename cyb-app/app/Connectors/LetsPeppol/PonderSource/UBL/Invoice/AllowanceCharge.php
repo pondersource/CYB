@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -45,21 +45,21 @@ class AllowanceCharge
     /**
      * @SerializedName("Amount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $amount;
     
     /**
      * @SerializedName("BaseAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $baseAmount;
 
     /**
      * @SerializedName("TaxCategory")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\TaxCategory")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\TaxCategory")
      */
     private $taxCategory; // Not included for invoice line
     

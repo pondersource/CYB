@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,7 +15,7 @@ class AdditionalDocumentReference
     /**
      * @SerializedName("ID")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ID")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ID")
      */
     private $id;
     
@@ -36,7 +36,7 @@ class AdditionalDocumentReference
     /**
      * @SerializedName("Attachment")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Attachment")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Attachment")
      */
     private $attachment;
     

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlRoot,XmlNamespace,XmlAttribute,SerializedName,XmlElement};
 
 /**
@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation\{Type,XmlRoot,XmlNamespace,XmlAttribute,Serialized
 class KeyInfo {
     /**
      * @SerializedName("SecurityTokenReference")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\SecurityTokenReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\SecurityTokenReference")
      * @XmlElement(namespace=Namespaces::WSSE)
      */
     private $securityTokenReference;

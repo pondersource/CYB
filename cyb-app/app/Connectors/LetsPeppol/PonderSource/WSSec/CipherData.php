@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,Type,XmlElement,XmlNamespace,SerializedName};
 
 /**
@@ -19,7 +19,7 @@ class CipherData {
 
     /**
      * @SerializedName("CipherReference")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\CipherReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\CipherReference")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $cipherReference;
@@ -27,7 +27,7 @@ class CipherData {
     public function __construct($cipherDataOrReference){
         if (is_string($cipherDataOrReference)){
             $this->cipherValue = $cipherDataOrReference;
-        } else if (is_object($cipherDataOrReference) && get_class($cipherDataOrReference) === 'OCA\PeppolNext\PonderSource\WSSec\CipherReference'){
+        } else if (is_object($cipherDataOrReference) && get_class($cipherDataOrReference) === 'App\Connectors\LetsPeppol\PonderSource\WSSec\CipherReference'){
             $this->cipherReference = $cipherDataOrReference;
         } else {
             throw new \Exception('CipherData can only contain either CipherValue(string) or CipherReference types');

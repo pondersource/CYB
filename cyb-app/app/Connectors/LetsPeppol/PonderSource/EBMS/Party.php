@@ -1,16 +1,16 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\EBMS\PartyId;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PartyId;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type, XmlElement, SerializedName};
 
 class Party {
     /**
      * @SerializedName("PartyId");
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\PartyId")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\PartyId")
      */
     private $partyId;
 

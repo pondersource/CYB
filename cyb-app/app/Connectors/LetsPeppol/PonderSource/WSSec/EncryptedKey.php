@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlRoot,XmlNamespace,XmlAttribute,SerializedName,XmlList,XmlElement};
 
 /**
@@ -20,21 +20,21 @@ class EncryptedKey {
 
     /**
      * @SerializedName("EncryptionMethod") 
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\EncryptionMethod\RsaOeap")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod\RsaOeap")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $encryptionMethod;
 
     /**
      * @SerializedName("KeyInfo")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\KeyInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\KeyInfo")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $keyInfo;
 
     /**
      * @SerializedName("CipherData")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\CipherData")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\CipherData")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $cipherData;
@@ -42,7 +42,7 @@ class EncryptedKey {
     /**
      * @XmlList(entry="DataReference", namespace=Namespaces::XENC)
      * @SerializedName("ReferenceList")
-     * @Type("array<OCA\PeppolNext\PonderSource\WSSec\DataReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\WSSec\DataReference>")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $referenceList = [];

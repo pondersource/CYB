@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlList,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -16,14 +16,14 @@ class ServiceGroup
     /**
      * @SerializedName("ParticipantIdentifier")
      * @XmlElement(namespace=Namespaces::ID)
-     * @Type("OCA\PeppolNext\PonderSource\SMP\ParticipantIdentifier")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\ParticipantIdentifier")
      */
     private $participantIdentifier;
 
     /**
      * @SerializedName("ServiceMetadataReferenceCollection")
      * @XmlList(inline=false, entry="Endpoint", namespace=Namespaces::SMP)
-     * @Type("array<OCA\PeppolNext\PonderSource\SMP\ServiceMetadataReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\SMP\ServiceMetadataReference>")
      * @XmlElement(namespace=Namespaces::SMP)
      */
     private $serviceMetadataReferenceCollection = [];

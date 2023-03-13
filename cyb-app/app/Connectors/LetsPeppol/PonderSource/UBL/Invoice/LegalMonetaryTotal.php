@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,56 +15,56 @@ class LegalMonetaryTotal
     /**
      * @SerializedName("LineExtensionAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $lineExtensionAmount;
     
     /**
      * @SerializedName("TaxExclusiveAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $taxExclusiveAmount;
     
     /**
      * @SerializedName("TaxInclusiveAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $taxInclusiveAmount;
     
     /**
      * @SerializedName("AllowanceTotalAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $allowanceTotalAmount;
     
     /**
      * @SerializedName("ChargeTotalAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $chargeTotalAmount;
     
     /**
      * @SerializedName("PrepaidAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $prepaidAmount;
     
     /**
      * @SerializedName("PayableRoundingAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $payableRoundingAmount;
     
     /**
      * @SerializedName("PayableAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $payableAmount;
     

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -14,7 +14,7 @@ class ServiceMetadata
     /**
      * @SerializedName("ServiceInformation")
      * @XmlElement(namespace=Namespaces::SMP)
-     * @Type("OCA\PeppolNext\PonderSource\SMP\ServiceInformation")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\ServiceInformation")
      */
     private $serviceInformation;
 

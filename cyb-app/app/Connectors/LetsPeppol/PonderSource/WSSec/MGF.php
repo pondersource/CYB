@@ -1,9 +1,9 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,Type,XmlNamespace,XmlAttribute,SerializedName};
 
 /**

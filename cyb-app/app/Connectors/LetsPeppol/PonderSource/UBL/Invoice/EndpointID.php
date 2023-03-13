@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
 use JMS\Serializer\Annotation\{Type, XmlAttributeMap, XmlValue, XmlAttribute, SerializedName};
 

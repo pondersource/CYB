@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot, Type, XmlNamespace,XmlAttribute,SerializedName,XmlList,XmlElement};
 
 /**
@@ -21,7 +21,7 @@ class DSigReference {
     /**
      * @SerializedName("Transforms")
      * @XmlList(inline=false, entry="Transform", namespace=Namespaces::DS) 
-     * @Type("array<OCA\PeppolNext\PonderSource\WSSec\Transform>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\WSSec\Transform>")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $transforms;
@@ -29,7 +29,7 @@ class DSigReference {
     /**
      * @SerializedName("DigestMethod")
      * @XmlElement(cdata=false, namespace=Namespaces::DS)
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\DigestMethod\SHA256")
      */
     private $digestMethod;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,21 +15,21 @@ class PayeeParty
     /**
      * @SerializedName("PartyIdentification")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyIdentification")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyIdentification")
      */
     private $partyIdentification;
 
     /**
      * @SerializedName("PartyName")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyName")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyName")
      */
     private $partyName;
 
     /**
      * @SerializedName("PartyLegalEntity")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyLegalEntity")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyLegalEntity")
      */
     private $partyLegalEntity;
     

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\Envelope;
+namespace App\Connectors\LetsPeppol\PonderSource\Envelope;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -15,14 +15,14 @@ class Envelope
     /**
      * @SerializedName("Header")
      * @XmlElement(namespace=Namespaces::S12)
-     * @Type("OCA\PeppolNext\PonderSource\Envelope\Header")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\Envelope\Header")
      */
     private $header;
 
     /**
      * @SerializedName("Body")
      * @XmlElement(namespace=Namespaces::S12)
-     * @Type("OCA\PeppolNext\PonderSource\Envelope\Body")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\Envelope\Body")
      */
     private $body;
 

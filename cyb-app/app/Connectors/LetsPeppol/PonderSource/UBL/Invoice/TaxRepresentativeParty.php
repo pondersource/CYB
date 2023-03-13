@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlValue,XmlElement,XmlList};
 
 /**
@@ -15,21 +15,21 @@ class TaxRepresentativeParty
     /**
      * @SerializedName("PartyName")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyName")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyName")
      */
     private $partyName;
 
     /**
      * @SerializedName("PostalAddress")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PostalAddress")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PostalAddress")
      */
     private $postalAddress;
 
     /**
      * @SerializedName("PartyTaxScheme")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyTaxScheme")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyTaxScheme")
      */
     private $partyTaxScheme;
     

@@ -1,16 +1,16 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
 use JMS\Serializer\Annotation\{Type,SerializedName,XmlNamespace,XmlRoot,XmlElement};
-use OCA\PeppolNext\PonderSource\EBMS\PartInfo;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PartInfo;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 
 class PayloadInfo {
     /**
      * @XmlElement(cdata=false, namespace=Namespaces::EB)
      * @SerializedName("PartInfo");
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\PartInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\PartInfo")
      */
     private $partInfo;
 

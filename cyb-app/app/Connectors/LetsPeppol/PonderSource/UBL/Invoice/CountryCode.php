@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
 /*
     https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO3166/

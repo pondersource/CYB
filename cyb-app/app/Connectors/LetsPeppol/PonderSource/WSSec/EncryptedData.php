@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlElement,XmlRoot,XmlNamespace,XmlAttribute,SerializedName,Type};
 
 /**
@@ -30,19 +30,19 @@ class EncryptedData {
      */
     private $type;
     /**
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\EncryptionMethod\AES128GCM")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod\AES128GCM")
      * @SerializedName("EncryptionMethod")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $encryptionMethod;
     /**
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\KeyInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\KeyInfo")
      * @SerializedName("KeyInfo")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $keyInfo;
     /**
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\CipherData")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\CipherData")
      * @SerializedName("CipherData")
      * @XmlElement(namespace=Namespaces::XENC)
      */

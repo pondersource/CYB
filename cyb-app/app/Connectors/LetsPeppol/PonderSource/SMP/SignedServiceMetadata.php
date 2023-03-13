@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -18,13 +18,13 @@ class SignedServiceMetadata
     /**
      * @SerializedName("ServiceMetadata")
      * @XmlElement(namespace=Namespaces::SMP)
-     * @Type("OCA\PeppolNext\PonderSource\SMP\ServiceMetadata")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\ServiceMetadata")
      */
     private $serviceMetadata;
 
     /**
      * @SerializedName("Signature")
-     * @Type("OCA\PeppolNext\PonderSource\SMP\Signature")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\Signature")
      */
     private $signature;
 

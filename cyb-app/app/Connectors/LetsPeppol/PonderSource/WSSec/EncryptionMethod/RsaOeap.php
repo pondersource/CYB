@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\EncryptionMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlElement,XmlRoot,Type,Inline,XmlNamespace,XmlAttribute,SerializedName};
 use phpseclib3\Crypt\{AES,Random};
 
@@ -22,14 +22,14 @@ class RsaOeap implements IEncryptionMethod {
 
     /**
      * @SerializedName("DigestMethod")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\DigestMethod\SHA256")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $digestMethod;
 
     /**
      * @SerializedName("MGF")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\MGF")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\MGF")
      * @XmlElement(namespace=Namespaces::XENC11)
      */
     private $mgf;

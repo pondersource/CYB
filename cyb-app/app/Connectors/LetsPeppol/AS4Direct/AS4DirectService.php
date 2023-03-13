@@ -12,39 +12,44 @@ use App\Models\Authentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use JMS\Serializer\SerializerBuilder;
-use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
-use OCA\PeppolNext\PonderSource\EBMS\CollaborationInfo;
-use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
-use OCA\PeppolNext\PonderSource\EBMS\Messaging;
-use OCA\PeppolNext\PonderSource\EBMS\PartInfo;
-use OCA\PeppolNext\PonderSource\EBMS\Party;
-use OCA\PeppolNext\PonderSource\EBMS\PartyId;
-use OCA\PeppolNext\PonderSource\EBMS\PartyInfo;
-use OCA\PeppolNext\PonderSource\EBMS\PayloadInfo;
-use OCA\PeppolNext\PonderSource\EBMS\Property;
-use OCA\PeppolNext\PonderSource\EBMS\Receipt;
-use OCA\PeppolNext\PonderSource\EBMS\Service;
-use OCA\PeppolNext\PonderSource\EBMS\SignalMessage;
-use OCA\PeppolNext\PonderSource\EBMS\UserMessage;
-use OCA\PeppolNext\PonderSource\Envelope\Body;
-use OCA\PeppolNext\PonderSource\Envelope\Envelope;
-use OCA\PeppolNext\PonderSource\Envelope\Header;
-use OCA\PeppolNext\PonderSource\SBD\DocumentIdentification;
-use OCA\PeppolNext\PonderSource\SBD\Identifier;
-use OCA\PeppolNext\PonderSource\SBD\Receiver;
-use OCA\PeppolNext\PonderSource\SBD\Scope;
-use OCA\PeppolNext\PonderSource\SBD\Sender;
-use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument;
-use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocumentHeader;
-use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
-use OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256;
-use OCA\PeppolNext\PonderSource\WSSec\DSigReference;
-use OCA\PeppolNext\PonderSource\WSSec\Security;
-use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
-use OCA\PeppolNext\PonderSource\WSSec\Transform;
+use App\Connectors\LetsPeppol\PonderSource\EBBP\MessagePartNRInformation;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\CollaborationInfo;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\MessageInfo;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Messaging;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PartInfo;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Party;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PartyId;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PartyInfo;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\PayloadInfo;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Property;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Receipt;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Service;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\SignalMessage;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\UserMessage;
+use App\Connectors\LetsPeppol\PonderSource\Envelope\Body;
+use App\Connectors\LetsPeppol\PonderSource\Envelope\Envelope;
+use App\Connectors\LetsPeppol\PonderSource\Envelope\Header;
+use App\Connectors\LetsPeppol\PonderSource\SBD\DocumentIdentification;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Identifier;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Receiver;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Scope;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Sender;
+use App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocument;
+use App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocumentHeader;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\DigestMethod\SHA256;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\DSigReference;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\Security;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\SignatureMethod\RsaSha256;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\Transform;
 use phpseclib3\Crypt\{RSA, Random};
 
-Helper::include_once(__DIR__.'/../PonderSource');
+// Helper::include_once(__DIR__.'/../PonderSource');
+require_once(__DIR__.'/../PonderSource/WSSec/EncryptionMethod/IEncryptionMethod.php');
+require_once(__DIR__.'/../PonderSource/Envelope/Envelope.php');
+require_once(__DIR__.'/../PonderSource/WSSec/EncryptionMethod/AES128GCM.php');
+new \App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod\AES128GCM();
+// new \AES128GCM();
 
 class AS4DirectService
 {
@@ -68,7 +73,7 @@ class AS4DirectService
     {
         list($raw_envelope, $raw_payload) = $this->getEnvelopeAndPayload($request);
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-		$envelope = $serializer->deserialize($raw_envelope, 'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
+		$envelope = $serializer->deserialize($raw_envelope, 'App\Connectors\LetsPeppol\PonderSource\Envelope\Envelope::class', 'xml');
 
 		list($sender, $receiver) = $envelope->getHeader()->getMessaging()->getUserMessage()->getPeppolSenderAndReceiver();
 
@@ -108,7 +113,7 @@ class AS4DirectService
 		$private_key = $this->keyStore->getPrivateKey();
 
 		$decrypted_payload = $envelope->getHeader()->decodePayload($raw_payload, $private_key);
-		$sbd = $serializer->deserialize($decrypted_payload,'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
+		$sbd = $serializer->deserialize($decrypted_payload,'App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
 		$invoice = $sbd->getInvoice();
 
 		$sender_public_key = KeyStore::publicKeyFromString($sender_identity['as4direct_public_key']);
@@ -209,7 +214,7 @@ class AS4DirectService
 		$responseBody = $response->body();
 
 		$serializer = SerializerBuilder::create()->build();
-		$response = $serializer->deserialize($responseBody, 'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
+		$response = $serializer->deserialize($responseBody, 'App\Connectors\LetsPeppol\PonderSource\Envelope\Envelope::class', 'xml');
 
 		$receiver_public_key = KeyStore::publicKeyFromString($receiver_identity['as4direct_public_key']);
 		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);

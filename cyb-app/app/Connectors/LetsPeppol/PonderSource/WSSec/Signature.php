@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,XmlElement,Type,XmlNamespace,SerializedName};
 use JMS\Serializer\SerializerBuilder;
 
@@ -13,7 +13,7 @@ use JMS\Serializer\SerializerBuilder;
 class Signature {
     /**
      * @SerializedName("SignedInfo") 
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\SignedInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\SignedInfo")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $signedInfo;
@@ -27,7 +27,7 @@ class Signature {
 
     /**
      * @SerializedName("KeyInfo")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\KeyInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\KeyInfo")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $keyInfo;

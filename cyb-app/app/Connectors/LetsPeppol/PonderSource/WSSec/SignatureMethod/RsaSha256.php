@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\SignatureMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\SignatureMethod;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use phpseclib3\Crypt\RSA;
 use JMS\Serializer\Annotation\{XmlRoot,XmlAttribute,Type,SerializedName,XmlNamespace};
 

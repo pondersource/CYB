@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\SignatureMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\SignatureMethod;
 
 use JMS\Serializer\Annotation\{XmlAttribute,Type,SerializedName,XmlNamespace};
 

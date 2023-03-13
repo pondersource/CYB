@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,14 +15,14 @@ class Attachment
     /**
      * @SerializedName("ExternalReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\EmbeddedDocumentBinaryObject")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\EmbeddedDocumentBinaryObject")
      */
     private $embeddedDocumentBinaryObject;
 
     /**
      * @SerializedName("ExternalReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ExternalReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ExternalReference")
      */
     private $externalReference;
     

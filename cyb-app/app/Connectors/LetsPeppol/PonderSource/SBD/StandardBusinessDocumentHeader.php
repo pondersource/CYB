@@ -1,10 +1,10 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SBD;
+namespace App\Connectors\LetsPeppol\PonderSource\SBD;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
-use OCA\PeppolNext\PonderSource\SBD\Any;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Any;
 
 /**
  * @XmlRoot("StandardBusinessDocumentHeader")
@@ -22,28 +22,28 @@ class StandardBusinessDocumentHeader
     /**
      * @SerializedName("Sender")
      * @XmlElement(namespace=Namespaces::SBD)
-     * @Type("OCA\PeppolNext\PonderSource\SBD\Sender")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SBD\Sender")
      */
     private $sender;
 
     /**
      * @SerializedName("Receiver")
      * @XmlElement(namespace=Namespaces::SBD)
-     * @Type("OCA\PeppolNext\PonderSource\SBD\Receiver")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SBD\Receiver")
      */
     private $receiver;
 
     /**
      * @SerializedName("DocumentIdentification")
      * @XmlElement(namespace=Namespaces::SBD)
-     * @Type("OCA\PeppolNext\PonderSource\SBD\DocumentIdentification")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SBD\DocumentIdentification")
      */
     private $documentIdentification;
 
     /**
      * @SerializedName("BusinessScope")
      * @XmlList(inline=false, entry="Scope", namespace=Namespaces::SBD)
-     * @Type("array<OCA\PeppolNext\PonderSource\SBD\Scope>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\SBD\Scope>")
      */
     private $businessScope = [];
 

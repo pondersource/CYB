@@ -1,10 +1,10 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,XmlElement,XmlNamespace,Type,SerializedName,XmlList};
-use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
 
 /**
  * @XmlNamespace(uri=Namespaces::DS, prefix="ds")
@@ -13,21 +13,21 @@ use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
 class SignedInfo {
     /**
      * @SerializedName("CanonicalizationMethod")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $canonicalizationMethod;
 
     /**
      * @SerializedName("SignatureMethod")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\SignatureMethod\RsaSha256")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $signatureMethod;
 
     /**
      * @XmlList(inline=true, entry="Reference", namespace=Namespaces::DS)
-     * @Type("array<OCA\PeppolNext\PonderSource\WSSec\DSigReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\WSSec\DSigReference>")
      */
     private $references = [];
 

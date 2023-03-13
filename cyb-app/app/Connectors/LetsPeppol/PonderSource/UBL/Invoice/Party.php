@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlValue,XmlElement,XmlList};
 
 /**
@@ -15,47 +15,47 @@ class Party
     /**
      * @SerializedName("EndpointID")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\EndpointID")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\EndpointID")
      */
     private $endpointID;
 
     /**
      * @XmlList(inline=true, entry="PartyIdentification", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\PartyIdentification>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyIdentification>")
      */
     private $partyIdentifications = []; // Can be multiple for AccountingSupplierParty but at most one for others
 
     /**
      * @SerializedName("PartyName")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyName")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyName")
      */
     private $partyName;
 
     /**
      * @SerializedName("PostalAddress")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PostalAddress")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PostalAddress")
      */
     private $postalAddress;
 
     /**
      * @XmlList(inline=true, entry="PartyTaxScheme", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\PartyTaxScheme>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyTaxScheme>")
      */
     private $partyTaxSchemes = []; // Can be at most 2 for AccountingSupplierParty but at most one for others
 
     /**
      * @SerializedName("PartyLegalEntity")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PartyLegalEntity")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PartyLegalEntity")
      */
     private $partyLegalEntity;
 
     /**
      * @SerializedName("Contact")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Contact")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Contact")
      */
     private $contact;
     

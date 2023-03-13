@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,13 +15,13 @@ class TaxTotal
     /**
      * @SerializedName("TaxAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $taxAmount;
 
     /**
      * @XmlList(inline=true, entry="TaxSubtotal", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\TaxSubtotal>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\TaxSubtotal>")
      */
     private $taxSubtotals;
     

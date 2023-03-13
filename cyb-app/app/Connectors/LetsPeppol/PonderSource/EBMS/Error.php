@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type, XmlElement, SerializedName, Exclude, XmlAttribute};
 
 class Error {

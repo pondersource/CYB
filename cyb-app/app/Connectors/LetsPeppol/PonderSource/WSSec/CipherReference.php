@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlElement,XmlRoot,Type,XmlNamespace,SerializedName,XmlAttribute,XmlList};
 
 /**
@@ -21,7 +21,7 @@ class CipherReference {
     /**
      * @SerializedName("Transforms")
      * @XmlList(inline=false, entry="Transform", namespace=Namespaces::DS)
-     * @Type("array<OCA\PeppolNext\PonderSource\WSSec\Transform>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\WSSec\Transform>")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $transforms = [];

@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SBD;
+namespace App\Connectors\LetsPeppol\PonderSource\SBD;
 
 class Any 
 {

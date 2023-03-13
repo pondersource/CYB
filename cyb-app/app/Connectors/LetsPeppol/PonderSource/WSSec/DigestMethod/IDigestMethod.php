@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\DigestMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\DigestMethod;
 
 interface IDigestMethod {
     public function getUri();

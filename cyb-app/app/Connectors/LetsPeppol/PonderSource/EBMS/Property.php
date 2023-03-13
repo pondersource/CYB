@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
 use JMS\Serializer\Annotation\{Type, XmlAttributeMap, XmlValue, XmlAttribute, SerializedName};
 

@@ -12,7 +12,7 @@ use App\Models\Authentication;
 
 Helper::include_once(__DIR__.'/PonderSource');
 
-use OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice;
+use App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Invoice;
 
 class LetsPeppolService
 {
@@ -457,7 +457,7 @@ class LetsPeppolService
     private function invoiceFromUBL(string $ubl): Invoice
     {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        return $serializer->deserialize($ubl, 'OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice::class', 'xml');
+        return $serializer->deserialize($ubl, 'App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Invoice::class', 'xml');
     }
 
 }

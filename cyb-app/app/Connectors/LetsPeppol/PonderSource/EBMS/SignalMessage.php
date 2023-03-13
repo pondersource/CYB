@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -13,21 +13,21 @@ class SignalMessage
     /**
      * @SerializedName("MessageInfo");
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\MessageInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\MessageInfo")
      */
     private $messageInfo;
 
     /**
      * @SerializedName("Receipt");
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\Receipt")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\Receipt")
      */
     private $receipt;
 
     /**
      * @SerializedName("Error");
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\Error")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\Error")
      */
     private $error;
 

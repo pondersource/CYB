@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlElement,Type,XmlNamespace,XmlRoot,SerializedName,XmlAttribute};
 
 /**
@@ -21,35 +21,35 @@ class Security {
 
     /**
      * @SerializedName("BinarySecurityToken")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\BinarySecurityToken")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\BinarySecurityToken")
      * @XmlElement(namespace=Namespaces::WSSE)
      */
     private $encryptionSecurityToken;
 
     /**
      * @SerializedName("EncryptedKey")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\EncryptedKey")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptedKey")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $encryptedKey;
 
     /**
      * @SerializedName("EncryptedData")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\EncryptedData")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptedData")
      * @XmlElement(namespace=Namespaces::XENC)
      */
     private $encryptedData;
 
     /**
      * @SerializedName("BinarySecurityToken")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\BinarySecurityToken")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\BinarySecurityToken")
      * @XmlElement(namespace=Namespaces::WSSE)
      */
     private $signatureSecurityToken;
 
     /**
      * @SerializedName("Signature")
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\Signature")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\Signature")
      * @XmlElement(namespace=Namespaces::DS)
      */
     private $signature;

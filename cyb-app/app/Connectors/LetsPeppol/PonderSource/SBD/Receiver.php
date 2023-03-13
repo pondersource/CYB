@@ -1,10 +1,10 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SBD;
+namespace App\Connectors\LetsPeppol\PonderSource\SBD;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
-use OCA\PeppolNext\PonderSource\SBD\Any;
+use App\Connectors\LetsPeppol\PonderSource\SBD\Any;
 
 /**
  */
@@ -14,7 +14,7 @@ class Receiver
     /**
      * @SerializedName("Identifier")
      * @XmlElement(namespace=Namespaces::SBD)
-     * @Type("OCA\PeppolNext\PonderSource\SBD\Identifier")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SBD\Identifier")
      */
     private $identifier;
 

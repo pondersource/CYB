@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\EncryptionMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod;
 
 interface IEncryptionMethod {
     public function getUri();

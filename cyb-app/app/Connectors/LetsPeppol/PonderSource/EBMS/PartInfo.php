@@ -1,16 +1,16 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\EBMS\Property;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Property;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlNamespace,XmlRoot,XmlList,XmlAttribute,XmlElement,SerializedName};
 
 
 class PartInfo {
     /**
      * @XmlList(entry="Property",namespace=Namespaces::EB)
-     * @Type("array<OCA\PeppolNext\PonderSource\EBMS\Property>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\EBMS\Property>")
      * @XmlElement(namespace=Namespaces::EB)
      * @SerializedName("PartProperties")
      */

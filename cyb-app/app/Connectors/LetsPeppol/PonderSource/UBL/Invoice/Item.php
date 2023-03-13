@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -29,47 +29,47 @@ class Item
     /**
      * @SerializedName("BuyersItemIdentification")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\BuyersItemIdentification")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\BuyersItemIdentification")
      */
     private $buyersItemIdentification;
 
     /**
      * @SerializedName("SellersItemIdentification")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\SellersItemIdentification")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\SellersItemIdentification")
      */
     private $sellersItemIdentification;
 
     /**
      * @SerializedName("StandardItemIdentification")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\StandardItemIdentification")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\StandardItemIdentification")
      */
     private $standardItemIdentification;
 
     /**
      * @SerializedName("OriginCountry")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\OriginCountry")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\OriginCountry")
      */
     private $originCountry;
 
     /**
      * @XmlList(inline=true, entry="CommodityClassification", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\CommodityClassification>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\CommodityClassification>")
      */
     private $commodityClassifications;
 
     /**
      * @SerializedName("ClassifiedTaxCategory")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ClassifiedTaxCategory")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\ClassifiedTaxCategory")
      */
     private $classifiedTaxCategory;
 
     /**
      * @XmlList(inline=true, entry="AdditionalItemProperty", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\AdditionalItemProperty>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AdditionalItemProperty>")
      */
     private $additionalItemProperties = [];
     

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -29,14 +29,14 @@ class InvoiceLine
     /**
      * @SerializedName("InvoicedQuantity")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Quantity")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Quantity")
      */
     private $invoicedQuantity;
     
     /**
      * @SerializedName("LineExtensionAmount")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Amount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Amount")
      */
     private $lineExtensionAmount;
     
@@ -50,41 +50,41 @@ class InvoiceLine
     /**
      * @SerializedName("InvoicePeriod")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\InvoicePeriod")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\InvoicePeriod")
      */
     private $invoicePeriod;
 
     /**
      * @SerializedName("OrderLineReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\OrderLineReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\OrderLineReference")
      */
     private $orderLineReference;
 
     /**
      * @SerializedName("DocumentReference")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\DocumentReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\DocumentReference")
      */
     private $documentReference;
 
     /**
      * @XmlList(inline=true, entry="AllowanceCharge", namespace=Namespaces::CAC)
-     * @Type("array<OCA\PeppolNext\PonderSource\UBL\Invoice\AllowanceCharge>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\AllowanceCharge>")
      */
     private $allowanceCharges = [];
 
     /**
      * @SerializedName("Item")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Item")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Item")
      */
     private $item;
 
     /**
      * @SerializedName("Price")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Price")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Price")
      */
     private $price;
     

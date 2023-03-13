@@ -1,9 +1,9 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\EBMS\Property;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Property;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlNamespace,XmlRoot,XmlList,XmlAttribute,XmlElement,SerializedName};
 
 /**
@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation\{Type,XmlNamespace,XmlRoot,XmlList,XmlAttribute,Xm
 class Receipt {
     /**
      * @XmlList(entry="MessagePartNRInformation",namespace=Namespaces::EBBP)
-     * @Type("array<OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\EBBP\MessagePartNRInformation>")
      * @XmlElement(namespace=Namespaces::EBBP)
      * @SerializedName("NonRepudiationInformation")
      */

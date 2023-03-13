@@ -1,9 +1,9 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\EBMS\Service;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Service;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,SerializedName,XmlElement};
 
 class CollaborationInfo {
@@ -17,7 +17,7 @@ class CollaborationInfo {
     /**
      * @SerializedName("Service");
      * @XmlElement(cdata=false,namespace=Namespaces::EB);
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\Service")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\Service")
      */
     private $service;
 

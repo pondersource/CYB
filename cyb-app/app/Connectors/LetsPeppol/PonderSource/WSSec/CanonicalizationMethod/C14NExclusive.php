@@ -1,10 +1,10 @@
 <?php 
 
-namespace OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod;
 
 use JMS\Serializer\Annotation\{XmlRoot, Type,XmlNamespace,XmlAttribute,SerializedName,XmlValue,XmlElement};
-use OCA\PeppolNext\PonderSource\WSSec\InclusiveNamespaces;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\InclusiveNamespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 
 /**
  * @XmlNamespace(uri=Namespaces::DS, prefix="ds")
@@ -22,7 +22,7 @@ class C14NExclusive implements ICanonicalizationMethod {
     /**
      * @SerializedName("InclusiveNamespaces")
      * @XmlElement(cdata=false, namespace=Namespaces::EC)
-     * @Type("OCA\PeppolNext\PonderSource\WSSec\InclusiveNamespaces")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\WSSec\InclusiveNamespaces")
      */
     private $childElements;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource;
+namespace App\Connectors\LetsPeppol\PonderSource;
 
 class Namespaces {
     const DS = "http://www.w3.org/2000/09/xmldsig#";

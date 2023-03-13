@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod;
+namespace App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod;
 
 interface ICanonicalizationMethod {
     public function getAlgorithmUri();

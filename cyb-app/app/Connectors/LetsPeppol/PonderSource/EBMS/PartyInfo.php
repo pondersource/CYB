@@ -1,23 +1,23 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\EBMS\Party;
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\EBMS\Party;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlElement,XmlNamespace,SerializedName};
 
 class PartyInfo {
     /**
      * @SerializedName("From")
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\Party")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\Party")
      */
     private $from;
 
     /**
      * @SerializedName("To")
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\Party")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\Party")
      */
     private $to;
 

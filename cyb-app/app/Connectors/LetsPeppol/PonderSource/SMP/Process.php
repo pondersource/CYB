@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlList,XmlElement};
 
 /**
@@ -15,14 +15,14 @@ class Process
     /**
      * @SerializedName("ProcessIdentifier")
      * @XmlElement(namespace=Namespaces::ID)
-     * @Type("OCA\PeppolNext\PonderSource\SMP\ProcessIdentifier")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\ProcessIdentifier")
      */
     private $processIdentifier;
 
     /**
      * @SerializedName("ServiceEndpointList")
      * @XmlList(inline=false, entry="Endpoint", namespace=Namespaces::SMP)
-     * @Type("array<OCA\PeppolNext\PonderSource\SMP\Endpoint>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\SMP\Endpoint>")
      * @XmlElement(namespace=Namespaces::SMP)
      */
     private $endpointList = [];

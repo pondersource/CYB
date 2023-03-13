@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -29,7 +29,7 @@ class PayeeFinancialAccount
     /**
      * @SerializedName("FinancialInstitutionBranch")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\FinancialInstitutionBranch")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\FinancialInstitutionBranch")
      */
     private $financialInstitutionBranch;
     

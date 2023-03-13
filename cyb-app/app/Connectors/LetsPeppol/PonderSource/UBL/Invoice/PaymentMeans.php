@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\UBL\Invoice;
+namespace App\Connectors\LetsPeppol\PonderSource\UBL\Invoice;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
@@ -15,7 +15,7 @@ class PaymentMeans
     /**
      * @SerializedName("PaymentMeansCode")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMeansCode")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PaymentMeansCode")
      */
     private $paymentMeansCode; // https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL4461/
     
@@ -29,21 +29,21 @@ class PaymentMeans
     /**
      * @SerializedName("CardAccount")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\CardAccount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\CardAccount")
      */
     private $cardAccount;
 
     /**
      * @SerializedName("PayeeFinancialAccount")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PayeeFinancialAccount")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PayeeFinancialAccount")
      */
     private $payeeFinancialAccount;
 
     /**
      * @SerializedName("PaymentMandate")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMandate")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\PaymentMandate")
      */
     private $paymentMandate;
     

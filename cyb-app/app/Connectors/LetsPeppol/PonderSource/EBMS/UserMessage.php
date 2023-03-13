@@ -1,29 +1,29 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBMS;
+namespace App\Connectors\LetsPeppol\PonderSource\EBMS;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type, SerializedName, XmlList, XmlElement};
 
 class UserMessage {
     /**
      * @SerializedName("MessageInfo");
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\MessageInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\MessageInfo")
      */
     private $messageInfo;
 
     /**
      * @SerializedName("PartyInfo")
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\PartyInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\PartyInfo")
      */
     private $partyInfo;
 
     /**
      * @SerializedName("CollaborationInfo")
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\CollaborationInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\CollaborationInfo")
      */
     private $collaborationInfo;
 
@@ -31,14 +31,14 @@ class UserMessage {
      * @SerializedName("MessageProperties")
      * @XmlList(entry="Property", namespace=Namespaces::EB)
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("array<OCA\PeppolNext\PonderSource\EBMS\Property>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\EBMS\Property>")
      */
     private $messageProperties;
 
     /**
      * @SerializedName("PayloadInfo")
      * @XmlElement(namespace=Namespaces::EB)
-     * @Type("OCA\PeppolNext\PonderSource\EBMS\PayloadInfo")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\EBMS\PayloadInfo")
      */
     private $payloadInfo;
 

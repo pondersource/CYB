@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
 
 /**
@@ -21,7 +21,7 @@ class Endpoint
     /**
      * @SerializedName("EndpointReference")
      * @XmlElement(namespace=Namespaces::WSA)
-     * @Type("OCA\PeppolNext\PonderSource\SMP\EndpointReference")
+     * @Type("App\Connectors\LetsPeppol\PonderSource\SMP\EndpointReference")
      */
     private $endpointReference;
 

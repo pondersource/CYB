@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\SMP;
+namespace App\Connectors\LetsPeppol\PonderSource\SMP;
 
-use OCA\PeppolNext\PonderSource\SMP\{ServiceGroup, ParticipantIdentifier, ServiceMetadata, ServiceInformation, DocumentIdentifier, Process, ProcessIdentifier, Endpoint, EndpointReference};
+use App\Connectors\LetsPeppol\PonderSource\SMP\{ServiceGroup, ParticipantIdentifier, ServiceMetadata, ServiceInformation, DocumentIdentifier, Process, ProcessIdentifier, Endpoint, EndpointReference};
 use phpseclib3\File\X509;
 
 class SMP 
@@ -15,7 +15,7 @@ class SMP
 		$response = $client->request('GET', $smpEndpoint)->getBody();
 
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-		$obj = $serializer->deserialize($response,'OCA\PeppolNext\PonderSource\SMP\SignedServiceMetadata::class', 'xml');
+		$obj = $serializer->deserialize($response,'App\Connectors\LetsPeppol\PonderSource\SMP\SignedServiceMetadata::class', 'xml');
 
         $endpoint = $obj->getServiceMetadata()->getServiceInformation()->getProcessList()[0]->getEndpointList()[0];
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace OCA\PeppolNext\PonderSource\EBBP;
+namespace App\Connectors\LetsPeppol\PonderSource\EBBP;
 
-use OCA\PeppolNext\PonderSource\Namespaces;
+use App\Connectors\LetsPeppol\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{XmlRoot,XmlElement,XmlNamespace,Type,SerializedName,XmlList};
-use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
+use App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
 
 /**
  * @XmlNamespace(uri=Namespaces::EBBP, prefix="ebbp")
@@ -14,7 +14,7 @@ class MessagePartNRInformation {
 
     /**
      * @XmlList(inline=true, entry="Reference", namespace=Namespaces::DS)
-     * @Type("array<OCA\PeppolNext\PonderSource\WSSec\DSigReference>")
+     * @Type("array<App\Connectors\LetsPeppol\PonderSource\WSSec\DSigReference>")
      */
     private $references = [];
 
