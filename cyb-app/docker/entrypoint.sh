@@ -58,6 +58,9 @@ else
     chgrp --recursive www-data /var/www/html/storage /var/www/html/bootstrap/cache
     chmod --recursive ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
 
+    # make run-docker.sh executable.
+    chmod +x /var/www/html/run-docker.sh
+
     # only optimize sources when we are in productions, otherwise clear all optimizations.
     if [[ "${CYB_APP_MODE}" == "development" ]]; then
         /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan optimize:clear

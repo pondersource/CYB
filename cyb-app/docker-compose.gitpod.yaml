@@ -23,6 +23,8 @@ services:
       - no-new-privileges:true
     networks:
       - cyb-network
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     ports:
       - target: 8000
         published: 8000
@@ -33,6 +35,8 @@ services:
       CYB_APP_MODE: "development"
       APP_CONTAINER_ROLE: "app"
       APP_WEBSERVER_TYPE: "artisan"
+      XDEBUG_MODE: "develop,debug,coverage"
+      XDEBUG_CONFIG: "idekey=ECLIPSE client_host=host.docker.internal"
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
