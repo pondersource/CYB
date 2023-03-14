@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Facades\Log;
 
 // require_once('/var/www/html/app/Connectors/LetsPeppol/AS4Direct/../PonderSource/WSSec/EncryptionMethod/IEncryptionMethod.php');
 // require_once('/var/www/html/app/Connectors/LetsPeppol/AS4Direct/../PonderSource/WSSec/EncryptionMethod/AES128GCM.php');

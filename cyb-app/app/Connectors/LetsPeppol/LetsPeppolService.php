@@ -9,8 +9,10 @@ use App\Core\ApplicationManager;
 use App\Core\Helper;
 use App\Core\Settings;
 use App\Models\Authentication;
+use Illuminate\Support\Facades\Log;
+use JMS\Serializer\SerializerBuilder;
 
-Helper::include_once(__DIR__.'/PonderSource');
+//Helper::include_once(__DIR__.'/PonderSource');
 
 use App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Invoice;
 
@@ -231,12 +233,14 @@ class LetsPeppolService
         $supplier_value = null;
         
         try {
-            $invoice = $this->invoiceFromUBL($ubl);
+            list($invoice, $ubl) = $this->invoiceFromString($ubl);
+            Log::debug($ubl);
             $supplier_ID = $invoice->getAccountingSupplierParty()->getParty()->getEndpointID();
 
             $supplier_scheme = $supplier_ID->getSchemeID();
             $supplier_value = $supplier_ID->getValue();
         } catch (\Exception $e) {
+            throw $e;
             return false;
         }
 
@@ -280,7 +284,7 @@ class LetsPeppolService
         $customer_value = null;
         
         try {
-            $invoice = $this->invoiceFromUBL($ubl);
+            list($invoice, $ubl) = $this->invoiceFromString($ubl);
             $customer_ID = $invoice->getAccountingCustomerParty()->getParty()->getEndpointID();
 
             $customer_scheme = $customer_ID->getSchemeID();
@@ -405,7 +409,7 @@ class LetsPeppolService
         $message['file_name'] = $file_name;
 
         // read the invoice
-        $invoice = $this->invoiceFromUBL($ubl);
+        list($invoice, $ubl) = $this->invoiceFromString($ubl);
 
         // discover identifier and identity
         $endpoint_ID = null;
@@ -454,10 +458,31 @@ class LetsPeppolService
         }
     }
 
+    private function invoiceFromString(string $str): array
+    {
+        if (substr_compare($str, '<StandardBusinessDocument', 0, 25) === 0) {
+            $invoice = $this->invoiceFromSBD($str);
+            $serializer = SerializerBuilder::create()->build();
+            $ubl = $serializer->serialize($invoice, 'xml');
+            $ubl = str_replace("  ", '', str_replace("\n", '', $ubl));
+            return [$invoice, $ubl];
+        }
+        else {
+            return [$this->invoiceFromUBL($str), $str];
+        }
+    }
+
     private function invoiceFromUBL(string $ubl): Invoice
     {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
         return $serializer->deserialize($ubl, 'App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Invoice::class', 'xml');
+    }
+
+    private function invoiceFromSBD(string $sbd): Invoice
+    {
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        $sbd = $serializer->deserialize($sbd, 'App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
+        return $sbd->getInvoice();
     }
 
 }
