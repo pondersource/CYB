@@ -44,12 +44,7 @@ use App\Connectors\LetsPeppol\PonderSource\WSSec\SignatureMethod\RsaSha256;
 use App\Connectors\LetsPeppol\PonderSource\WSSec\Transform;
 use phpseclib3\Crypt\{RSA, Random};
 
-// Helper::include_once(__DIR__.'/../PonderSource');
-require_once(__DIR__.'/../PonderSource/WSSec/EncryptionMethod/IEncryptionMethod.php');
-require_once(__DIR__.'/../PonderSource/Envelope/Envelope.php');
-require_once(__DIR__.'/../PonderSource/WSSec/EncryptionMethod/AES128GCM.php');
-new \App\Connectors\LetsPeppol\PonderSource\WSSec\EncryptionMethod\AES128GCM();
-// new \AES128GCM();
+Helper::include_once(__DIR__.'/../PonderSource');
 
 class AS4DirectService
 {
