@@ -3,6 +3,9 @@ image:
 
 vscode:
   extensions:
+    # Docker helper extension
+    - ms-azuretools.vscode-docker
+
     # PHP extension
     - felixfbecker.php-debug
 
@@ -11,7 +14,10 @@ vscode:
     - rogalmic.bash-debug
 
     # Env file highlight
-    - irongeek.vscode-env
+    - mikestead.dotenv
+
+    # Github Theme
+    - github.github-vscode-theme
 
 github:
   prebuilds:
@@ -33,6 +39,16 @@ github:
     # add a label once the prebuild is ready to pull requests (defaults to false)
     addLabel: true
 
+# Define Ports and how they should be handled
+# Documentation: https://www.gitpod.io/docs/configure/workspaces/ports
+ports:
+  - port: 8000
+    onOpen: open-browser
+    visibility: public
+    name: cyb webserver
+    description: shows cyb application on the browser
+
 tasks:
+  - before: sudo curl -o /usr/local/bin/docker-compose -fsSL https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-$(uname -m)
   - init: chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod pull
   - command: chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod up
