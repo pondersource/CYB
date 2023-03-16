@@ -11,6 +11,7 @@ use App\Core\Settings;
 use App\Models\Authentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use JMS\Serializer\SerializerBuilder;
 use App\Connectors\LetsPeppol\PonderSource\EBBP\MessagePartNRInformation;
 use App\Connectors\LetsPeppol\PonderSource\EBMS\CollaborationInfo;
@@ -36,6 +37,7 @@ use App\Connectors\LetsPeppol\PonderSource\SBD\Scope;
 use App\Connectors\LetsPeppol\PonderSource\SBD\Sender;
 use App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocument;
 use App\Connectors\LetsPeppol\PonderSource\SBD\StandardBusinessDocumentHeader;
+use App\Connectors\LetsPeppol\PonderSource\UBL\Invoice\Invoice;
 use App\Connectors\LetsPeppol\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
 use App\Connectors\LetsPeppol\PonderSource\WSSec\DigestMethod\SHA256;
 use App\Connectors\LetsPeppol\PonderSource\WSSec\DSigReference;
@@ -199,14 +201,20 @@ class AS4DirectService
 				KeyStore::certificateFromString($receiver_identity['as4direct_certificate']),
 				$boundry);
 
+		$endpoint = $receiver_identity['as4direct_endpoint'];
+		//$endpoint = str_replace('nc2.docker', '8080-pondersource-peppolphp-71yptnh782j.ws-us90.gitpod.io', $endpoint);
+		Log::debug('AS4 direct endpoint is: '.$endpoint);
+
 		$response = Http::withHeaders([
 				'Message-Id' => '<'.uniqid().'>',
 				'MIME-Version' => '1.0'
 			])
 			->withBody($body, "multipart/related;    boundary=\"$boundry\";    type=\"application/soap+xml\"; charset=UTF-8")
-			->post($receiver_identity['as4direct_endpoint']);
+			->post($endpoint);
 
 		$responseBody = $response->body();
+
+		Log::debug('AS4 direct response: '.$responseBody);
 
 		$serializer = SerializerBuilder::create()->build();
 		$response = $serializer->deserialize($responseBody, 'App\Connectors\LetsPeppol\PonderSource\Envelope\Envelope::class', 'xml');
@@ -225,9 +233,10 @@ class AS4DirectService
 		$bodyId = uniqid('id-');
 		$payloadId = uniqid('letspeppol-att-').'@cid';
 
-		$r_cn = $r_cert->getDNProp('CN');
+		$r_cn = $r_cert->getDNProp('CN')[0];
 
 		$envelope = $this->prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $r_scheme, $r_id, $r_cn, $payloadId, $bodyId);
+		Log::debug(var_export($envelope, true));
 		list($raw_payload, $payload) = $this->preparePayload($envelope, $s_scheme, $s_id, $r_scheme, $r_id, $invoice, $messagingId, $bodyId, $payloadId, $s_key, $r_cert);
 
 		$serializer = SerializerBuilder::create()->build();
