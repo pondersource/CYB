@@ -49,6 +49,5 @@ ports:
     description: shows cyb application on the browser
 
 tasks:
-  - before: sudo curl -o /usr/local/bin/docker-compose -fsSL https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-$(uname -m)
   - init: chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod pull
   - command: chmod +x ./cyb-app/run-docker.sh && ./cyb-app/run-docker.sh gitpod up
